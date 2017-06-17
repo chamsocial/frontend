@@ -18,21 +18,28 @@ export default class Home extends Component {
   constructor (props) {
     super(props)
 
+    this.limit = 5
     this.state = {
-      posts: []
+      posts: [],
+      totalPostCount: 0
     }
   }
   componentDidMount () {
+    const { page = 1 } = this.props
 
-    fetch('http://localhost:5000/v1/posts')
+    fetch(`http://localhost:5000/v1/posts?limit=${this.limit}&page=${page}`)
       .then((res) => res.json())
       .then(json => {
-        this.setState(() => ({ posts: json.posts }))
+        this.setState(() => ({ posts: json.posts, totalPostCount: json.meta.total }))
       })
   }
 
   render () {
+    const pages = Math.ceil(this.state.totalPostCount / this.limit)
+    const page = this.props.page || 1
+
     return <div>
+      <h5>Page {page} of {pages}</h5>
       {this.state.posts.map((post, i) => <Post key={i} post={post}/>)}
     </div>
   }
