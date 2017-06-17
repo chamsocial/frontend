@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { dateToString } from '../utils'
 
 function Post ({ post }) {
@@ -23,8 +24,20 @@ export default class Home extends Component {
       posts: [],
       totalPostCount: 0
     }
+
+    this.loadPosts = this.loadPosts.bind(this)
   }
   componentDidMount () {
+    this.loadPosts()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.page !== prevProps.page) {
+      this.loadPosts()
+    }
+  }
+
+  loadPosts (props) {
     const { page = 1 } = this.props
 
     fetch(`http://localhost:5000/v1/posts?limit=${this.limit}&page=${page}`)
@@ -35,12 +48,18 @@ export default class Home extends Component {
   }
 
   render () {
-    const pages = Math.ceil(this.state.totalPostCount / this.limit)
+    const pageCount = Math.ceil(this.state.totalPostCount / this.limit)
     const page = this.props.page || 1
 
+    const pagination = []
+    for(let i = 1; i <= pageCount; i++) {
+      pagination.push(<Link key={i} to={`/page/${i}`}> {i} </Link>)
+    }
+
     return <div>
-      <h5>Page {page} of {pages}</h5>
+      <h5>Page {page} of {pageCount}</h5>
       {this.state.posts.map((post, i) => <Post key={i} post={post}/>)}
+      <p>{pagination}</p>
     </div>
   }
 }
