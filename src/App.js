@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from './Routes'
+import Header from './components/Header'
 import './App.css';
 
 // Reducer
@@ -10,6 +11,8 @@ function user(state = { user: false, token: false }, action) {
   switch (action.type) {
     case 'login':
       return { user: action.user, token: action.token }
+    case 'logout':
+      return { user: false, token: false }
     default:
       return state
   }
@@ -24,7 +27,6 @@ const store = createStore(user, preservedState)
 
 store.subscribe(() => {
   const userState = store.getState('user')
-  console.log(userState)
   localStorage.setItem('user', JSON.stringify(userState))
 })
 
@@ -34,14 +36,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <div className='App-header'>
-              <div className='container'>
-                <h2 className='logo'>
-                <Link to='/'>Chamsocial</Link>
-                </h2>
-                <Link to='/login'>Login</Link>
-              </div>
-            </div>
+            <Header />
             <div className='container'>
               <Routes />
             </div>
