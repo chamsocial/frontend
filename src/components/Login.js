@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { request } from '../utils'
 import './Login.css';
 
 export class Login extends Component {
@@ -24,14 +25,8 @@ export class Login extends Component {
   onSubmit (e) {
     e.preventDefault()
     const { username, password } = this.state
-    const options = {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    }
-
-    fetch('http://localhost:5000/v1/login', options)
-      .then(res => res.json())
+    const data = { username, password }
+    request.post('http://localhost:5000/v1/login', data)
       .then(res => {
         if (res.user && res.token) {
           this.props.login(res.user, res.token)

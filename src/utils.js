@@ -12,3 +12,20 @@ export function dateToString (date) {
   const formated = d.toLocaleDateString(undefined, options)
   return `${formated}`
 }
+
+export const request = {
+  post (url, body, opt = {}) {
+    const options = Object.assign({
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }, opt)
+
+    return fetch(url, options).then(toJson)
+  },
+  get (url) {
+    return fetch(url).then(toJson)
+  }
+}
+
+function toJson (res) { return res.json() }

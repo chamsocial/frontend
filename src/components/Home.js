@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { dateToString } from '../utils'
+import { dateToString, request } from '../utils'
 
 function Post ({ post }) {
   const { title, slug, username, created_at } = post
@@ -40,8 +40,7 @@ export default class Home extends Component {
   loadPosts (props) {
     const { page = 1 } = this.props
 
-    fetch(`http://localhost:5000/v1/posts?limit=${this.limit}&page=${page}`)
-      .then((res) => res.json())
+    request.get(`http://localhost:5000/v1/posts?limit=${this.limit}&page=${page}`)
       .then(json => {
         this.setState(() => ({ posts: json.posts, totalPostCount: json.meta.total }))
       })
