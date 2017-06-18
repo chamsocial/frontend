@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import './Login.css';
 
 export class Login extends Component {
   constructor (props) {
@@ -51,14 +52,14 @@ export class Login extends Component {
   }
 
   render () {
-    return <form onSubmit={this.onSubmit}>
+    return <form onSubmit={this.onSubmit} className='login-form'>
       <div className='form-group'>
         <label htmlFor='username'>Username or email</label>
         <input value={this.state.username} onChange={this.setUsername} />
       </div>
       <div className='form-group'>
         <label htmlFor='password'>Password</label>
-        <input value={this.state.password} onChange={this.setPassword} />
+        <input type='password' value={this.state.password} onChange={this.setPassword} />
       </div>
       <div className='form-group'>
         <button className='btn'>Login</button>

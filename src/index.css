@@ -1,3 +1,5 @@
+* { box-sizing: border-box; }
+html, body { background: #fcfcfc; }
 body {
   margin: 0;
   padding: 0;
@@ -5,4 +7,51 @@ body {
   font-size: 15px;
   line-height: 1.42857;
   color: #444;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+h2 a {
+  color: #444;
+}
+a {
+  color: #26B864;
+  text-decoration: none;
+}
+
+
+label {
+  display: block;
+  margin: 0 0 10px;
+}
+input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #444;
+}
+.form-group {
+  margin: 0 0 20px;
+}
+
+.btn {
+  background: #0086DB;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  border-radius: .25rem;
 }
