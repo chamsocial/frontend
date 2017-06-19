@@ -11,6 +11,10 @@ function Login () {
   return <LazyLoad getComponent={() => import('./components/Login')} />
 }
 
+function Post ({ match }) {
+  return <LazyLoad getComponent={() => import('./components/Post')} {...match.params} />
+}
+
 // Map Redux actions to component props
 function mapLogoutDispatch(dispatch) {
   return {
@@ -32,6 +36,7 @@ export default function Routes () {
   return <Switch>
     <Route exact path='/login' component={Login} />
     <Route exact path='/logout' component={LogoutMapped} />
+    <Route path='/posts/:slug' component={Post} />
     <Route exact path='/' component={Home} />
     <Route path='/page/:page' component={Home}/>
   </Switch>

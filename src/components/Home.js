@@ -37,7 +37,7 @@ export default class Home extends Component {
     }
   }
 
-  loadPosts (props) {
+  loadPosts () {
     const { page = 1 } = this.props
 
     request.get(`http://localhost:5000/v1/posts?limit=${this.limit}&page=${page}`)

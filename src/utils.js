@@ -23,8 +23,10 @@ export const request = {
 
     return fetch(url, options).then(toJson)
   },
-  get (url) {
-    return fetch(url).then(toJson)
+  get (url, token) {
+    return fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    }).then(toJson)
   }
 }
 
