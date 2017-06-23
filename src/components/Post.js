@@ -28,11 +28,9 @@ export class Post extends Component {
 
   render () {
     if (!this.state.post) return <div>Loading</div>
-    const { title, slug, username, created_at, content } = this.state.post
+    const { title, username, created_at, content } = this.state.post
     return <div className='Post-item'>
-      <h2>
-        <a href={`http://localhost:5000/en/posts/${slug}`}>{title}</a>
-      </h2>
+      <h1>{title}</h1>
       <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
       <div className='meta'>
         { dateToString(created_at) }

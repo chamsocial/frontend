@@ -6,7 +6,7 @@ function Post ({ post }) {
   const { title, slug, username, created_at } = post
   return <div className='Post-item'>
     <h2>
-      <a href={`http://localhost:5000/en/posts/${slug}`}>{title}</a>
+      <a href={`http://localhost:3000/posts/${slug}`}>{title}</a>
     </h2>
     <div className='meta'>
        { dateToString(created_at) }
