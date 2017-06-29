@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { request } from '../utils'
-import './Login.css';
+import './Login.css'
+const { REACT_APP_API_URL } = process.env
 
 export class Login extends Component {
   constructor (props) {
@@ -26,7 +27,7 @@ export class Login extends Component {
     e.preventDefault()
     const { username, password } = this.state
     const data = { username, password }
-    request.post('http://localhost:5000/v1/login', data)
+    request.post(`${REACT_APP_API_URL}/login`, data)
       .then(res => {
         if (res.user && res.token) {
           this.props.login(res.user, res.token)
@@ -63,14 +64,13 @@ export class Login extends Component {
   }
 }
 
-
 // Map Redux state to component props
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return { user: state.user }
 }
 
 // Map Redux actions to component props
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     login: (user, token) => dispatch({
       type: 'login',

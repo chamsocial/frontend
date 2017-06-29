@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { dateToString, request } from '../utils'
+const { REACT_APP_API_URL } = process.env
 
 export class Post extends Component {
   constructor (props) {
@@ -19,7 +20,7 @@ export class Post extends Component {
 
   loadSinglePost () {
     const { slug, token } = this.props
-    request.get(`http://localhost:5000/v1/posts/${slug}/links/comments`, token)
+    request.get(`${REACT_APP_API_URL}/posts/${slug}/links/comments`, token)
       .then(json => {
         console.log(json)
         this.setState(() => ({ post: json.posts }))
@@ -41,7 +42,7 @@ export class Post extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return { token: state.token }
 }
 export default connect(mapStateToProps)(Post)
