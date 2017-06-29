@@ -1,3 +1,4 @@
+/* global fetch */
 export function dateToString (date) {
   if (!date) return '-'
 
@@ -24,9 +25,8 @@ export const request = {
     return fetch(url, options).then(toJson)
   },
   get (url, token) {
-    return fetch(url, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    }).then(toJson)
+    return fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
+      .then(toJson)
   }
 }
 

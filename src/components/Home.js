@@ -43,6 +43,7 @@ export default class Home extends Component {
 
     request.get(`${REACT_APP_API_URL}/posts?limit=${this.limit}&page=${page}`)
       .then(json => {
+        if (json.errors) return
         this.setState(() => ({ posts: json.posts, totalPostCount: json.meta.total }))
       })
   }
