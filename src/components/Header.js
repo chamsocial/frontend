@@ -6,7 +6,7 @@ export function Header ({ user }) {
   return <div className='App-header'>
     <div className='container header'>
       <h2 className='logo'>
-      <Link to='/'>Chamsocial</Link>
+        <Link to='/'>Chamsocial</Link>
       </h2>
       <div>
         {user
@@ -19,8 +19,8 @@ export function Header ({ user }) {
 }
 
 // Map Redux state to component props
-function mapStateToProps(state) {
-  return { user: state.user }
+function mapStateToProps (state) {
+  return { user: state.auth.user }
 }
 
 // Connected Component

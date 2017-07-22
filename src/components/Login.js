@@ -27,7 +27,7 @@ export class Login extends Component {
     e.preventDefault()
     const { username, password } = this.state
     const data = { username, password }
-    request.post(`${REACT_APP_API_URL}/login`, data)
+    request.post(`${REACT_APP_API_URL}/v2/login`, data)
       .then(res => {
         if (res.user && res.token) {
           this.props.login(res.user, res.token)

@@ -1,48 +1,37 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { dateToString, request } from '../utils'
-const { REACT_APP_API_URL } = process.env
+import { dateToString } from '../utils'
+import Loading from './Loading'
 
-export class Post extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      post: false
-    }
-
-    this.loadSinglePost = this.loadSinglePost.bind(this)
-  }
-  componentDidMount () {
-    this.loadSinglePost()
-  }
-
-  loadSinglePost () {
-    const { slug, token } = this.props
-    request.get(`${REACT_APP_API_URL}/posts/${slug}/links/comments`, token)
-      .then(json => {
-        console.log(json)
-        this.setState(() => ({ post: json.posts }))
-      })
-  }
-
-  render () {
-    if (!this.state.post) return <div>Loading</div>
-    const { title, username, created_at, content } = this.state.post
-    return <div className='Post-item'>
-      <h1>{title}</h1>
-      <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
-      <div className='meta'>
-        { dateToString(created_at) }
-        <a href='#Hmm' className='float-right'>{username}</a>
-      </div>
-      <Link to='/'>Home</Link>
+export function Post (props) {
+  const { loading, post } = props.data
+  if (loading) return <Loading />
+  const { title, username, created_at, content } = post
+  return <div className='Post-item'>
+    <h1>{title}</h1>
+    <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
+    <div className='meta'>
+      { dateToString(created_at) }
+      <a href='#Hmm' className='float-right'>{username}</a>
     </div>
-  }
+    <Link to='/'>Home</Link>
+  </div>
 }
 
-function mapStateToProps (state) {
-  return { token: state.token }
-}
-export default connect(mapStateToProps)(Post)
+const postsQuery = gql`query postSingleQuery ($slug: String!) {
+  post(slug: $slug) {
+    title
+    slug
+    content
+    created_at
+    author {
+      username
+    }
+  }
+}`
+
+export default graphql(postsQuery, {
+  options: (data) => ({ variables: { slug: data.slug } })
+})(Post)
