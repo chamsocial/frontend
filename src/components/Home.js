@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { dateToString, request } from '../utils'
-const { REACT_APP_API_URL } = process.env
+import React from 'react'
+// import { Link } from 'react-router-dom'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+import { dateToString } from '../utils'
 
 function Post ({ post }) {
   const { title, slug, username, created_at } = post
@@ -16,51 +17,38 @@ function Post ({ post }) {
   </div>
 }
 
-export default class Home extends Component {
-  constructor (props) {
-    super(props)
-
-    this.limit = 5
-    this.state = {
-      posts: [],
-      totalPostCount: 0
-    }
-
-    this.loadPosts = this.loadPosts.bind(this)
-  }
-  componentDidMount () {
-    this.loadPosts()
-  }
-
-  componentDidUpdate (prevProps) {
-    if (this.props.page !== prevProps.page) {
-      this.loadPosts()
-    }
-  }
-
-  loadPosts () {
-    const { page = 1 } = this.props
-
-    request.get(`${REACT_APP_API_URL}/posts?limit=${this.limit}&page=${page}`)
-      .then(json => {
-        if (json.errors) return
-        this.setState(() => ({ posts: json.posts, totalPostCount: json.meta.total }))
-      })
-  }
-
-  render () {
-    const pageCount = Math.ceil(this.state.totalPostCount / this.limit)
-    const page = this.props.page || 1
-
-    const pagination = []
-    for (let i = 1; i <= pageCount; i++) {
-      pagination.push(<Link key={i} to={`/page/${i}`}> {i} </Link>)
-    }
-
-    return <div>
-      <h5>Page {page} of {pageCount}</h5>
-      {this.state.posts.map((post, i) => <Post key={i} post={post} />)}
-      <p>{pagination}</p>
-    </div>
-  }
+function Loading () {
+  return <div className='loading'>Loading...</div>
 }
+
+export function Home (props) {
+  const { loading, posts } = props.data
+
+  if (loading) return <Loading />
+
+  // const pageCount = Math.ceil(this.state.totalPostCount / this.limit)
+  // const page = this.props.page || 1
+  //
+  // const pagination = []
+  // for (let i = 1; i <= pageCount; i++) {
+  //   pagination.push(<Link key={i} to={`/page/${i}`}> {i} </Link>)
+  // }
+
+  return <div>
+    {/* <h5>Page {page} of {pageCount}</h5> */}
+    {posts.map((post, i) => <Post key={i} post={post} />)}
+    {/* <p>{pagination}</p> */}
+  </div>
+}
+
+const postsQuery = gql`query partnerWithTariffQuery {
+  posts {
+    title
+    slug
+    created_at
+  }
+}`
+
+const MyComponentWithData = graphql(postsQuery)(Home)
+
+export default MyComponentWithData
