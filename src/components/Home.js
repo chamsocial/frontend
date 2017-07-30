@@ -8,8 +8,16 @@ import Pagination from './partials/Pagination'
 const { REACT_APP_ITEMS_PER_PAGE } = process.env
 
 function Post ({ post }) {
-  const { title, slug, author, created_at } = post
+  const { title, slug, author, created_at, comments_count: commentsCount } = post
+  let comments = null
+  if (commentsCount) {
+    comments = <span className='float-right meta'>
+      <i className='icon-comment-empty' />{commentsCount}
+    </span>
+  }
+
   return <div className='Post-item'>
+    {comments}
     <h2>
       <Link to={`/posts/${slug}`}>{title}</Link>
     </h2>
@@ -38,6 +46,7 @@ const postsQuery = gql`query postsQuery($offset: Int!) {
     title
     slug
     created_at
+    comments_count
     author {
       id
       username
