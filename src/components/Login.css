@@ -7,6 +7,11 @@
   color: #31708f;
   border-radius: 3px;
 }
+.login-warn {
+  background-color: #f2dede;
+  border-color: #a94442;
+  color: #a94442;
+}
 
 .login-form {
   max-width: 400px;

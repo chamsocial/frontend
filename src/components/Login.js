@@ -11,7 +11,8 @@ export class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      message: false
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -33,6 +34,8 @@ export class Login extends Component {
         if (res.user && res.token) {
           this.props.login(res.user, res.token)
           this.setState({ redirectToReferrer: true })
+        } else {
+          this.setState({ message: 'Invalid username/email or password' })
         }
       })
       .catch(e => console.error(e))
@@ -54,11 +57,18 @@ export class Login extends Component {
     if (redirectToReferrer) return <Redirect to={from} />
 
     const isRedirect = this.props.location.state && this.props.location.state.from
-    let message = null
+    let redirectMessage = null
     if (isRedirect) {
-      message = <div className='login-info'>Please login to read the post.</div>
+      redirectMessage = <div className='login-info'>Please login to read the post.</div>
     }
+
+    let message = null
+    if (this.state.message) {
+      message = <div className='login-info login-warn'>{this.state.message}</div>
+    }
+
     return <form onSubmit={this.onSubmit} className='login-form'>
+      {redirectMessage}
       {message}
       <div className='form-group'>
         <label htmlFor='username'>Username or email</label>
