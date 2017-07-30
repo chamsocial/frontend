@@ -16,7 +16,7 @@ function Comment ({ comment }) {
   return <div>
     <div className='comment'>
       <div className='meta'>{ dateToString(created_at) } - {author.username}</div>
-      {content}
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
     {subComments}
   </div>
