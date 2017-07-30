@@ -1,22 +1,50 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Link } from 'react-router-dom'
 import { dateToString } from '../utils'
 import Loading from './Loading'
+
+function Comment ({ comment }) {
+  const { created_at, content, author, comments } = comment
+  let subComments = null
+  if (comments && comments.length) {
+    subComments = <div className='subcomments'>
+      {comments.map(c => <Comment key={c.id} comment={c} />)}
+    </div>
+  }
+
+  return <div>
+    <div className='comment'>
+      <div className='meta'>{ dateToString(created_at) } - {author.username}</div>
+      {content}
+    </div>
+    {subComments}
+  </div>
+}
+
+function Comments ({ comments }) {
+  if (!comments.length) return <div>No comments</div>
+
+  return <div>
+    <h3>Comments</h3>
+    {comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+  </div>
+}
 
 export function Post (props) {
   const { loading, post } = props.data
   if (loading) return <Loading />
-  const { title, username, created_at, content } = post
-  return <div className='Post-item'>
-    <h1>{title}</h1>
-    <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
-    <div className='meta'>
-      { dateToString(created_at) }
-      <a href='#Hmm' className='float-right'>{username}</a>
+  const { title, created_at, content, author, comments } = post
+  return <div>
+    <div className='Post-item'>
+      <h1>{title}</h1>
+      <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
+      <div className='meta'>
+        { dateToString(created_at) }
+        <a href='#Hmm' className='float-right'>{author.username}</a>
+      </div>
     </div>
-    <Link to='/'>Home</Link>
+    <Comments comments={comments} />
   </div>
 }
 
@@ -27,10 +55,48 @@ const postsQuery = gql`query postSingleQuery ($slug: String!) {
     content
     created_at
     author {
+      id
       username
     }
+    comments {
+      ...CommentParts
+      comments {
+        ...CommentParts
+        comments {
+          ...CommentParts
+          comments {
+            ...CommentParts
+            comments {
+              ...CommentParts
+              comments {
+                ...CommentParts
+                comments {
+                  ...CommentParts
+                  comments {
+                    ...CommentParts
+                    comments {
+                      ...CommentParts
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
-}`
+}
+fragment CommentParts on Comment {
+  id
+  created_at
+  content
+  author {
+    id
+    username
+  }
+}
+`
 
 export default graphql(postsQuery, {
   options: (data) => ({ variables: { slug: data.slug } })

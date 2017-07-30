@@ -95,3 +95,30 @@
 .pagination .next {
   margin-left: auto;
 }
+
+
+/* Post */
+.post-content { margin-bottom: 30px; }
+.comment {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+  position: relative;
+}
+.subcomments {
+  padding-left: 8px;
+  border-left: 3px solid #aea;
+}
+
+.subcomments .comment {
+  padding: 10px;
+}
+.subcomments .comment:before {
+  content: "\0020";
+  display: block;
+  position: absolute;
+  top: 11px;
+  left: -8px;
+  border: 6px solid transparent;
+  border-left-color: #aea;
+}
