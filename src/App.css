@@ -19,6 +19,7 @@
 .container {
   max-width: 970px;
   margin: 0 auto;
+  padding: 0 10px;
 }
 
 .float-right { float: right }
@@ -63,4 +64,34 @@
 
 .fade-exit {
   display: none;
+}
+
+
+.pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+  width: 100%;
+  display: flex;
+}
+.pagination > li {
+  display: inline-block;
+}
+.pagination > li > a {
+  display: inline-block;
+  padding: 3px 8px;
+}
+.pagination > .active > a {
+  color: #000;
+}
+
+.pagination .prev,
+.pagination .next {
+  transform: scale(1.4)
+}
+.pagination .prev {
+  margin-right: auto;
+}
+.pagination .next {
+  margin-left: auto;
 }

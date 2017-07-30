@@ -4,6 +4,9 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { dateToString } from '../utils'
 import Loading from './Loading'
+import Pagination from './partials/Pagination'
+
+const ITEMS_PER_PAGE = 5
 
 function Post ({ post }) {
   const { title, slug, author, created_at } = post
@@ -19,16 +22,20 @@ function Post ({ post }) {
 }
 
 export function Home (props) {
-  const { loading, posts } = props.data
+  const { page = 1 } = props
+  const { loading, posts, postsInfo } = props.data
   if (loading) return <Loading />
 
   return <div>
     {posts.map((post, i) => <Post key={i} post={post} />)}
+    <div>
+      <Pagination totalCount={postsInfo.count} page={page} itemsPerPage={ITEMS_PER_PAGE} urlPrefix='/page/' />
+    </div>
   </div>
 }
 
-const postsQuery = gql`query postsQuery {
-  posts {
+const postsQuery = gql`query postsQuery($offset: Int!) {
+  posts(limit: ${ITEMS_PER_PAGE}, order: "reverse:created_at", offset: $offset) {
     title
     slug
     created_at
@@ -36,6 +43,20 @@ const postsQuery = gql`query postsQuery {
       username
     }
   }
+  postsInfo {
+    count
+  }
 }`
 
-export default graphql(postsQuery)(Home)
+export default graphql(postsQuery, {
+  options: (data) => {
+    const { page = 1 } = data
+    const offset = ITEMS_PER_PAGE * (page - 1)
+    return {
+      pollInterval: 20000,
+      variables: {
+        offset
+      }
+    }
+  }
+})(Home)
