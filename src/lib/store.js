@@ -7,8 +7,6 @@ function auth (state = { user: false, token: false }, action) {
   switch (action.type) {
     case 'login':
       return { user: action.user, token: action.token }
-    case 'logout':
-      return { user: false, token: false }
     default:
       return state
   }
@@ -23,11 +21,21 @@ const storeMiddleware = [applyMiddleware(apolloClient.middleware())]
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {
   storeMiddleware.push(window.__REDUX_DEVTOOLS_EXTENSION__())
 }
+
+const appReducer = combineReducers({
+  auth,
+  apollo: apolloClient.reducer()
+})
+
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
+
 export const store = createStore(
-  combineReducers({
-    auth,
-    apollo: apolloClient.reducer()
-  }),
+  rootReducer,
   preservedState,
   compose.apply(null, storeMiddleware)
 )

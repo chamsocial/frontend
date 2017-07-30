@@ -11,3 +11,13 @@ networkInterface.use([{ applyMiddleware (req, next) {
   }
   next()
 }}])
+
+// Apollo invalid responses
+networkInterface.useAfter([{
+  applyAfterware ({ response }, next) {
+    if (response.status === 401) {
+      window.location = '/logout'
+    }
+    next()
+  }
+}])

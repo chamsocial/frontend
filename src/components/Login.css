@@ -1,4 +1,13 @@
 
+.login-info {
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #31708f;
+  background-color: #d9edf7;
+  color: #31708f;
+  border-radius: 3px;
+}
+
 .login-form {
   max-width: 400px;
   margin: 0 auto;

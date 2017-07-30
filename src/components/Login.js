@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { request } from '../utils'
 import './Login.css'
 const { REACT_APP_API_URL } = process.env
@@ -10,7 +10,8 @@ export class Login extends Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      redirectToReferrer: false
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -31,7 +32,7 @@ export class Login extends Component {
       .then(res => {
         if (res.user && res.token) {
           this.props.login(res.user, res.token)
-          this.props.history.push('/')
+          this.setState({ redirectToReferrer: true })
         }
       })
       .catch(e => console.error(e))
@@ -48,7 +49,17 @@ export class Login extends Component {
   }
 
   render () {
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
+    if (redirectToReferrer) return <Redirect to={from} />
+
+    const isRedirect = this.props.location.state && this.props.location.state.from
+    let message = null
+    if (isRedirect) {
+      message = <div className='login-info'>Please login to read the post.</div>
+    }
     return <form onSubmit={this.onSubmit} className='login-form'>
+      {message}
       <div className='form-group'>
         <label htmlFor='username'>Username or email</label>
         <input value={this.state.username} onChange={this.setUsername} />
@@ -84,4 +95,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Login))
+)(Login)
