@@ -5,8 +5,7 @@ import gql from 'graphql-tag'
 import { dateToString } from '../utils'
 import Loading from './Loading'
 import Pagination from './partials/Pagination'
-
-const ITEMS_PER_PAGE = 5
+const { REACT_APP_ITEMS_PER_PAGE } = process.env
 
 function Post ({ post }) {
   const { title, slug, author, created_at } = post
@@ -29,17 +28,18 @@ export function Home (props) {
   return <div>
     {posts.map((post, i) => <Post key={i} post={post} />)}
     <div>
-      <Pagination totalCount={postsInfo.count} page={page} itemsPerPage={ITEMS_PER_PAGE} urlPrefix='/page/' />
+      <Pagination totalCount={postsInfo.count} page={page} itemsPerPage={REACT_APP_ITEMS_PER_PAGE} urlPrefix='/page/' />
     </div>
   </div>
 }
 
 const postsQuery = gql`query postsQuery($offset: Int!) {
-  posts(limit: ${ITEMS_PER_PAGE}, order: "reverse:created_at", offset: $offset) {
+  posts(limit: ${REACT_APP_ITEMS_PER_PAGE}, order: "reverse:created_at", offset: $offset) {
     title
     slug
     created_at
     author {
+      id
       username
     }
   }
@@ -51,7 +51,7 @@ const postsQuery = gql`query postsQuery($offset: Int!) {
 export default graphql(postsQuery, {
   options: (data) => {
     const { page = 1 } = data
-    const offset = ITEMS_PER_PAGE * (page - 1)
+    const offset = REACT_APP_ITEMS_PER_PAGE * (page - 1)
     return {
       pollInterval: 20000,
       variables: {
