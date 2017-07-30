@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { dateToString } from '../utils'
 import Loading from './Loading'
+import CommentsForm from './Comments/Form'
 
 function Comment ({ comment }) {
   const { created_at, content, author, comments } = comment
@@ -22,12 +23,14 @@ function Comment ({ comment }) {
   </div>
 }
 
-function Comments ({ comments }) {
-  if (!comments.length) return <div>No comments</div>
+function Comments ({ comments, postId }) {
+  let commentsList = comments.map(comment => <Comment key={comment.id} comment={comment} />)
+  if (!comments.length) commentsList = <div>No comments</div>
 
   return <div>
     <h3>Comments</h3>
-    {comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+    <CommentsForm postId={postId} />
+    {commentsList}
   </div>
 }
 
@@ -44,12 +47,13 @@ export function Post (props) {
         <a href='#Hmm' className='float-right'>{author.username}</a>
       </div>
     </div>
-    <Comments comments={comments} />
+    <Comments postId={post.id} comments={comments} />
   </div>
 }
 
 const postsQuery = gql`query postSingleQuery ($slug: String!) {
   post(slug: $slug) {
+    id
     title
     slug
     content

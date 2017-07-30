@@ -4,14 +4,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.42857;
+  font-size: 16px;
+  line-height: 1.5;
   color: #444;
 }
 
+h1 {
+  font-size: 22px;
+}
 h2 {
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   margin: 0 0 10px;
 }
 h2 a {
@@ -27,6 +30,7 @@ label {
   display: block;
   margin: 0 0 10px;
 }
+textarea,
 input {
   width: 100%;
   padding: 7px 10px;
@@ -35,6 +39,9 @@ input {
   font-size: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
+}
+textarea {
+  min-height: 100px;
 }
 .form-group {
   margin: 0 0 20px;
