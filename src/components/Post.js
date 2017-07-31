@@ -5,12 +5,14 @@ import { dateToString } from '../utils'
 import Loading from './Loading'
 import CommentsForm from './Comments/Form'
 
-function Comment ({ comment }) {
+function Comment ({ comment, index = 0 }) {
   const { created_at, content, author, comments } = comment
   let subComments = null
   if (comments && comments.length) {
-    subComments = <div className='subcomments'>
-      {comments.map(c => <Comment key={c.id} comment={c} />)}
+    const oddEven = (index % 2 === 0) ? 'even' : 'odd'
+    const className = `subcomments subcomments-${oddEven}`
+    subComments = <div className={className}>
+      {comments.map(c => <Comment index={++index} key={c.id} comment={c} />)}
     </div>
   }
 

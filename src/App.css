@@ -122,3 +122,10 @@
   border: 6px solid transparent;
   border-left-color: #aea;
 }
+
+.subcomments-odd {
+  border-color: #9edaff;
+}
+.subcomments-odd > div > .comment:before {
+  border-left-color: #9edaff;
+}
