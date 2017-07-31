@@ -1,32 +1,54 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import { dateToString } from '../utils'
 import Loading from './Loading'
 import CommentsForm from './Comments/Form'
 import { singlePostQuery } from '../graphql/post-queries'
 
-function Comment ({ comment, index = 0 }) {
-  const { created_at, content, author, comments } = comment
-  let subComments = null
-  if (comments && comments.length) {
-    const oddEven = (index % 2 === 0) ? 'even' : 'odd'
-    const className = `subcomments subcomments-${oddEven}`
-    subComments = <div className={className}>
-      {comments.map(c => <Comment index={++index} key={c.id} comment={c} />)}
-    </div>
+class Comment extends Component {
+  constructor (props) {
+    super(props)
+    this.state = { reply: false }
+    this.setReply = this.setReply.bind(this)
   }
 
-  return <div>
-    <div className='comment'>
-      <div className='meta'>{ dateToString(created_at) } - {author.username}</div>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+  setReply (e) {
+    e.preventDefault()
+    const reply = !this.state.reply
+    this.setState(() => ({ reply }))
+  }
+
+  render () {
+    const { comment, index = 0, postSlug } = this.props
+    const { created_at, content, author, comments } = comment
+    let subComments = null
+    if (comments && comments.length) {
+      const oddEven = (index % 2 === 0) ? 'even' : 'odd'
+      const className = `subcomments subcomments-${oddEven}`
+      subComments = <div className={className}>
+        {comments.map(c => <Comment index={(index + 1)} key={c.id} postSlug={postSlug} comment={c} />)}
+      </div>
+    }
+
+    let form = null
+    if (this.state.reply) {
+      form = <CommentsForm postSlug={postSlug} commentId={comment.id} />
+    }
+
+    return <div>
+      <div className='comment'>
+        <div className='meta'>{ dateToString(created_at) } - {author.username}</div>
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+        <a href='#reply' onClick={this.setReply}>Reply</a>
+        {form}
+      </div>
+      {subComments}
     </div>
-    {subComments}
-  </div>
+  }
 }
 
 function Comments ({ comments, postSlug }) {
-  let commentsList = comments.map(comment => <Comment key={comment.id} comment={comment} />)
+  let commentsList = comments.map(comment => <Comment key={comment.id} postSlug={postSlug} comment={comment} />)
   if (!comments.length) commentsList = <div>No comments</div>
 
   return <div>
