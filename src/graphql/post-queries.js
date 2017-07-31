@@ -7,6 +7,7 @@ export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
     slug
     content
     created_at
+    comments_count
     author {
       id
       username

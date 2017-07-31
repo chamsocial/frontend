@@ -43,6 +43,7 @@ export function Home (props) {
 
 const postsQuery = gql`query postsQuery($offset: Int!) {
   posts(limit: ${REACT_APP_ITEMS_PER_PAGE}, order: "reverse:created_at", offset: $offset) {
+    id
     title
     slug
     created_at
@@ -62,7 +63,6 @@ export default graphql(postsQuery, {
     const { page = 1 } = data
     const offset = REACT_APP_ITEMS_PER_PAGE * (page - 1)
     return {
-      pollInterval: 20000,
       variables: {
         offset
       }

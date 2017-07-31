@@ -8,8 +8,13 @@ export class CommentsForm extends Component {
     super(props)
 
     this.state = { comment: '', status: '' }
+    this.timeoutStatus = null
     this.updateMessage = this.updateMessage.bind(this)
     this.sendComment = this.sendComment.bind(this)
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.timeoutStatus)
   }
 
   updateMessage (e) {
@@ -29,9 +34,9 @@ export class CommentsForm extends Component {
       .then(res => {
         this.setState(() => ({ comment: '', status: 'sent' }))
         // @TODO scroll to comment
-        setTimeout(() => {
+        this.timeoutStatus = setTimeout(() => {
           this.setState(() => ({ status: '' }))
-        }, 1000)
+        }, 5000)
       })
       .catch(e => window.alert(e.message))
   }
@@ -83,6 +88,7 @@ const CommentsFormWrapped = graphql(commentMutation, {
         const data = proxy.readQuery({ query: singlePostQuery, variables: { slug: postSlug } })
         // @TODO reply to comment insert
         createComment.comments = null
+        data.post.comments_count++
         data.post.comments.push(createComment)
         proxy.writeQuery({ query: singlePostQuery, data, variables: { slug: postSlug } })
       }
