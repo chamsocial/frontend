@@ -10,9 +10,11 @@ function Home ({ match }) {
   return <LazyLoad getComponent={() => import('./components/Home')} {...match.params} />
 }
 function Login ({ location }) {
-  return <LazyLoad getComponent={() => import('./components/Login')} location={location} />
+  return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} />
 }
-
+function Signup ({ location }) {
+  return <LazyLoad getComponent={() => import('./components/Auth/Signup')} location={location} />
+}
 function Post ({ match }) {
   return <LazyLoad getComponent={() => import('./components/Post')} {...match.params} />
 }
@@ -64,6 +66,7 @@ const SomeComponent = withRouter(({ location }) => (
     <Transition key={`css-${location.key}`}>
       <Switch key={location.key} location={location}>
         <Route exact path='/login' component={Login} />
+        <Route exact path='/signup' component={Signup} />
         <Route exact path='/logout' component={LogoutMapped} />
         <PrivateRoute path='/posts/:slug' component={Post} />
         <Route exact path='/' component={Home} />

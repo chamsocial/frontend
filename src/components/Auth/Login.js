@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { request } from '../utils'
+import { request } from '../../utils'
 import './Login.css'
 const { REACT_APP_API_URL } = process.env
 
@@ -18,11 +18,6 @@ export class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.setUsername = this.setUsername.bind(this)
     this.setPassword = this.setPassword.bind(this)
-  }
-
-  componentDidMount () {
-    // Don't display the login if the user is logged in
-    if (this.props.user) return this.props.history.push('/')
   }
 
   onSubmit (e) {
@@ -54,7 +49,7 @@ export class Login extends Component {
   render () {
     const { from } = this.props.location.state || { from: { pathname: '/' } }
     const { redirectToReferrer } = this.state
-    if (redirectToReferrer) return <Redirect to={from} />
+    if (redirectToReferrer || this.props.user) return <Redirect to={from} />
 
     const isRedirect = this.props.location.state && this.props.location.state.from
     let redirectMessage = null
@@ -72,11 +67,11 @@ export class Login extends Component {
       {message}
       <div className='form-group'>
         <label htmlFor='username'>Username or email</label>
-        <input value={this.state.username} onChange={this.setUsername} />
+        <input value={this.state.username} onChange={this.setUsername} required />
       </div>
       <div className='form-group'>
         <label htmlFor='password'>Password</label>
-        <input type='password' value={this.state.password} onChange={this.setPassword} />
+        <input type='password' value={this.state.password} onChange={this.setPassword} required />
       </div>
       <div className='form-group'>
         <button className='btn'>Login</button>
@@ -87,7 +82,7 @@ export class Login extends Component {
 
 // Map Redux state to component props
 function mapStateToProps (state) {
-  return { user: state.user }
+  return { user: state.auth.user }
 }
 
 // Map Redux actions to component props
