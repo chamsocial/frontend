@@ -29,6 +29,8 @@ export class CommentsForm extends Component {
 
   sendComment (e) {
     e.preventDefault()
+    const { closeMe = () => {} } = this.props
+
     this.setState(() => ({ status: 'loading' }))
     this.props.submitComment(this.state.comment)
       .then(res => {
@@ -36,16 +38,20 @@ export class CommentsForm extends Component {
         // @TODO scroll to comment
         this.timeoutStatus = setTimeout(() => {
           this.setState(() => ({ status: '' }))
-        }, 5000)
+          closeMe()
+        }, 2000)
       })
-      .catch(e => window.alert(e.message))
+      .catch(e => {
+        this.setState(() => ({ status: '' }))
+        window.alert('Could not save comment!')
+      })
   }
 
   render () {
     const { comment, status } = this.state
     let buttonText = 'Send comment'
     if (status === 'loading') buttonText = 'Saving..'
-    if (status === 'sent') buttonText = 'Saved!'
+    if (status === 'sent') buttonText = 'Comment added!'
 
     return <form onSubmit={this.sendComment}>
       <div className='form-group'>
@@ -59,11 +65,12 @@ export class CommentsForm extends Component {
 }
 
 const commentMutation = gql`
-  mutation commentMutation($comment: String!, $postSlug: String!) {
-    createComment(comment: $comment, postSlug: $postSlug) {
+  mutation commentMutation($comment: String!, $postSlug: String!, $parentId: Int) {
+    createComment(comment: $comment, postSlug: $postSlug, parentId: $parentId) {
       id
       created_at
       content
+      parent_id
       author {
         id
         username
@@ -76,24 +83,41 @@ const CommentsFormWrapped = graphql(commentMutation, {
   props: ({ mutate, ownProps }) => ({
     submitComment: (comment) => {
       const variables = {
-        postSlug: ownProps.postSlug,
-        comment
+        postSlug: 'asdfsadfasdfashfasvdjfasvfjasvfjsav',
+        comment,
+        parentId: ownProps.parentId
       }
       return mutate({ variables })
     }
   }),
-  options: ({ postSlug }) => {
+  options: ({ postSlug, parentId }) => {
     return {
       update: (proxy, { data: { createComment } }) => {
-        const data = proxy.readQuery({ query: singlePostQuery, variables: { slug: postSlug } })
-        // @TODO reply to comment insert
+        const data = proxy.readQuery({ query: singlePostQuery, variables: { slug: postSlug, parentId } })
         createComment.comments = null
         data.post.comments_count++
-        data.post.comments.push(createComment)
+        if (createComment.parent_id) {
+          loopComments(data.post.comments, createComment)
+        } else {
+          data.post.comments.push(createComment)
+        }
+
         proxy.writeQuery({ query: singlePostQuery, data, variables: { slug: postSlug } })
       }
     }
   }
 })(CommentsForm)
+
+function loopComments (comments, newComment) {
+  for (const comment of comments) {
+    if (comment.id === newComment.parent_id) {
+      if (!comment.comments) comment.comments = []
+      comment.comments.push(newComment)
+      break
+    } else if (comment.comments && comment.comments.length) {
+      loopComments(comment.comments, newComment)
+    }
+  }
+}
 
 export default CommentsFormWrapped

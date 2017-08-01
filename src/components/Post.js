@@ -10,12 +10,17 @@ class Comment extends Component {
     super(props)
     this.state = { reply: false }
     this.setReply = this.setReply.bind(this)
+    this.closeForm = this.closeForm.bind(this)
   }
 
   setReply (e) {
-    e.preventDefault()
+    if (e) e.preventDefault()
     const reply = !this.state.reply
     this.setState(() => ({ reply }))
+  }
+
+  closeForm () {
+    this.setReply()
   }
 
   render () {
@@ -31,15 +36,21 @@ class Comment extends Component {
     }
 
     let form = null
+    let replyButton = null
     if (this.state.reply) {
-      form = <CommentsForm postSlug={postSlug} commentId={comment.id} />
+      form = <CommentsForm postSlug={postSlug} parentId={comment.id} closeMe={this.closeForm} />
+    }
+    if (index < 4) {
+      replyButton = <a href='#reply' className='float-right' onClick={this.setReply}>Reply</a>
     }
 
     return <div>
       <div className='comment'>
-        <div className='meta'>{ dateToString(created_at) } - {author.username}</div>
+        <div className='meta'>
+          {replyButton}
+          { dateToString(created_at) } - {author.username}
+        </div>
         <div dangerouslySetInnerHTML={{ __html: content }} />
-        <a href='#reply' onClick={this.setReply}>Reply</a>
         {form}
       </div>
       {subComments}

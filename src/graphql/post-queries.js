@@ -45,6 +45,7 @@ fragment CommentParts on Comment {
   id
   created_at
   content
+  parent_id
   author {
     id
     username
