@@ -83,7 +83,7 @@ const CommentsFormWrapped = graphql(commentMutation, {
   props: ({ mutate, ownProps }) => ({
     submitComment: (comment) => {
       const variables = {
-        postSlug: 'asdfsadfasdfashfasvdjfasvfjasvfjsav',
+        postSlug: ownProps.postSlug,
         comment,
         parentId: ownProps.parentId
       }
