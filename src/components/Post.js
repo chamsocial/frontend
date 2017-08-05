@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import { dateToString } from '../utils'
-import Loading from './Loading'
+import Loading from './partials/Loading'
 import CommentsForm from './Comments/Form'
 import { singlePostQuery } from '../graphql/post-queries'
 

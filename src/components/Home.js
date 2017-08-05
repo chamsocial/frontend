@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { dateToString } from '../utils'
-import Loading from './Loading'
+import Loading from './partials/Loading'
 import Pagination from './partials/Pagination'
 const { REACT_APP_ITEMS_PER_PAGE } = process.env
 
