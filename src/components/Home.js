@@ -1,32 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import { dateToString } from '../utils'
 import Loading from './partials/Loading'
 import Pagination from './partials/Pagination'
+import PostListItem from './Posts/ListItem'
 const { REACT_APP_ITEMS_PER_PAGE } = process.env
-
-function Post ({ post }) {
-  const { title, slug, author, created_at, comments_count: commentsCount } = post
-  let comments = null
-  if (commentsCount) {
-    comments = <span className='float-right meta'>
-      <i className='icon-comment-empty' />{commentsCount}
-    </span>
-  }
-
-  return <div className='Post-item'>
-    {comments}
-    <h2>
-      <Link to={`/posts/${slug}`}>{title}</Link>
-    </h2>
-    <div className='meta'>
-      { dateToString(created_at) }
-      <a href='#Hmm' className='float-right'>{author.username}</a>
-    </div>
-  </div>
-}
 
 export function Home (props) {
   const { page = 1 } = props
@@ -34,7 +12,7 @@ export function Home (props) {
   if (loading) return <Loading />
 
   return <div>
-    {posts.map((post, i) => <Post key={i} post={post} />)}
+    {posts.map((post, i) => <PostListItem key={i} post={post} />)}
     <div>
       <Pagination totalCount={postsInfo.count} page={page} itemsPerPage={REACT_APP_ITEMS_PER_PAGE} urlPrefix='/page/' />
     </div>

@@ -16,7 +16,7 @@ function Signup ({ location }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Signup')} location={location} />
 }
 function Post ({ match }) {
-  return <LazyLoad getComponent={() => import('./components/Post')} {...match.params} />
+  return <LazyLoad getComponent={() => import('./components/Posts/Post')} {...match.params} />
 }
 
 function Activation ({ match }) {

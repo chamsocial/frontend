@@ -18,10 +18,8 @@ export function Header ({ user }) {
   </div>
 }
 
-// Map Redux state to component props
 function mapStateToProps (state) {
   return { user: state.auth.user }
 }
 
-// Connected Component
 export default connect(mapStateToProps)(Header)

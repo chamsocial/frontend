@@ -53,12 +53,12 @@ export class Login extends Component {
   render () {
     const { from } = this.props.location.state || { from: { pathname: '/' } }
     const { redirectToReferrer, isLoading } = this.state
-    if (redirectToReferrer || this.props.user) return <Redirect to={from} />
+    if (redirectToReferrer) return <Redirect to={from} />
 
     const isRedirect = this.props.location.state && this.props.location.state.from
     let redirectMessage = null
     if (isRedirect) {
-      redirectMessage = <div className='login-info'>Please login to read the post.</div>
+      redirectMessage = <Alert>Please login to read the post.</Alert>
     }
 
     let message = null
@@ -84,12 +84,6 @@ export class Login extends Component {
   }
 }
 
-// Map Redux state to component props
-function mapStateToProps (state) {
-  return { user: state.auth.user }
-}
-
-// Map Redux actions to component props
 function mapDispatchToProps (dispatch) {
   return {
     login: (user, token) => dispatch({
@@ -99,9 +93,4 @@ function mapDispatchToProps (dispatch) {
     })
   }
 }
-
-// Connected Component
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login)
+export default connect(null, mapDispatchToProps)(Login)

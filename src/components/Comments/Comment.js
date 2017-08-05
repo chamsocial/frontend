@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { graphql } from 'react-apollo'
-import { dateToString } from '../utils'
-import Loading from './partials/Loading'
-import CommentsForm from './Comments/Form'
-import { singlePostQuery } from '../graphql/post-queries'
+import CommentsForm from './Form'
+import { dateToString } from '../../utils'
 
 class Comment extends Component {
   constructor (props) {
@@ -58,34 +55,4 @@ class Comment extends Component {
   }
 }
 
-function Comments ({ comments, postSlug }) {
-  let commentsList = comments.map(comment => <Comment key={comment.id} postSlug={postSlug} comment={comment} />)
-  if (!comments.length) commentsList = <div>No comments</div>
-
-  return <div>
-    <h3>Comments</h3>
-    <CommentsForm postSlug={postSlug} />
-    {commentsList}
-  </div>
-}
-
-export function Post (props) {
-  const { loading, post } = props.data
-  if (loading) return <Loading />
-  const { title, created_at, content, author, comments } = post
-  return <div>
-    <div className='Post-item'>
-      <h1>{title}</h1>
-      <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
-      <div className='meta'>
-        { dateToString(created_at) }
-        <a href='#Hmm' className='float-right'>{author.username}</a>
-      </div>
-    </div>
-    <Comments postSlug={post.slug} comments={comments} />
-  </div>
-}
-
-export default graphql(singlePostQuery, {
-  options: (data) => ({ variables: { slug: data.slug } })
-})(Post)
+export default Comment
