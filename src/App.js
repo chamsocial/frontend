@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from './Routes'
 import Header from './components/Header'
+import FlashMessages from './components/FlashMessages'
 import './App.css'
 
 import { client as apolloClient } from './lib/apollo'
@@ -16,6 +17,7 @@ function App () {
         <div>
           <Header />
           <div className='container'>
+            <FlashMessages />
             <Routes />
           </div>
         </div>

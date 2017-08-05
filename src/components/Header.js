@@ -11,7 +11,7 @@ export function Header ({ user }) {
       <div>
         {user
           ? <Link to='/logout'>Logout</Link>
-          : <Link to='/login'>Login</Link>
+          : <span><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link></span>
         }
       </div>
     </div>

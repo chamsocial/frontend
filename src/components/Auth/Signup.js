@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
 import { Form, Text } from 'react-form'
 import './Login.css'
@@ -8,27 +10,49 @@ export class Signup extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      redirect: false
+      redirect: false,
+      errors: []
     }
+    this.submitUser = this.submitUser.bind(this)
   }
 
-  // https://github.com/tannerlinsley/react-form/issues/25
-  isUnique (field, getValue) {
-    console.log(getValue(field))
+  submitUser (values) {
+    this.props.signup(values)
+      .then(({ data: { createUser } }) => {
+        this.setState({
+          redirectToReferrer: {
+            pathname: '/',
+            state: { flashMessage: `We've sent an activation email to ${createUser.email}, please verify your email with the link in the email to login.` }
+          }
+        })
+      })
+      .catch(e => {
+        if (e.message.includes('Validation:')) {
+          const errors = e.message.split('Validation:')[1]
+          if (errors) this.setState({ errors: errors.split(',') })
+        } else {
+          this.setState({ errors: ['Could not create the user'] })
+        }
+      })
   }
 
   render () {
-    const { redirectToReferrer } = this.state
-    if (redirectToReferrer || this.props.user) return <Redirect to='/' />
+    const { redirectToReferrer, errors } = this.state
+    if (redirectToReferrer || this.props.user) return <Redirect to={redirectToReferrer} />
 
+    let errorMessage = null
+    if (errors.length) {
+      errorMessage = <div className='login-info login-warn'>
+        {errors.map((e, i) => <div key={i}>{e}</div>)}
+      </div>
+    }
     return <Form
-      onSubmit={(values) => { console.log('Success!', values) }}
-      validate={({ username, email }) => {
-        return {
-          username: !username ? 'A username is required' : undefined,
-          email: !email ? 'An email is required' : undefined
-        }
-      }}
+      onSubmit={this.submitUser}
+      validate={({ username, email, password }) => ({
+        username: reqMinLength('Username', username),
+        email: !email ? 'Email is required' : undefined,
+        password: reqMinLength('Password', password, 6)
+      })}
     >
       {({ submitForm, getValue }) => {
         return (
@@ -36,7 +60,7 @@ export class Signup extends Component {
             <h1>Signup</h1>
             <div className='form-group'>
               <label htmlFor='username'>Username</label>
-              <Text field='username' id='username' onBlur={this.isUnique.bind(this, 'username', getValue)} />
+              <Text field='username' id='username' />
             </div>
             <div className='form-group'>
               <label htmlFor='email'>Email</label>
@@ -46,6 +70,7 @@ export class Signup extends Component {
               <label htmlFor='password'>Password</label>
               <Text type='password' field='password' id='password' />
             </div>
+            {errorMessage}
             <div className='form-group'>
               <button className='btn' type='submit'>Give me access, please.</button>
             </div>
@@ -54,6 +79,11 @@ export class Signup extends Component {
       }}
     </Form>
   }
+}
+
+function reqMinLength (key, value, length = 3) {
+  if (!value) return `${key} is required`
+  else if (value.length < length) return `${key} has to be at least ${length} characters`
 }
 
 // Map Redux state to component props
@@ -72,8 +102,24 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-// Connected Component
-export default connect(
+const signupMutation = gql`
+  mutation signupMutation($username: String!, $email: String!, $password: String!) {
+    createUser(username: $username, email: $email, password: $password) {
+      id
+      username
+      slug
+      email
+    }
+  }
+`
+
+export default graphql(signupMutation, {
+  props: ({ mutate, ownProps }) => ({
+    signup: (variables) => {
+      return mutate({ variables })
+    }
+  })
+})(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Signup)
+)(Signup))
