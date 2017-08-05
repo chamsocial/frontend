@@ -1,0 +1,43 @@
+.action-btn-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.action-btn-wrapper + .action-btn-wrapper,
+.action-btn-wrapper + .btn,
+.btn + .action-btn-wrapper {
+  margin-left: 5px;
+}
+
+.btn-loading {
+  cursor: wait;
+}
+.btn-loading:after {
+  margin-left: 10px;
+}
+.loadng-icon {
+  display: inline-block;
+}
+.btn-loading:after,
+.loadng-icon:after {
+  display: inline-block;
+  content: "\0020";
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 100%;
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+  animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

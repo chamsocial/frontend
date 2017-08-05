@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { request } from '../../utils'
+import Button from '../partials/Button'
 import './Login.css'
 const { REACT_APP_API_URL } = process.env
 
@@ -12,7 +13,8 @@ export class Login extends Component {
       username: '',
       password: '',
       redirectToReferrer: false,
-      message: false
+      message: false,
+      isLoading: false
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -22,6 +24,7 @@ export class Login extends Component {
 
   onSubmit (e) {
     e.preventDefault()
+    this.setState({ isLoading: true })
     const { username, password } = this.state
     const data = { username, password }
     request.post(`${REACT_APP_API_URL}/v2/login`, data)
@@ -30,7 +33,7 @@ export class Login extends Component {
           this.props.login(res.user, res.token)
           this.setState({ redirectToReferrer: true })
         } else {
-          this.setState({ message: 'Invalid username/email or password' })
+          this.setState({ isLoading: false, message: 'Invalid username/email or password' })
         }
       })
       .catch(e => console.error(e))
@@ -48,7 +51,7 @@ export class Login extends Component {
 
   render () {
     const { from } = this.props.location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer } = this.state
+    const { redirectToReferrer, isLoading } = this.state
     if (redirectToReferrer || this.props.user) return <Redirect to={from} />
 
     const isRedirect = this.props.location.state && this.props.location.state.from
@@ -74,7 +77,7 @@ export class Login extends Component {
         <input type='password' value={this.state.password} onChange={this.setPassword} required />
       </div>
       <div className='form-group'>
-        <button className='btn'>Login</button>
+        <Button loading={isLoading} loadingText='Logging in...'>Login</Button>
       </div>
     </form>
   }
