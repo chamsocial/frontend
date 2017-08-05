@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { request } from '../../utils'
 import Button from '../partials/Button'
+import Alert from '../partials/Alert'
 import './Login.css'
 const { REACT_APP_API_URL } = process.env
 
@@ -62,7 +63,7 @@ export class Login extends Component {
 
     let message = null
     if (this.state.message) {
-      message = <div className='login-info login-warn'>{this.state.message}</div>
+      message = <Alert type='warn'>{this.state.message}</Alert>
     }
 
     return <form onSubmit={this.onSubmit} className='login-form'>

@@ -1,9 +1,10 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import Alert from './partials/Alert'
 
 function FlashMessages ({ location }) {
   if (location.state && location.state.flashMessage) {
-    return <div className='alert'>{location.state.flashMessage}</div>
+    return <Alert>{location.state.flashMessage}</Alert>
   }
   return null
 }

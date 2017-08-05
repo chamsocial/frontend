@@ -4,6 +4,8 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
 import { Form, Text } from 'react-form'
+import Button from '../partials/Button'
+import Alert from '../partials/Alert'
 import './Login.css'
 
 export class Signup extends Component {
@@ -11,12 +13,14 @@ export class Signup extends Component {
     super(props)
     this.state = {
       redirect: false,
-      errors: []
+      errors: [],
+      isLoading: false
     }
     this.submitUser = this.submitUser.bind(this)
   }
 
   submitUser (values) {
+    this.setState({ isLoading: true })
     this.props.signup(values)
       .then(({ data: { createUser } }) => {
         this.setState({
@@ -29,22 +33,22 @@ export class Signup extends Component {
       .catch(e => {
         if (e.message.includes('Validation:')) {
           const errors = e.message.split('Validation:')[1]
-          if (errors) this.setState({ errors: errors.split(',') })
+          if (errors) this.setState({ isLoading: false, errors: errors.split(',') })
         } else {
-          this.setState({ errors: ['Could not create the user'] })
+          this.setState({ isLoading: false, errors: ['Could not create the user'] })
         }
       })
   }
 
   render () {
-    const { redirectToReferrer, errors } = this.state
+    const { redirectToReferrer, errors, isLoading } = this.state
     if (redirectToReferrer || this.props.user) return <Redirect to={redirectToReferrer} />
 
     let errorMessage = null
     if (errors.length) {
-      errorMessage = <div className='login-info login-warn'>
+      errorMessage = <Alert type='warn'>
         {errors.map((e, i) => <div key={i}>{e}</div>)}
-      </div>
+      </Alert>
     }
     return <Form
       onSubmit={this.submitUser}
@@ -72,7 +76,7 @@ export class Signup extends Component {
             </div>
             {errorMessage}
             <div className='form-group'>
-              <button className='btn' type='submit'>Give me access, please.</button>
+              <Button loading={isLoading} type='submit'>Give me access, please.</Button>
             </div>
           </form>
         )
