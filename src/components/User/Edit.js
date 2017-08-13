@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Form, Text, Textarea, Select } from 'react-form'
-import { editUserQuery } from '../../graphql/user-queries'
+import { editUserQuery, userFragment } from '../../graphql/user-queries'
 import GraphLoader from '../partials/GraphLoader'
 import Button from '../partials/Button'
 
@@ -11,11 +12,18 @@ class Edit extends Component {
   constructor (props) {
     super(props)
 
-    this.submitUser = this.submitUser.bind(this)
+    this.submitUserEdits = this.submitUserEdits.bind(this)
   }
 
-  submitUser (values) {
-    console.log(values)
+  submitUserEdits (values) {
+    const variables = {
+      first_name: values.first_name,
+      last_name: values.last_name,
+      jobtitle: values.jobtitle,
+      interests: values.interests,
+      aboutme: values.aboutme
+    }
+    this.props.updateUser(variables)
   }
 
   render () {
@@ -31,26 +39,37 @@ class Edit extends Component {
 
     return <Form
       defaultValues={user}
-      onSubmit={this.submitUser}
-      validate={({ username, email, password }) => ({
-        email: !email ? 'Email is required' : undefined
+      onSubmit={this.submitUserEdits}
+      validate={({ lang }) => ({
+        lang: !lang ? 'Language is required' : undefined
       })}
     >
       {({ submitForm, getValue }) => {
         return (
           <form onSubmit={submitForm}>
             <h2>Edit your profile {user.username}</h2>
-            <div className='form-group'>
-              <label htmlFor='first_name'>First name</label>
-              <Text field='first_name' id='first_name' />
+            <div className='row'>
+              <div className='col'>
+                <label htmlFor='first_name'>First name</label>
+                <Text field='first_name' id='first_name' />
+              </div>
+              <div className='col'>
+                <label htmlFor='last_name'>Last name</label>
+                <Text field='last_name' id='last_name' />
+              </div>
             </div>
-            <div className='form-group'>
-              <label htmlFor='last_name'>Last name</label>
-              <Text field='last_name' id='last_name' />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='jobtitle'>Jobtitle</label>
-              <Text field='jobtitle' id='jobtitle' />
+            <div className='row'>
+              <div className='col'>
+                <label htmlFor='jobtitle'>Jobtitle</label>
+                <Text field='jobtitle' id='jobtitle' />
+              </div>
+              <div className='col'>
+                <label htmlFor='lang'>Language</label>
+                <Select field='lang' id='lang' options={[
+                  { label: 'English', value: 'en' },
+                  { label: 'Français', value: 'fr' }
+                ]} />
+              </div>
             </div>
             <div className='form-group'>
               <label htmlFor='interests'>Interests</label>
@@ -61,14 +80,7 @@ class Edit extends Component {
               <Textarea field='aboutme' id='aboutme' />
             </div>
             <div className='form-group'>
-              <label htmlFor='lang'>Lang</label>
-              <Select field='lang' id='lang' options={[
-                { label: 'English', value: 'en' },
-                { label: 'Français', value: 'fr' }
-              ]} />
-            </div>
-            <div className='form-group'>
-              <Button type='submit'>Update.</Button>
+              <Button type='submit'>Update</Button>
             </div>
           </form>
         )
@@ -77,10 +89,35 @@ class Edit extends Component {
   }
 }
 
+const userProfileMutation = gql`
+  mutation userProfileMutation(
+    $slug: String!, $first_name: String, $last_name: String,
+    $jobtitle: String, $lang: String, $interests: String, $aboutme: String
+  ) {
+    updateUser(
+      slug: $slug, first_name: $first_name, last_name: $last_name,
+      jobtitle: $jobtitle, lang: $lang, interests: $interests, aboutme: $aboutme
+    ) {
+      ...UserFields
+    }
+  }
+  ${userFragment}
+`
+
 const loadEdit = GraphLoader(Edit)
-const graphEdit = graphql(editUserQuery, {
-  options: (data) => ({ variables: { slug: data.slug } })
-})(loadEdit)
+const graphEdit = compose(
+  graphql(editUserQuery, {
+    options: (data) => ({ variables: { slug: data.slug } })
+  }),
+  graphql(userProfileMutation, {
+    props: ({ mutate, ownProps }) => ({
+      updateUser: (variables) => {
+        variables.slug = ownProps.slug
+        return mutate({ variables })
+      }
+    })
+  })
+)(loadEdit)
 const mapStateToProps = (state) => ({ user: state.auth.user })
 const connectedEdit = connect(mapStateToProps)(graphEdit)
 export default connectedEdit

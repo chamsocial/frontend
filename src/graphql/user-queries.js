@@ -22,18 +22,25 @@ export const profileQuery = gql`query userQuery ($slug: String!) {
   }
 }`
 
+export const userFragment = gql`fragment UserFields on User {
+  id
+  slug
+  username
+  first_name
+  last_name
+  company_name
+  interests
+  aboutme
+  jobtitle
+  avatarpath
+  lang
+}
+`
+
 export const editUserQuery = gql`query editUserQuery ($slug: String!) {
   user(slug: $slug) {
-    id
-    slug
-    username
-    first_name
-    last_name
-    company_name
-    interests
-    aboutme
-    jobtitle
-    avatarpath
-    lang
+    ...UserFields
   }
-}`
+}
+${userFragment}
+`

@@ -129,3 +129,18 @@
 .subcomments-odd > div > .comment:before {
   border-left-color: #9edaff;
 }
+
+
+.row {
+  display: flex;
+  margin-bottom: 20px;
+}
+.col {
+  flex: 1;
+}
+.col:nth-last-of-type(even) {
+  padding: 0 15px 0 0;
+}
+.col:nth-last-of-type(odd) {
+  padding: 0 0 0 15px;
+}
