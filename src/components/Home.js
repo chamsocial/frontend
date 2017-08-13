@@ -8,8 +8,8 @@ const { REACT_APP_ITEMS_PER_PAGE } = process.env
 
 export function Home (props) {
   const { page = 1 } = props
-  const { loading, posts, postsInfo } = props.data
-  if (loading) return <Loading />
+  const { error, loading, posts, postsInfo } = props.data
+  if (loading || error) return <Loading error={error} />
 
   return <div>
     {posts.map((post, i) => <PostListItem key={i} post={post} />)}

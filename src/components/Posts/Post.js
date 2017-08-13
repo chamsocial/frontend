@@ -6,8 +6,8 @@ import Comments from '../Comments'
 import { singlePostQuery } from '../../graphql/post-queries'
 
 export function Post (props) {
-  const { loading, post } = props.data
-  if (loading) return <Loading />
+  const { loading, error, post } = props.data
+  if (loading || error) return <Loading error={error} />
   const { title, created_at, content, author, comments } = post
   return <div>
     <div className='Post-item'>

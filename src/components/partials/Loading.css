@@ -11,6 +11,11 @@
   opacity: 1;
 }
 
+.loading-error-icon {
+  font-size: 112px;
+  color: #FFB493;
+}
+
 .loading-icon {
   width: 70px;
   height: 70px;
