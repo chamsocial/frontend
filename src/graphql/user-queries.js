@@ -34,5 +34,6 @@ export const editUserQuery = gql`query editUserQuery ($slug: String!) {
     aboutme
     jobtitle
     avatarpath
+    lang
   }
 }`
