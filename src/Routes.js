@@ -23,6 +23,10 @@ function Activation ({ match }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Activation')} {...match.params} />
 }
 
+function UserProfile ({ match }) {
+  return <LazyLoad getComponent={() => import('./components/User/Profile')} {...match.params} />
+}
+
 // Map Redux actions to component props
 function mapLogoutDispatch (dispatch) {
   return {
@@ -73,6 +77,7 @@ const SomeComponent = withRouter(({ location }) => (
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/logout' component={LogoutMapped} />
         <Route exact path='/user/activate/:code' component={Activation} />
+        <PrivateRoute exact path='/users/:slug' component={UserProfile} />
         <PrivateRoute path='/posts/:slug' component={Post} />
         <Route exact path='/' component={Home} />
         <Route path='/page/:page' component={Home} />

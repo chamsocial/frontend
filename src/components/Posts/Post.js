@@ -1,5 +1,6 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
+import { Link } from 'react-router-dom'
 import { dateToString } from '../../utils'
 import Loading from '../partials/Loading'
 import Comments from '../Comments'
@@ -15,7 +16,7 @@ export function Post (props) {
       <div className='post-content' dangerouslySetInnerHTML={{ __html: content }} />
       <div className='meta'>
         { dateToString(created_at) }
-        <a href='#Hmm' className='float-right'>{author.username}</a>
+        <Link to={`/users/${author.slug}`} className='float-right'>{author.username}</Link>
       </div>
     </div>
     <Comments postSlug={post.slug} comments={comments} />

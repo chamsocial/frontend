@@ -28,6 +28,7 @@ const postsQuery = gql`query postsQuery($offset: Int!) {
     comments_count
     author {
       id
+      slug
       username
     }
   }

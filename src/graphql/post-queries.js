@@ -10,6 +10,7 @@ export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
     comments_count
     author {
       id
+      slug
       username
     }
     comments {

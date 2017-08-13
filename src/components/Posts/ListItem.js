@@ -10,6 +10,10 @@ function PostListItem ({ post }) {
       <i className='icon-comment-empty' />{commentsCount}
     </span>
   }
+  let authorInfo = null
+  if (author) {
+    authorInfo = <Link to={`/users/${author.slug}`} className='float-right'>{author.username}</Link>
+  }
 
   return <div className='Post-item'>
     {comments}
@@ -18,7 +22,7 @@ function PostListItem ({ post }) {
     </h2>
     <div className='meta'>
       { dateToString(created_at) }
-      <a href='#Hmm' className='float-right'>{author.username}</a>
+      {authorInfo}
     </div>
   </div>
 }
