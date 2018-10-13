@@ -1,27 +1,27 @@
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter as Router } from 'react-router-dom'
+import apollo from './utils/apollo'
+import Auth from './components/Auth'
 import Routes from './Routes'
 import Header from './components/Header'
 import FlashMessages from './components/FlashMessages'
-import './App.css'
-
-import { client as apolloClient } from './lib/apollo'
-import store from './lib/store'
-import './lib/networkInterface'
+import './scss/App.scss'
 
 function App () {
   return (
-    <ApolloProvider client={apolloClient} store={store}>
-      <Router>
-        <div>
-          <Header />
-          <div className='container'>
-            <FlashMessages />
-            <Routes />
+    <ApolloProvider client={apollo.client}>
+      <Auth>
+        <Router>
+          <div>
+            <Header />
+            <div className='container'>
+              <FlashMessages />
+              <Routes />
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </Auth>
     </ApolloProvider>
   )
 }

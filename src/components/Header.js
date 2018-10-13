@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { withAuth } from './Auth/AuthContext'
 
-export function Header ({ user }) {
+export function Header ({ auth }) {
+  const { user } = auth
+  console.log(auth.user)
   return <div className='App-header'>
     <div className='container header'>
       <h2 className='logo'>
@@ -10,7 +12,7 @@ export function Header ({ user }) {
       </h2>
       <div>
         {user
-          ? <Link to='/logout'>Logout</Link>
+          ? <Link to='/logout'>Logout {user.username}</Link>
           : <span><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link></span>
         }
       </div>
@@ -18,8 +20,4 @@ export function Header ({ user }) {
   </div>
 }
 
-function mapStateToProps (state) {
-  return { user: state.auth.user }
-}
-
-export default connect(mapStateToProps)(Header)
+export default withAuth(Header)
