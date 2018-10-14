@@ -27,7 +27,7 @@ export class AuthContext extends Component {
     const { user } = this.state
 
     return (
-      <Provider value={{ setUser, user }}>
+      <Provider value={{ setUser, user, logout }}>
         {children}
       </Provider>
     )

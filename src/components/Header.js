@@ -4,7 +4,7 @@ import { withAuth } from './Auth/AuthContext'
 
 export function Header ({ auth }) {
   const { user } = auth
-  console.log(auth.user)
+  console.log('Header User:', auth.user)
   return <div className='App-header'>
     <div className='container header'>
       <h2 className='logo'>

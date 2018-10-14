@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
@@ -90,22 +89,6 @@ function reqMinLength (key, value, length = 3) {
   else if (value.length < length) return `${key} has to be at least ${length} characters`
 }
 
-// Map Redux state to component props
-function mapStateToProps (state) {
-  return { user: state.auth.user }
-}
-
-// Map Redux actions to component props
-function mapDispatchToProps (dispatch) {
-  return {
-    login: (user, token) => dispatch({
-      type: 'login',
-      user,
-      token
-    })
-  }
-}
-
 const signupMutation = gql`
   mutation signupMutation($username: String!, $email: String!, $password: String!) {
     createUser(username: $username, email: $email, password: $password) {
@@ -123,7 +106,4 @@ export default graphql(signupMutation, {
       return mutate({ variables })
     }
   })
-})(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signup))
+})(Signup)

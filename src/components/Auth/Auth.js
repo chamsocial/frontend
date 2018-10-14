@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import { AuthContext, Consumer } from './AuthContext'
+import { AuthContext } from './AuthContext'
 
 const AUTH = gql`query authQuery {
   me {
