@@ -11,7 +11,7 @@ const AUTH = gql`query authQuery {
   }
 }`
 
-export const Auth = ({ children }) => (
+const Auth = ({ children }) => (
   <Query query={AUTH}>
     {({ loading, error, data }) => {
       if (loading) return 'Loading...'
@@ -25,7 +25,7 @@ export const Auth = ({ children }) => (
   </Query>
 )
 Auth.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 }
 
 export default Auth

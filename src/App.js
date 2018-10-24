@@ -8,14 +8,14 @@ import Header from './components/Header'
 import FlashMessages from './components/FlashMessages'
 import './scss/App.scss'
 
-function App () {
+function App() {
   return (
     <ApolloProvider client={apollo.client}>
       <Auth>
         <Router>
           <div>
             <Header />
-            <div className='container'>
+            <div className="container">
               <FlashMessages />
               <Routes />
             </div>

@@ -1,23 +1,33 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { withAuth } from './Auth/AuthContext'
 
-export function Header ({ auth }) {
+export function HeaderComponent({ auth }) {
   const { user } = auth
-  console.log('Header User:', auth.user)
-  return <div className='App-header'>
-    <div className='container header'>
-      <h2 className='logo'>
-        <Link to='/'>Chamsocial</Link>
-      </h2>
-      <div>
-        {user
-          ? <Link to='/logout'>Logout {user.username}</Link>
-          : <span><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link></span>
-        }
+  console.log('HeaderComponent User:', auth.user)
+  return (
+    <div className="App-header">
+      <div className="container header">
+        <h2 className="logo">
+          <Link to="/">Chamsocial</Link>
+        </h2>
+        <div>
+          {user
+            ? <Link to="/logout">Logout {user.username}</Link>
+            : <span><Link to="/signup">Signup</Link> / <Link to="/login">Login</Link></span>
+          }
+        </div>
       </div>
     </div>
-  </div>
+  )
+}
+HeaderComponent.propTypes = {
+  auth: PropTypes.shape({
+    user: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+  }).isRequired,
 }
 
-export default withAuth(Header)
+export default withAuth(HeaderComponent)
