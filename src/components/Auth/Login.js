@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import Button from '../partials/Button'
 import Alert from '../partials/Alert'
+import { withAuth } from './AuthContext'
 import './Login.css'
 
 export class LoginForm extends Component {
@@ -25,17 +27,16 @@ export class LoginForm extends Component {
   onSubmit(e) {
     e.preventDefault()
     this.setState({ isLoading: true })
-    const { login } = this.props
+    const { login, auth } = this.props
     const { username, password } = this.state
     const user = { username, password }
     login(user)
       .then(resp => {
-        console.log(resp.data.login)
-        // this.setState({ redirectToReferrer: true })
-        this.setState({ isLoading: false, message: 'Logged in' })
+        auth.setUser(resp.data.login)
+        this.setState({ isLoading: false, redirectToReferrer: true })
       })
       .catch(err => {
-        console.log(err)
+        console.log('Login error', err) // eslint-disable-line
         this.setState({ isLoading: false, message: 'Invalid username/email or password' })
       })
   }
@@ -87,6 +88,15 @@ export class LoginForm extends Component {
     )
   }
 }
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.any,
+  }).isRequired,
+  auth: PropTypes.shape({
+    setUser: PropTypes.func.isRequired,
+  }).isRequired,
+}
 
 const LOGIN = gql`
   mutation LoginMutation($username: String! $password: String!) {
@@ -101,6 +111,6 @@ const Login = graphql(LOGIN, {
   props: ({ mutate }) => ({
     login: authValues => mutate({ variables: authValues }),
   }),
-})(LoginForm)
+})(withAuth(LoginForm))
 
 export default Login

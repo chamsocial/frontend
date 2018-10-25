@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import apollo from 'utils/apollo'
 
+const { REACT_APP_API_URL } = process.env
 export const { Provider, Consumer } = React.createContext()
+
+function logout() {
+  fetch(`${REACT_APP_API_URL}/logout`, { credentials: 'include' })
+    .then(() => {
+      apollo.resetAll()
+      window.location = '/'
+    })
+    .catch(err => {
+      console.log('Logout error:', err) // eslint-disable-line
+      apollo.resetAll()
+      window.location = '/'
+    })
+}
 
 export class AuthContext extends Component {
   constructor(props) {
@@ -10,19 +25,14 @@ export class AuthContext extends Component {
       user: props.user,
     }
     this.setUser = this.setUser.bind(this)
-    this.logout = this.logout.bind(this)
   }
 
   setUser(user) {
     this.setState(() => ({ user }))
   }
 
-  logout() {
-    this.setState(() => ({ user: null }))
-  }
-
   render() {
-    const { setUser, logout } = this
+    const { setUser } = this
     const { children } = this.props
     const { user } = this.state
 
@@ -33,8 +43,14 @@ export class AuthContext extends Component {
     )
   }
 }
+AuthContext.defaultProps = {
+  user: {},
+}
 AuthContext.propTypes = {
-  children: PropTypes.node.isRequired
+  user: PropTypes.shape({
+    username: PropTypes.string,
+  }),
+  children: PropTypes.node.isRequired,
 }
 
 export function withAuth(WrappedComponent) {

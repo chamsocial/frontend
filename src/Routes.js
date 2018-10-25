@@ -1,93 +1,95 @@
 import React, { Component } from 'react'
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {
+  Route, Switch, withRouter, Redirect,
+} from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import TransitionGroup from 'react-transition-group/TransitionGroup'
-import { connect } from 'react-redux'
-import { withApollo } from 'react-apollo'
 import LazyLoad from './components/LazyLoad'
+import { withAuth } from './components/Auth/AuthContext'
 
-function Home ({ match }) {
+function Home({ match }) {
   return <LazyLoad getComponent={() => import('./components/Home')} {...match.params} />
 }
-function Login ({ location }) {
+function Login({ location }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} />
 }
-function Signup ({ location }) {
+Login.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.any,
+  }).isRequired,
+}
+function Signup({ location }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Signup')} location={location} />
 }
-function Post ({ match }) {
+Signup.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.any,
+  }).isRequired,
+}
+function Post({ match }) {
   return <LazyLoad getComponent={() => import('./components/Posts/Post')} {...match.params} />
 }
 
-function Activation ({ match }) {
+function Activation({ match }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Activation')} {...match.params} />
 }
 
-function UserProfile ({ match }) {
+function UserProfile({ match }) {
   return <LazyLoad getComponent={() => import('./components/User/Profile')} {...match.params} />
 }
 
-function UserEdit ({ match }) {
+function UserEdit({ match }) {
   return <LazyLoad getComponent={() => import('./components/User/Edit')} {...match.params} />
 }
 
-// Map Redux actions to component props
-function mapLogoutDispatch (dispatch) {
-  return {
-    logout: () => dispatch({ type: 'USER_LOGOUT' })
-  }
-}
-
 class Logout extends Component {
-  componentWillUnmount () {
-    const { logout } = this.props
-    this.props.client.resetStore()
-    logout()
+  componentWillUnmount() {
+    const { auth } = this.props
+    auth.logout()
   }
-  render () { return <Redirect to={{ pathname: '/', state: {} }} /> }
-}
-const LogoutMapped = connect(null, mapLogoutDispatch)(withApollo(Logout))
 
-const Transition = ({ children, ...props }) => (
-  <CSSTransition {...props} classNames='fade' timeout={300}>
-    <div className='cham-route'>{children}</div>
-  </CSSTransition>
-)
-
-function mapStateToProps (state) {
-  return {
-    isLoggedIn: !!state.auth.user
+  render() {
+    return <Redirect to={{ pathname: '/', state: {} }} />
   }
 }
+Logout.propTypes = {
+  auth: PropTypes.shape({
+    logout: PropTypes.func.isRequired,
+  }).isRequired,
+}
+const LogoutMapped = withAuth(Logout)
 
-const PrivateRoute = connect(mapStateToProps)(({ component: Component, isLoggedIn, ...rest }) => (
-  <Route {...rest} render={props => (
-    isLoggedIn ? (
-      <Component {...props} />
-    ) : (
-      <Redirect to={{
-        pathname: '/login',
-        state: { from: props.location }
-      }} />
-    )
-  )} />
+const PrivateRoute = withAuth(({ component: RouteComponent, auth, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => (
+      auth.user ? (
+        <RouteComponent {...props} />
+      ) : (
+        <Redirect to={{ pathname: '/login', state: { from: props.location } }}/>
+      )
+    )}
+  />
 ))
 
 const SomeComponent = withRouter(({ location }) => (
   <TransitionGroup className='transition-wrapper' exit={false}>
-    <Transition key={`css-${location.key}`}>
-      <Switch key={location.key} location={location}>
-        <Route exact path='/login' component={Login} />
-        <Route exact path='/signup' component={Signup} />
-        <Route exact path='/logout' component={LogoutMapped} />
-        <Route exact path='/user/activate/:code' component={Activation} />
-        <PrivateRoute exact path='/users/:slug' component={UserProfile} />
-        <PrivateRoute exact path='/users/:slug/edit' component={UserEdit} />
-        <PrivateRoute path='/posts/:slug' component={Post} />
-        <Route exact path='/' component={Home} />
-        <Route path='/page/:page' component={Home} />
-      </Switch>
-    </Transition>
+    <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
+      <div className="cham-route">
+        <Switch key={location.key} location={location}>
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/signup' component={Signup} />
+          <Route exact path='/logout' component={LogoutMapped} />
+          <Route exact path='/user/activate/:code' component={Activation} />
+          <PrivateRoute exact path='/users/:slug' component={UserProfile} />
+          <PrivateRoute exact path='/users/:slug/edit' component={UserEdit} />
+          <PrivateRoute path='/posts/:slug' component={Post} />
+          <Route exact path='/' component={Home} />
+          <Route path='/page/:page' component={Home} />
+        </Switch>
+      </div>
+    </CSSTransition>
   </TransitionGroup>
 ))
 
