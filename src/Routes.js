@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   Route, Switch, withRouter, Redirect,
@@ -8,8 +8,17 @@ import TransitionGroup from 'react-transition-group/TransitionGroup'
 import LazyLoad from './components/LazyLoad'
 import { withAuth } from './components/Auth/AuthContext'
 
-const Home = lazy(() => import('./components/Home'))
-const Login = lazy(() => import('./components/Auth/Login'))
+function Home({ match }) {
+  return <LazyLoad getComponent={() => import('./components/Home')} {...match.params} />
+}
+function Login({ location }) {
+  return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} />
+}
+Login.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.any,
+  }).isRequired,
+}
 
 function Signup({ location }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Signup')} location={location} />
@@ -69,19 +78,17 @@ const SomeComponent = withRouter(({ location }) => (
   <TransitionGroup className="transition-wrapper" exit={false}>
     <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
       <div className="cham-route">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Switch key={location.key} location={location}>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/logout" component={LogoutMapped} />
-            <Route exact path="/user/activate/:code" component={Activation} />
-            <PrivateRoute exact path="/users/:slug" component={UserProfile} />
-            <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
-            <PrivateRoute path="/posts/:slug" component={Post} />
-            <Route exact path="/" component={Home} />
-            <Route path="/page/:page" component={Home} />
-          </Switch>
-        </Suspense>
+        <Switch key={location.key} location={location}>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/logout" component={LogoutMapped} />
+          <Route exact path="/user/activate/:code" component={Activation} />
+          <PrivateRoute exact path="/users/:slug" component={UserProfile} />
+          <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
+          <PrivateRoute path="/posts/:slug" component={Post} />
+          <Route exact path="/" component={Home} />
+          <Route path="/page/:page" component={Home} />
+        </Switch>
       </div>
     </CSSTransition>
   </TransitionGroup>
