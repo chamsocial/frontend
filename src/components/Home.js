@@ -40,8 +40,8 @@ const postsQuery = gql`query postsQuery($page: Int!) {
     id
     title
     slug
-    created_at
-    comments_count
+    createdAt
+    commentsCount
     author {
       id
       slug

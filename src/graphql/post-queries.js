@@ -1,13 +1,14 @@
 import gql from 'graphql-tag'
 
+export const x = 'y'
 export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
   post(slug: $slug) {
     id
     title
     slug
     content
-    created_at
-    comments_count
+    createdAt
+    commentsCount
     author {
       id
       slug
