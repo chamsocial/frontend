@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import {
-  Form, Text, Textarea, Select,
-} from 'react-form'
+  Formik, FastField, ErrorMessage,
+} from 'formik'
 import GraphLoader from '../partials/GraphLoader'
 import Button from '../partials/Button'
 import { withAuth } from '../Auth/AuthContext'
@@ -15,15 +14,25 @@ class Edit extends Component {
     super(props)
 
     this.state = {
-      profileSaved: false,
       error: false,
     }
 
     this.submitUserEdits = this.submitUserEdits.bind(this)
   }
 
+  componentDidMount() {
+    const { slug, auth, history } = this.props
+    if (!auth.user || slug !== auth.user.slug) {
+      const to = {
+        pathname: `/users/${auth.user.slug}/edit`,
+        state: { flashMessage: `You are not allowed to edit ${slug}'s profile but here is yours` },
+      }
+      history.push(to)
+    }
+  }
+
   submitUserEdits(values) {
-    const { updateUser } = this.props
+    const { updateUser, history } = this.props
     const variables = {
       firstName: values.firstName,
       lastName: values.lastName,
@@ -34,7 +43,12 @@ class Edit extends Component {
       lang: values.lang,
     }
     updateUser(variables)
-      .then(() => this.setState({ profileSaved: true }))
+      .then(() => {
+        history.push({
+          pathname: `/users/${values.slug}/`,
+          state: { flashMessage: 'Your profile has been updated.' },
+        })
+      })
       .catch(e => {
         if (e.graphQLErrors) {
           return this.setState({ error: e.graphQLErrors[0].message })
@@ -44,75 +58,60 @@ class Edit extends Component {
   }
 
   render() {
-    const { profileSaved, error } = this.state
-    const { data, auth } = this.props
+    const { error } = this.state
+    const { data } = this.props
     const { user } = data
-    if (!user || user.id !== auth.user.id) {
-      const to = {
-        pathname: `/users/${auth.user.slug}/`,
-        state: { flashMessage: `You are not allowed to edit ${auth.user.slug}'s' profile but here is yours` },
-      }
-      return <Redirect to={to} />
-    }
-    if (profileSaved) {
-      const to = {
-        pathname: `/users/${user.slug}/`,
-        state: { flashMessage: 'Your profile has been updated.' },
-      }
-      return <Redirect to={to} />
-    }
 
     return (
-      <Form
-        defaultValues={user}
+      <Formik
+        initialValues={user}
         onSubmit={this.submitUserEdits}
-        validate={({ lang }) => ({
-          lang: !lang ? 'Language is required' : undefined,
-        })}
+        validate={({ lang }) => {
+          const errors = {}
+          if (!lang) errors.lang = 'Language is required'
+          return errors
+        }}
       >
-        {({ submitForm }) => (
-          <form onSubmit={submitForm}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
             <h2>Edit your profile {user.username}</h2>
             <div className="row">
               <div className="col">
                 <label htmlFor="firstName">First name</label>
-                <Text field="firstName" id="firstName" />
+                <FastField name="firstName" />
               </div>
               <div className="col">
                 <label htmlFor="lastName">Last name</label>
-                <Text field="lastName" id="lastName" />
+                <FastField name="lastName" />
               </div>
             </div>
             <div className="row">
               <div className="col">
                 <label htmlFor="companyName">Company</label>
-                <Text field="companyName" id="companyName" />
+                <FastField name="companyName" />
               </div>
               <div className="col">
                 <label htmlFor="jobtitle">Jobtitle</label>
-                <Text field="jobtitle" id="jobtitle" />
+                <FastField name="jobtitle" />
               </div>
             </div>
             <div className="row">
               <div className="col">
                 <label htmlFor="lang">Language</label>
-                <Select
-                  field="lang"
-                  id="lang"
-                  options={[
-                    { label: 'English', value: 'en' },
-                    { label: 'Français', value: 'fr' },
-                  ]}
-                />
+                <FastField component="select" name="lang" id="lang">
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                </FastField>
+                <ErrorMessage name="lang" />
               </div>
               <div className="col">
                 <label htmlFor="interests">Interests</label>
-                <Textarea field="interests" id="interests" />
+                <FastField component="textarea" name="interests" />
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="aboutme">About me</label>
-              <Textarea field="aboutme" id="aboutme" />
+              <FastField component="textarea" name="aboutme" />
             </div>
             {error && (
               <div className="alert alert-danger">{error}</div>
@@ -122,12 +121,16 @@ class Edit extends Component {
             </div>
           </form>
         )}
-      </Form>
+      </Formik>
     )
   }
 }
 Edit.propTypes = {
   updateUser: PropTypes.func.isRequired,
+  slug: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   data: PropTypes.shape({
     user: PropTypes.shape({
       firstName: PropTypes.string,
@@ -187,7 +190,7 @@ const userProfileMutation = gql`
 const loadEdit = GraphLoader(Edit)
 const graphEdit = compose(
   graphql(editUserQuery, {
-    options: data => ({ variables: { slug: data.slug } })
+    options: data => ({ variables: { slug: data.slug } }),
   }),
   graphql(userProfileMutation, {
     props: ({ mutate, ownProps }) => ({

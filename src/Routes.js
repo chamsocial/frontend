@@ -47,8 +47,8 @@ function UserProfile({ match }) {
   return <LazyLoad getComponent={() => import('./components/User/Profile')} {...match.params} />
 }
 
-function UserEdit({ match }) {
-  return <LazyLoad getComponent={() => import('./components/User/Edit')} {...match.params} />
+function UserEdit({ match, history }) {
+  return <LazyLoad getComponent={() => import('./components/User/Edit')} history={history} {...match.params} />
 }
 
 class Logout extends Component {
