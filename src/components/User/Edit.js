@@ -14,6 +14,11 @@ class Edit extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      profileSaved: false,
+      error: false,
+    }
+
     this.submitUserEdits = this.submitUserEdits.bind(this)
   }
 
@@ -29,15 +34,30 @@ class Edit extends Component {
       lang: values.lang,
     }
     updateUser(variables)
+      .then(() => this.setState({ profileSaved: true }))
+      .catch(e => {
+        if (e.graphQLErrors) {
+          return this.setState({ error: e.graphQLErrors[0].message })
+        }
+        return this.setState({ error: 'Something unexpected went wrong.' })
+      })
   }
 
   render() {
+    const { profileSaved, error } = this.state
     const { data, auth } = this.props
     const { user } = data
     if (!user || user.id !== auth.user.id) {
       const to = {
+        pathname: `/users/${auth.user.slug}/`,
+        state: { flashMessage: `You are not allowed to edit ${auth.user.slug}'s' profile but here is yours` },
+      }
+      return <Redirect to={to} />
+    }
+    if (profileSaved) {
+      const to = {
         pathname: `/users/${user.slug}/`,
-        state: { flashMessage: `You are not allowed to edit ${auth.user.slug}'s' profile but here is yours` }
+        state: { flashMessage: 'Your profile has been updated.' },
       }
       return <Redirect to={to} />
     }
@@ -94,6 +114,9 @@ class Edit extends Component {
               <label htmlFor="aboutme">About me</label>
               <Textarea field="aboutme" id="aboutme" />
             </div>
+            {error && (
+              <div className="alert alert-danger">{error}</div>
+            )}
             <div className="form-group">
               <Button type="submit">Update</Button>
             </div>
