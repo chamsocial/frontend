@@ -20,14 +20,10 @@ export class Activation extends Component {
     const { code, activate, auth } = this.props
     activate({ code })
       .then(({ data: { activateUser } }) => {
-        console.log('Yes', activateUser)
         auth.setUser(activateUser)
         this.setState({ isLoading: false, error: false })
       })
-      .catch(e => {
-        console.log('E', e)
-        this.setState({ isLoading: false, error: true })
-      })
+      .catch(() => this.setState({ isLoading: false, error: true }))
   }
 
   render() {
