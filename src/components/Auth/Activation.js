@@ -1,68 +1,68 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
+import { withAuth } from './AuthContext'
+import Loading from '../partials/Loading'
+import Alert from '../partials/Alert'
 
 export class Activation extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isLoading: true,
-      error: false
+      error: false,
     }
   }
-  componentDidMount () {
-    const { code, activate } = this.props
+
+  componentDidMount() {
+    const { code, activate, auth } = this.props
     activate({ code })
       .then(({ data: { activateUser } }) => {
-        this.props.login(activateUser.user, activateUser.token)
-        this.setState({ isLoading: false })
+        console.log('Yes', activateUser)
+        auth.setUser(activateUser)
+        this.setState({ isLoading: false, error: false })
       })
       .catch(e => {
+        console.log('E', e)
         this.setState({ isLoading: false, error: true })
       })
   }
 
-  render () {
-    if (this.state.isLoading) return <div>Loading...</div>
-    if (this.state.error) return <h2>Could not find activation code or it's already been used.</h2>
+  render() {
+    const { isLoading, error } = this.state
+    if (isLoading) return <Loading />
+    if (error) return <Alert type="danger">Could not find activation code or it&apos;s already been used.</Alert>
     const to = {
       pathname: '/',
-      state: { flashMessage: `Your account has been activated and you have been logged in.` }
+      state: { flashMessage: 'Your account has been activated and you have been logged in.' },
     }
     return <Redirect to={to} />
   }
 }
 
+Activation.propTypes = {
+  code: PropTypes.string.isRequired,
+  activate: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    setUser: PropTypes.func.isRequired,
+  }).isRequired,
+}
+
 const activationMutation = gql`
   mutation activationMutation($code: String!) {
     activateUser(code: $code) {
-      user {
-        id
-        username
-        slug
-        email
-      }
-      token
+      id
+      username
+      slug
+      email
     }
   }
 `
 
-function mapDispatchToProps (dispatch) {
-  return {
-    login: (user, token) => dispatch({
-      type: 'login',
-      user,
-      token
-    })
-  }
-}
-
 export default graphql(activationMutation, {
-  props: ({ mutate, ownProps }) => ({
-    activate: (variables) => {
-      return mutate({ variables })
-    }
-  })
-})(connect(null, mapDispatchToProps)(Activation))
+  props: ({ mutate }) => ({
+    activate: variables => mutate({ variables }),
+  }),
+})(withAuth(Activation))

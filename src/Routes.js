@@ -33,7 +33,14 @@ function Post({ match }) {
 }
 
 function Activation({ match }) {
-  return <LazyLoad getComponent={() => import('./components/Auth/Activation')} {...match.params} />
+  return <LazyLoad getComponent={() => import('./components/Auth/Activation')} code={match.params.code} />
+}
+Activation.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      code: PropTypes.string,
+    }),
+  }).isRequired,
 }
 
 function UserProfile({ match }) {
