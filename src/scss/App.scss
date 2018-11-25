@@ -144,3 +144,15 @@
 .col:nth-last-of-type(odd) {
   padding: 0 0 0 15px;
 }
+
+
+
+/**
+ * Profile
+ */
+.profile {
+  &__img {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+}

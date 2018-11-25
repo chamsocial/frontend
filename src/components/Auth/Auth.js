@@ -8,6 +8,7 @@ const AUTH = gql`query authQuery {
   me {
     id
     username
+    slug
   }
 }`
 

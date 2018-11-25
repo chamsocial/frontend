@@ -5,7 +5,7 @@ import { withAuth } from './Auth/AuthContext'
 
 export function HeaderComponent({ auth }) {
   const { user } = auth
-  console.log('HeaderComponent User:', auth.user)
+
   return (
     <div className="App-header">
       <div className="container header">
@@ -14,7 +14,7 @@ export function HeaderComponent({ auth }) {
         </h2>
         <div>
           {user
-            ? <Link to="/logout">Logout {user.username}</Link>
+            ? <Link to={`/users/${user.slug}`}>{user.username}</Link>
             : <span><Link to="/signup">Signup</Link> / <Link to="/login">Login</Link></span>
           }
         </div>
