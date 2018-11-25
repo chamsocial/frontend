@@ -70,7 +70,7 @@ export class SignupForm extends Component {
         validate={({ username, email, password }) => ({
           username: reqMinLength('Username', username),
           email: !email ? 'Email is required' : undefined,
-          password: reqMinLength('Password', password, 6)
+          password: reqMinLength('Password', password, 6),
         })}
       >
         {({ submitForm }) => (
