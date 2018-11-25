@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
@@ -7,86 +8,101 @@ import Button from '../partials/Button'
 import Alert from '../partials/Alert'
 import './Login.css'
 
-export class Signup extends Component {
-  constructor (props) {
+function reqMinLength(key, value, length = 3) {
+  if (!value) return `${key} is required`
+  if (value.length < length) return `${key} has to be at least ${length} characters`
+  return ''
+}
+
+export class SignupForm extends Component {
+  constructor(props) {
     super(props)
     this.state = {
-      redirect: false,
+      redirectToReferrer: false,
       errors: [],
-      isLoading: false
+      isLoading: false,
     }
     this.submitUser = this.submitUser.bind(this)
   }
 
-  submitUser (values) {
+  submitUser(values) {
     this.setState({ isLoading: true })
-    this.props.signup(values)
+    const { signup } = this.props
+
+    signup(values)
       .then(({ data: { createUser } }) => {
         this.setState({
           redirectToReferrer: {
             pathname: '/',
-            state: { flashMessage: `We've sent an activation email to ${createUser.email}, please verify your email with the link in the email to login.` }
-          }
+            state: { flashMessage: `We've sent an activation email to ${createUser.email}, please verify your email with the link in the email to login.` },
+          },
         })
       })
-      .catch(e => {
-        if (e.message.includes('Validation:')) {
-          const errors = e.message.split('Validation:')[1]
-          if (errors) this.setState({ isLoading: false, errors: errors.split(',') })
-        } else {
-          this.setState({ isLoading: false, errors: ['Could not create the user'] })
+      .catch(err => {
+        const errors = []
+        if (err.graphQLErrors) {
+          err.graphQLErrors.map(e => {
+            if (e.extensions.code !== 'BAD_USER_INPUT') return null
+            return e.extensions.exception.errors.map(field => errors.push(field.message))
+          })
         }
+        if (!errors) errors.push('Could not create the user')
+        this.setState({ isLoading: false, errors })
       })
   }
 
-  render () {
+  render() {
     const { redirectToReferrer, errors, isLoading } = this.state
-    if (redirectToReferrer || this.props.user) return <Redirect to={redirectToReferrer} />
+    if (redirectToReferrer) return <Redirect to={redirectToReferrer} />
 
     let errorMessage = null
     if (errors.length) {
-      errorMessage = <Alert type='warn'>
-        {errors.map((e, i) => <div key={i}>{e}</div>)}
-      </Alert>
+      errorMessage = (
+        <Alert type="warn">
+          { /* eslint-disable-next-line react/no-array-index-key */ }
+          {errors.map((e, i) => <div key={i}>{e}</div>)}
+        </Alert>
+      )
     }
-    return <Form
-      onSubmit={this.submitUser}
-      validate={({ username, email, password }) => ({
-        username: reqMinLength('Username', username),
-        email: !email ? 'Email is required' : undefined,
-        password: reqMinLength('Password', password, 6)
-      })}
-    >
-      {({ submitForm, getValue }) => {
-        return (
-          <form className='login-form' onSubmit={submitForm}>
+    return (
+      <Form
+        onSubmit={this.submitUser}
+        validate={({ username, email, password }) => ({
+          username: reqMinLength('Username', username),
+          email: !email ? 'Email is required' : undefined,
+          password: reqMinLength('Password', password, 6)
+        })}
+      >
+        {({ submitForm }) => (
+          <form className="login-form" onSubmit={submitForm}>
             <h1>Signup</h1>
-            <div className='form-group'>
-              <label htmlFor='username'>Username</label>
-              <Text field='username' id='username' />
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <Text field="username" id="username" />
             </div>
-            <div className='form-group'>
-              <label htmlFor='email'>Email</label>
-              <Text type='email' field='email' id='email' />
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <Text type="email" field="email" id="email" />
             </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Password</label>
-              <Text type='password' field='password' id='password' />
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <Text type="password" field="password" id="password" />
             </div>
             {errorMessage}
-            <div className='form-group'>
-              <Button loading={isLoading} type='submit'>Give me access, please.</Button>
+            <div className="form-group">
+              <Button loading={isLoading} type="submit">Give me access, please.</Button>
             </div>
           </form>
-        )
-      }}
-    </Form>
+        )}
+      </Form>
+    )
   }
 }
-
-function reqMinLength (key, value, length = 3) {
-  if (!value) return `${key} is required`
-  else if (value.length < length) return `${key} has to be at least ${length} characters`
+SignupForm.propTypes = {
+  signup: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.any,
+  }).isRequired,
 }
 
 const signupMutation = gql`
@@ -100,10 +116,10 @@ const signupMutation = gql`
   }
 `
 
-export default graphql(signupMutation, {
-  props: ({ mutate, ownProps }) => ({
-    signup: (variables) => {
-      return mutate({ variables })
-    }
-  })
-})(Signup)
+const Signup = graphql(signupMutation, {
+  props: ({ mutate }) => ({
+    signup: variables => mutate({ variables }),
+  }),
+})(SignupForm)
+
+export default Signup
