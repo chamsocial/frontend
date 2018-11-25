@@ -23,7 +23,7 @@ function Profile({ data, auth }) {
   }
   return (
     <div>
-      <img src={user.avatarpath} className="profile__img float-right" alt="Profil" />
+      <img src={user.avatarUrl} className="profile__img float-right" alt="Profil" />
       <h1>{user.username}</h1>
       {!!user.firstName && !!user.lastName && (
         <div className="meta">{user.firstName} {user.lastName}</div>
@@ -59,7 +59,7 @@ const profileQuery = gql`query userQuery ($slug: String!) {
     interests
     aboutme
     jobtitle
-    avatarpath
+    avatarUrl
     posts {
       id
       title
