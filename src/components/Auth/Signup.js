@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
-import { Form, Text } from 'react-form'
+import { Formik, FastField, ErrorMessage } from 'formik'
 import Button from '../partials/Button'
 import Alert from '../partials/Alert'
 import './Login.css'
@@ -65,28 +65,36 @@ export class SignupForm extends Component {
       )
     }
     return (
-      <Form
+      <Formik
+        initialValues={{ username: '', email: '', password: '' }}
         onSubmit={this.submitUser}
-        validate={({ username, email, password }) => ({
-          username: reqMinLength('Username', username),
-          email: !email ? 'Email is required' : undefined,
-          password: reqMinLength('Password', password, 6),
-        })}
+        validate={({ username, email, password }) => {
+          const errorList = {}
+          const user = reqMinLength('Username', username)
+          const pwd = reqMinLength('Password', password, 6)
+          if (user) errorList.username = user
+          if (pwd) errorList.password = pwd
+          if (!email) errorList.email = 'Email is required'
+          return errorList
+        }}
       >
-        {({ submitForm }) => (
-          <form className="login-form" onSubmit={submitForm}>
+        {({ handleSubmit }) => (
+          <form className="login-form" onSubmit={handleSubmit}>
             <h1>Signup</h1>
             <div className="form-group">
               <label htmlFor="username">Username</label>
-              <Text field="username" id="username" />
+              <FastField name="username" id="username" />
+              <ErrorMessage name="username" />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <Text type="email" field="email" id="email" />
+              <FastField type="email" name="email" id="email" />
+              <ErrorMessage name="email" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <Text type="password" field="password" id="password" />
+              <FastField type="password" name="password" id="password" />
+              <ErrorMessage name="password" />
             </div>
             {errorMessage}
             <div className="form-group">
@@ -94,7 +102,7 @@ export class SignupForm extends Component {
             </div>
           </form>
         )}
-      </Form>
+      </Formik>
     )
   }
 }

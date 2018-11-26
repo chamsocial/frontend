@@ -78,21 +78,21 @@ class Edit extends Component {
             <div className="row">
               <div className="col">
                 <label htmlFor="firstName">First name</label>
-                <FastField name="firstName" />
+                <FastField name="firstName" id="firstName" />
               </div>
               <div className="col">
                 <label htmlFor="lastName">Last name</label>
-                <FastField name="lastName" />
+                <FastField name="lastName" id="lastName" />
               </div>
             </div>
             <div className="row">
               <div className="col">
                 <label htmlFor="companyName">Company</label>
-                <FastField name="companyName" />
+                <FastField name="companyName" id="companyName" />
               </div>
               <div className="col">
                 <label htmlFor="jobtitle">Jobtitle</label>
-                <FastField name="jobtitle" />
+                <FastField name="jobtitle" id="jobtitle" />
               </div>
             </div>
             <div className="row">
@@ -102,16 +102,16 @@ class Edit extends Component {
                   <option value="en">English</option>
                   <option value="fr">Français</option>
                 </FastField>
-                <ErrorMessage name="lang" />
+                <ErrorMessage name="lang" id="lang" />
               </div>
               <div className="col">
                 <label htmlFor="interests">Interests</label>
-                <FastField component="textarea" name="interests" />
+                <FastField component="textarea" name="interests" id="interests" />
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="aboutme">About me</label>
-              <FastField component="textarea" name="aboutme" />
+              <FastField component="textarea" name="aboutme" id="aboutme" />
             </div>
             {error && (
               <div className="alert alert-danger">{error}</div>
