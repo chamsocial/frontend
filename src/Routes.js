@@ -36,6 +36,9 @@ Signup.propTypes = {
 function Post({ match }) {
   return <LazyLoad getComponent={() => import('./components/Posts/Post')} {...match.params} />
 }
+function CreatePost({ match }) {
+  return <LazyLoad getComponent={() => import('./pages/Posts/Create')} {...match.params} />
+}
 
 function Activation({ match }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Activation')} code={match.params.code} />
@@ -97,6 +100,7 @@ const SomeComponent = withRouter(({ location }) => (
           <Route exact path="/user/activate/:code" component={Activation} />
           <PrivateRoute exact path="/users/:slug" component={UserProfile} />
           <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
+          <PrivateRoute exact path="/posts/create" component={CreatePost} />
           <PrivateRoute path="/posts/:slug" component={Post} />
           <Route exact path="/" component={Home} />
           <Route path="/page/:page" component={Home} />

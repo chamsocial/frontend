@@ -158,3 +158,19 @@
     border-radius: 3px;
   }
 }
+
+
+/**
+ *
+ */
+.page {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.main {
+  flex: 1;
+}
+.sidebar {
+  width: 200px;
+  margin-left: 30px;
+}
