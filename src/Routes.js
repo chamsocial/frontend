@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  Route, Switch, withRouter, Redirect,
+  Route, Switch, withRouter,
 } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import TransitionGroup from 'react-transition-group/TransitionGroup'
 import LazyLoad from './components/LazyLoad'
+import CustomRedirect from './components/CustomRedirect'
+import Loading from './components/partials/Loading'
 import { withAuth } from './components/Auth/AuthContext'
 
 function Home({ match }) {
   return <LazyLoad getComponent={() => import('./components/Home')} {...match.params} />
 }
-function Login({ location }) {
-  return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} />
+function Login({ location, history }) {
+  return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} history={history} />
 }
 Login.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.any,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 }
 
@@ -52,13 +57,13 @@ function UserEdit({ match, history }) {
 }
 
 class Logout extends Component {
-  componentWillUnmount() {
-    const { auth } = this.props
-    auth.logout()
+  constructor(props) {
+    super(props)
+    props.auth.logout()
   }
 
   render() {
-    return <Redirect to={{ pathname: '/', state: {} }} />
+    return <Loading />
   }
 }
 Logout.propTypes = {
@@ -68,19 +73,19 @@ Logout.propTypes = {
 }
 const LogoutMapped = withAuth(Logout)
 
+
 const PrivateRoute = withAuth(({ component: RouteComponent, auth, ...rest }) => (
   <Route
     {...rest}
     render={props => (
-      auth.user ? (
-        <RouteComponent {...props} />
-      ) : (
-        <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-      )
+      auth.user
+        ? <RouteComponent {...props} />
+        : <CustomRedirect {...props} />
     )}
   />
 ))
 
+// <Route render={(location) => { instead of withRouter?
 const SomeComponent = withRouter(({ location }) => (
   <TransitionGroup className="transition-wrapper" exit={false}>
     <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import Button from '../partials/Button'
@@ -12,9 +11,8 @@ export class LoginForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
-      password: '',
-      redirectToReferrer: false,
+      username: 'spathon',
+      password: 'hello1',
       message: false,
       isLoading: false,
     }
@@ -27,13 +25,16 @@ export class LoginForm extends Component {
   onSubmit(e) {
     e.preventDefault()
     this.setState({ isLoading: true })
-    const { login, auth } = this.props
+    const {
+      login, auth, history, location,
+    } = this.props
     const { username, password } = this.state
-    const user = { username, password }
-    login(user)
+
+    login({ username, password })
       .then(resp => {
         auth.setUser(resp.data.login)
-        this.setState({ isLoading: false, redirectToReferrer: true })
+        const { from } = location.state || { from: { pathname: '/' } }
+        history.push(from.pathname, from.state)
       })
       .catch(err => {
         console.log('Login error', err) // eslint-disable-line
@@ -54,9 +55,7 @@ export class LoginForm extends Component {
   render() {
     const { message, username, password } = this.state
     const { location } = this.props
-    const { from } = location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer, isLoading } = this.state
-    if (redirectToReferrer) return <Redirect to={from} />
+    const { isLoading } = this.state
 
     const isRedirect = location.state && location.state.from
     let redirectMessage = null
@@ -82,7 +81,7 @@ export class LoginForm extends Component {
           <input type="password" value={password} onChange={this.setPassword} required />
         </div>
         <div className="form-group">
-          <Button loading={isLoading} loadingText="Logging in...">Login</Button>
+          <Button type="submit" loading={isLoading} loadingText="Logging in...">Login</Button>
         </div>
       </form>
     )
@@ -93,6 +92,9 @@ LoginForm.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.any,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   auth: PropTypes.shape({
     setUser: PropTypes.func.isRequired,
   }).isRequired,
@@ -102,6 +104,7 @@ const LOGIN = gql`
   mutation LoginMutation($username: String! $password: String!) {
     login(username: $username, password: $password) {
       id
+      slug
       username
     }
   }
