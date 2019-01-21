@@ -69,7 +69,7 @@ export class LoginForm extends Component {
     }
 
     return (
-      <form onSubmit={this.onSubmit} className="login-form">
+      <form onSubmit={this.onSubmit} className="narrow-form">
         {redirectMessage}
         {messageComponent}
         <div className="form-group">
