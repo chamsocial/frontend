@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import Downshift from 'downshift'
@@ -45,6 +45,7 @@ class CreatePostComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      postId: false,
       title: '',
       content: '',
       group: null,
@@ -65,7 +66,17 @@ class CreatePostComponent extends Component {
   }
 
   setInit() {
-    this.setState({ uploadInit: true })
+    const { title, content, uploadInit } = this.state
+    const { createPost } = this.props
+    if (uploadInit) return uploadInit
+
+    const postPromise = createPost({ title, content, status: 'draft' })
+      .then(result => {
+        this.setState({ postId: result.data.createPost.id })
+        return result
+      })
+    this.setState({ uploadInit: postPromise })
+    return postPromise
   }
 
   update(evt) {
@@ -79,19 +90,14 @@ class CreatePostComponent extends Component {
     })
   }
 
-  handleInit() {
-    console.log('FilePond instance has initialised', this.pond)
-  }
-
   render() {
     const {
-      title, content, group, files, uploadInit,
+      title, content, group, files, postId,
     } = this.state
-    const { createPost } = this.props
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
-        <h1>Create post</h1>
+        <h1>Create post {postId}</h1>
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input value={title} id="title" onChange={this.update} required />
@@ -107,19 +113,15 @@ class CreatePostComponent extends Component {
           allowMultiple
           maxFiles={3}
           beforeAddFile={item => {
-            this.setInit()
-            console.log(uploadInit, item.filename)
-            if (!uploadInit) {
-              return createPost({ title, content, status: 'draft' })
-            }
-            return new Promise(resolve => {
-              setTimeout(() => {
-                resolve(true)
-              }, 3000)
-            })
+            console.log(item)
+            return this.setInit()
           }}
-          server={`${process.env.REACT_APP_API_URL}/upload`}
-          oninit={() => this.handleInit()}
+          server={{
+            url: `${process.env.REACT_APP_API_URL}/upload/${postId}`,
+            revert: {
+              method: 'POST',
+            },
+          }}
           onupdatefiles={fileItems => {
             // Set current file objects to this.state
             this.setState({
@@ -193,9 +195,9 @@ class CreatePostComponent extends Component {
     )
   }
 }
-// CreatePost.propTypes = {
-//   username: PropTypes.string.isRequired,
-// }
+CreatePostComponent.propTypes = {
+  createPost: PropTypes.func.isRequired,
+}
 
 const CREATE_POST = gql`
   mutation createPostMutation($title: String! $content: String! $status: PostStatus) {
