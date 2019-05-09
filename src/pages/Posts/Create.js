@@ -1,25 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import Downshift from 'downshift'
 
-// Import React FilePond
-import { FilePond, File, registerPlugin } from 'react-filepond'
-
-// Import FilePond styles
-import 'filepond/dist/filepond.min.css'
-
-// Import the Image EXIF Orientation and Image Preview plugins
-// Note: These need to be installed separately
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
+import Upload from './Upload'
+// import Drafts from './Drafts'
 
 import Button from '../../components/partials/Button'
-
-// Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 const groups = [
   /* eslint-disable */
@@ -45,7 +33,7 @@ class CreatePostComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      postId: false,
+      postId: null,
       title: '',
       content: '',
       group: null,
@@ -58,14 +46,22 @@ class CreatePostComponent extends Component {
     this.update = this.update.bind(this)
     this.setGroup = this.setGroup.bind(this)
     this.unsetGroup = this.unsetGroup.bind(this)
-    this.setInit = this.setInit.bind(this)
+    this.createDraft = this.createDraft.bind(this)
+    this.onDrop = this.onDrop.bind(this)
+  }
+
+  onDrop(imageFiles) {
+    this.setState({
+      files: imageFiles,
+    })
+    console.log(imageFiles[0].preview)
   }
 
   setGroup(group) {
     this.setState({ group })
   }
 
-  setInit() {
+  createDraft() {
     const { title, content, uploadInit } = this.state
     const { createPost } = this.props
     if (uploadInit) return uploadInit
@@ -73,7 +69,7 @@ class CreatePostComponent extends Component {
     const postPromise = createPost({ title, content, status: 'draft' })
       .then(result => {
         this.setState({ postId: result.data.createPost.id })
-        return result
+        return result.data.createPost.id
       })
     this.setState({ uploadInit: postPromise })
     return postPromise
@@ -95,8 +91,11 @@ class CreatePostComponent extends Component {
       title, content, group, files, postId,
     } = this.state
 
+    console.log(this.props)
+
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
+        {/* <Drafts /> */}
         <h1>Create post {postId}</h1>
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -107,33 +106,11 @@ class CreatePostComponent extends Component {
           <textarea id="content" onChange={this.update} value={content} />
         </div>
 
-        {/* Pass FilePond properties as attributes */}
-        <FilePond
-          ref={ref => { this.pond = ref }}
-          allowMultiple
-          maxFiles={3}
-          beforeAddFile={item => {
-            console.log(item)
-            return this.setInit()
-          }}
-          server={{
-            url: `${process.env.REACT_APP_API_URL}/upload/${postId}`,
-            revert: {
-              method: 'POST',
-            },
-          }}
-          onupdatefiles={fileItems => {
-            // Set current file objects to this.state
-            this.setState({
-              files: fileItems.map(fileItem => fileItem.file),
-            })
-          }}
-        >
-          {/* Update current files  */}
-          {files.map(file => (
-            <File key={file} src={file} origin="local" />
-          ))}
-        </FilePond>
+        <Upload
+          createDraft={this.createDraft}
+          files={files}
+          postId={postId}
+        />
 
         <div className="form-group">
           <Downshift
@@ -207,10 +184,12 @@ const CREATE_POST = gql`
   }
 `
 
-const CreatePost = graphql(CREATE_POST, {
-  props: ({ mutate }) => ({
-    createPost: variables => mutate({ variables }),
+const CreatePost = compose(
+  graphql(CREATE_POST, {
+    props: ({ mutate }) => ({
+      createPost: variables => mutate({ variables }),
+    }),
   }),
-})(CreatePostComponent)
+)(CreatePostComponent)
 
 export default CreatePost
