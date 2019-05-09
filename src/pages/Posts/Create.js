@@ -108,7 +108,6 @@ class CreatePostComponent extends Component {
 
         <Upload
           createDraft={this.createDraft}
-          files={files}
           postId={postId}
         />
 
