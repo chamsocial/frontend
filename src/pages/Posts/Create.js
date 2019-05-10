@@ -91,7 +91,7 @@ class CreatePostComponent extends Component {
       title, content, group, files, postId,
     } = this.state
 
-    console.log(this.props)
+    console.log('Create props', this.props)
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
@@ -175,6 +175,17 @@ CreatePostComponent.propTypes = {
   createPost: PropTypes.func.isRequired,
 }
 
+
+const GET_DRAFT = gql`
+  query getDraftQuery($postId: ID!) {
+    draft(postId: $postId) {
+      id
+      title
+      content
+    }
+  }
+`
+
 const CREATE_POST = gql`
   mutation createPostMutation($title: String! $content: String! $status: PostStatus) {
     createPost(title: $title, content: $content, status: $status) {
@@ -184,6 +195,11 @@ const CREATE_POST = gql`
 `
 
 const CreatePost = compose(
+  graphql(GET_DRAFT, {
+    name: 'getDraft',
+    skip: ({ postId }) => !postId,
+    options: ({ postId }) => ({ variables: { postId } }),
+  }),
   graphql(CREATE_POST, {
     props: ({ mutate }) => ({
       createPost: variables => mutate({ variables }),
