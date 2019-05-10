@@ -10,13 +10,14 @@ function reducer(state, action) {
   switch (action.type) {
     case 'ADD_UPLOAD':
       return { ...state, uploads: [...state.uploads, action.file] }
-    case 'ADD_FILES':
-      return { ...state, files: [...state.files, ...action.files] }
+    case 'ADD_FILE':
+      return { ...state, files: [...state.files, action.file] }
     case 'UPDATE_FILE':
-      return { ...state, uploads: [...state.uploads] }
+      return { ...state, files: [...state.files] }
     case 'FILE_UPLOADED': {
-      const uploads = state.uploads.filter(file => file.id !== action.id)
-      return { ...state, files: [...state.files, action.file], uploads }
+      const files = state.files.filter(file => file.tmpId !== action.file.tmpId)
+      console.log(files, action)
+      return { ...state, files: [...files, action.file] }
     }
     default:
       throw new Error()
@@ -26,7 +27,7 @@ const apiPath = process.env.REACT_APP_API_URL
 
 function UploadComponent(props) {
   const { createDraft, postId, files } = props
-  const [state, dispatch] = useReducer(reducer, { files, uploads: [] })
+  const [state, dispatch] = useReducer(reducer, { files })
 
   console.log(postId, state)
   async function onDrop(newFiles) {
@@ -38,11 +39,11 @@ function UploadComponent(props) {
       const preview = URL.createObjectURL(file)
       const item = {
         preview,
-        id: preview.split('/').pop(),
+        tmpId: preview.split('/').pop(),
         name: file.name,
         progress: 0,
       }
-      dispatch({ type: 'ADD_UPLOAD', file: item })
+      dispatch({ type: 'ADD_FILE', file: item })
 
       return request
         .post(`${process.env.REACT_APP_API_URL}/upload/${id}`)
@@ -54,9 +55,10 @@ function UploadComponent(props) {
           dispatch({ type: 'UPDATE_FILE', file: item })
         })
         .then(({ body }) => {
-          const file = body
-          file.url = `${apiPath}${file.url}`
-          dispatch({ type: 'FILE_UPLOADED', file, id: item.id })
+          const uploadedFile = body
+          uploadedFile.preview = `${apiPath}${uploadedFile.url}`
+          uploadedFile.tmpId = item.tmpId
+          dispatch({ type: 'FILE_UPLOADED', file: uploadedFile })
           console.log('Resp', body)
         })
     })
@@ -79,14 +81,9 @@ function UploadComponent(props) {
             <p>Drag & drop some files here, or click to select files</p>
             <div>
               {state.files.map(file => (
-                <div key={file.id}>
-                  <img src={file.url} width="30" alt="preview" />
-                </div>
-              ))}
-              {state.uploads.map(file => (
-                <div key={file.id}>
-                  <img src={file.preview} width="100" alt="preview" />
-                  {file.progress}
+                <div key={file.tmpId || file.id}>
+                  <img src={file.preview} width="30" alt="preview" />
+                  {file.progress && (<h3>{file.progress}</h3>)}
                 </div>
               ))}
             </div>
@@ -119,7 +116,7 @@ const GET_POST_MEDIA = gql`
 
 const MediaWrapper = ({ getMedia, ...props }) => {
   if (getMedia.loading || getMedia.error) return 'Loading or error!'
-  const files = getMedia.postMedia.map(f => ({ ...f, url: `${apiPath}${f.url}` }))
+  const files = getMedia.postMedia.map(f => ({ ...f, preview: `${apiPath}${f.url}` }))
   return <UploadComponent files={files} {...props} />
 }
 MediaWrapper.propTypes = {
