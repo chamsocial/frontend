@@ -5,17 +5,18 @@ import { Query, Mutation } from 'react-apollo'
 
 import Upload from './Upload'
 import GroupSelect from './GroupSelect'
-// import Drafts from './Drafts'
+import Drafts from './Drafts'
 import Button from '../../components/partials/Button'
 
 
 class CreatePostComponent extends Component {
   constructor(props) {
     super(props)
+    const draft = props.draft || {}
     this.state = {
       postId: props.postId || null,
-      title: props.draft.title || '',
-      content: props.draft.content || '',
+      title: draft.title || '',
+      content: draft.content || '',
       group: null,
     }
 
@@ -69,8 +70,10 @@ class CreatePostComponent extends Component {
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
-        {/* <Drafts /> */}
-        <h1>Create post {postId}</h1>
+        {!postId && <Drafts />}
+        <h1>
+          {!postId ? 'Create post' : `Editing draft: ${postId}`}
+        </h1>
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input value={title} id="title" onChange={this.update} required />
@@ -138,7 +141,9 @@ const CREATE_POST = gql`
 const CreatePost = ({ postId }) => (
   <Query query={GET_DRAFT} skip={!postId} variables={{ postId }}>
     {({ loading, error, data }) => {
-      if (loading || error) return 'Loading -ish'
+      if (loading) return 'Loading -ish'
+      if (error && error.graphQLErrors) return error.graphQLErrors[0].message
+      if (error) return 'Nope'
       return (
         <Mutation mutation={CREATE_POST}>
           {(createPost, createData) => (

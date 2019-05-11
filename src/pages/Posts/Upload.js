@@ -113,8 +113,10 @@ const UPLOAD_FILE = gql`
 `
 
 const MediaWrapper = ({ getMedia, ...props }) => {
-  if (getMedia.loading || getMedia.error) return 'Loading or error!'
-  const files = getMedia.postMedia.map(f => ({ ...f, preview: `${apiPath}${f.url}` }))
+  if (getMedia && (getMedia.loading || getMedia.error)) return 'Loading or error!'
+  const files = getMedia
+    ? getMedia.postMedia.map(f => ({ ...f, preview: `${apiPath}${f.url}` }))
+    : []
   return (
     <Mutation mutation={UPLOAD_FILE}>
       {uploadFile => (
@@ -133,6 +135,7 @@ MediaWrapper.propTypes = {
 const Upload = compose(
   graphql(GET_POST_MEDIA, {
     name: 'getMedia',
+    skip: ({ postId }) => !postId,
     options: ({ postId }) => ({ variables: { postId } }),
   }),
 )(MediaWrapper)
