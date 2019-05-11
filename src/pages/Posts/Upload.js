@@ -22,7 +22,7 @@ const apiPath = process.env.REACT_APP_API_URL
 
 function UploadComponent(props) {
   const {
-    createDraft, postId, files, uploadFile
+    createDraft, postId, files, uploadFile,
   } = props
   const [state, dispatch] = useReducer(reducer, { files })
 
@@ -133,7 +133,7 @@ MediaWrapper.propTypes = {
 const Upload = compose(
   graphql(GET_POST_MEDIA, {
     name: 'getMedia',
-    options: () => ({ variables: { postId: '75797' } }),
+    options: ({ postId }) => ({ variables: { postId } }),
   }),
 )(MediaWrapper)
 
