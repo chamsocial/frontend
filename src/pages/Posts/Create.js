@@ -1,44 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { graphql, compose } from 'react-apollo'
-import Downshift from 'downshift'
+import { Query, Mutation } from 'react-apollo'
 
 import Upload from './Upload'
+import GroupSelect from './GroupSelect'
 // import Drafts from './Drafts'
-
 import Button from '../../components/partials/Button'
 
-const groups = [
-  /* eslint-disable */
-  {"id":1,"title":"Chamshare","description":"The main Chamshare list. General chat, shoutouts, discussions, questions...","slug":"chamshare","post_count":55373},
-  {"id":2,"title":"Trade","description":"Need to buy something or have something to sell?","lang":"en","slug":"trade","post_count":13551},
-  {"id":3,"title":"Accommodation","description":"Housemates / roommates / flat shares wanted or offered","lang":"en","slug":"accommodation","post_count":6311},
-  {"id":4,"title":"Jobs","description":"Work wanted or offered in the valley","lang":"en","slug":"jobs","post_count":3649},
-  {"id":5,"title":"Transfers","description":"Transfers offers/requests","lang":"en","slug":"transfers","post_count":2014},
-  {"id":6,"title":"News","description":"News about Chamsocial","lang":"en","slug":"news","post_count":886},
-  {"id":7,"title":"Kids","description":"For valley parents - everything and anything to do with children","lang":"en","slug":"kids","post_count":247},
-  {"id":8,"title":"Mountain friends","description":"Looking for friends for a mountain activity? (e.g Ski, climbing, cycling, hikingbuddy)","lang":"en","slug":"mountainfriends","post_count":180},
-  {"id":9,"title":"Pets in cham","description":"Discussion related to pets in the valley","lang":"en","slug":"cham-pets","post_count":70},
-  {"id":10,"title":"Website feedback","description":"Feedback and bug reporting for the Chamsocial web site","lang":"en","slug":"new-chamsocial","post_count":31},
-  {"id":11,"title":"Singletrack","description":"Single Track Chamonix group is all about biking, free spirit, comunity and solidarity. Get involved!","lang":"en","slug":"singletrack","post_count":26},
-  /* eslint-enable */
-]
-
-function filterMatches(inputValue) {
-  return item => !inputValue || item.title.toLowerCase().includes(inputValue.toLowerCase())
-}
 
 class CreatePostComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      postId: null,
-      title: '',
-      content: '',
+      postId: props.postId || null,
+      title: props.draft.title || '',
+      content: props.draft.content || '',
       group: null,
-      files: [],
-      uploadInit: false,
     }
 
     this.groupInput = React.createRef()
@@ -47,14 +25,12 @@ class CreatePostComponent extends Component {
     this.setGroup = this.setGroup.bind(this)
     this.unsetGroup = this.unsetGroup.bind(this)
     this.createDraft = this.createDraft.bind(this)
-    this.onDrop = this.onDrop.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
-  onDrop(imageFiles) {
-    this.setState({
-      files: imageFiles,
-    })
-    console.log(imageFiles[0].preview)
+  onSubmit(e) {
+    e.preventDefault()
+    console.log(this.state)
   }
 
   setGroup(group) {
@@ -62,17 +38,15 @@ class CreatePostComponent extends Component {
   }
 
   createDraft() {
-    const { title, content, uploadInit } = this.state
+    const { title, content, postId } = this.state
     const { createPost } = this.props
-    if (uploadInit) return uploadInit
+    if (postId) return postId
 
-    const postPromise = createPost({ title, content, status: 'draft' })
+    return createPost({ variables: { title, content, status: 'draft' } })
       .then(result => {
         this.setState({ postId: result.data.createPost.id })
         return result.data.createPost.id
       })
-    this.setState({ uploadInit: postPromise })
-    return postPromise
   }
 
   update(evt) {
@@ -88,7 +62,7 @@ class CreatePostComponent extends Component {
 
   render() {
     const {
-      title, content, group, files, postId,
+      title, content, group, postId,
     } = this.state
 
     console.log('Create props', this.props)
@@ -106,73 +80,40 @@ class CreatePostComponent extends Component {
           <textarea id="content" onChange={this.update} value={content} />
         </div>
 
+        <h4>Add images</h4>
         <Upload
           createDraft={this.createDraft}
           postId={postId}
         />
 
         <div className="form-group">
-          <Downshift
-            onChange={this.setGroup}
-            itemToString={item => (item ? item.title : '')}
-            selectedItem={group || ''}
-            initialInputValue={group ? group.title : ''}
-          >
-            {({
-              getInputProps,
-              getItemProps,
-              getMenuProps,
-              isOpen,
-              inputValue,
-              selectedItem,
-              openMenu,
-            }) => (
-              <div className="downshift">
-                <label htmlFor="group">Group</label>
-                <div className="downshift__input">
-                  <input ref={this.groupInput} {...getInputProps({ id: 'group', className: 'form-control', onFocus: () => openMenu() })} />
-
-                  {selectedItem && (
-                    <button type="button" onClick={this.unsetGroup} className="downshift__clear">
-                      ⓧ
-                    </button>
-                  )}
-
-                  {isOpen && (
-                    <ul {...getMenuProps()} className="downshift__dropdown">
-                      {groups
-                        .filter(filterMatches(inputValue))
-                        .map((item, index) => {
-                          const itemProps = {
-                            key: item.id,
-                            index,
-                            item,
-                          }
-                          return (
-                            <li {...getItemProps(itemProps)}>
-                              {item.title}
-                              <div className="desc">{item.description}</div>
-                            </li>
-                          )
-                        })
-                      }
-                    </ul>
-                  )}
-                </div>
-              </div>
-            )}
-          </Downshift>
+          <GroupSelect
+            group={group}
+            setGroup={this.setGroup}
+            unsetGroup={this.unsetGroup}
+            groupInput={this.groupInput}
+          />
         </div>
 
         <div className="form-group">
           <Button type="submit">Publish</Button>
+          {postId && <Button type="submit">Discard draft</Button>}
         </div>
       </form>
     )
   }
 }
+CreatePostComponent.defaultProps = {
+  postId: null,
+  draft: {},
+}
 CreatePostComponent.propTypes = {
   createPost: PropTypes.func.isRequired,
+  postId: PropTypes.string,
+  draft: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.string,
+  }),
 }
 
 
@@ -194,17 +135,43 @@ const CREATE_POST = gql`
   }
 `
 
-const CreatePost = compose(
-  graphql(GET_DRAFT, {
-    name: 'getDraft',
-    skip: ({ postId }) => !postId,
-    options: ({ postId }) => ({ variables: { postId } }),
-  }),
-  graphql(CREATE_POST, {
-    props: ({ mutate }) => ({
-      createPost: variables => mutate({ variables }),
-    }),
-  }),
-)(CreatePostComponent)
+const CreatePost = ({ postId }) => (
+  <Query query={GET_DRAFT} skip={!postId} variables={{ postId }}>
+    {({ loading, error, data }) => {
+      if (loading || error) return 'Loading -ish'
+      return (
+        <Mutation mutation={CREATE_POST}>
+          {(createPost, createData) => (
+            <CreatePostComponent
+              createPost={createPost}
+              postId={postId}
+              createData={createData}
+              draft={data && data.draft}
+            />
+          )}
+        </Mutation>
+      )
+    }}
+  </Query>
+)
+CreatePost.defaultProps = {
+  postId: null,
+}
+CreatePost.propTypes = {
+  postId: PropTypes.string,
+}
+
+// const CreatePost = compose(
+//   graphql(GET_DRAFT, {
+//     name: 'getDraft',
+//     skip: ({ postId }) => !postId,
+//     options: ({ postId }) => ({ variables: { postId } }),
+//   }),
+//   graphql(CREATE_POST, {
+//     props: ({ mutate }) => ({
+//       createPost: variables => mutate({ variables }),
+//     }),
+//   }),
+// )(Wrapper)
 
 export default CreatePost
