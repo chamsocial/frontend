@@ -6,14 +6,19 @@ img {
 }
 
 .uploader {
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   border-radius: 3px;
   background: #fff;
   margin-bottom: 20px;
 
+
+  &--can-drop {
+    border: 1px solid #0bcc2b;
+    box-shadow: 0 0 7px 1px #0bcc2b;
+  }
   &__desc {
     text-align: center;
-    padding: 20px;
+    padding: 60px 20px;
     color: #777;
     cursor: pointer;
     span {
@@ -23,6 +28,9 @@ img {
       border-radius: 3px;
     }
   }
+  &--has-files &__desc {
+    padding: 20px;
+  }
   &__files {
     border-top: 1px solid #ddd;
     margin: 0 20px 20px;
@@ -31,10 +39,33 @@ img {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
   }
+  &__close {
+    background: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    line-height: 0.9;
+    color: #d80000;
+    font-size: 20px;
+    display: block;
+    padding: 0;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.3);
+      box-shadow: 0 0 7px 1px #d80000;
+    }
+  }
   &__file {
     position: relative;
     width: 100px;
     border-radius: 5px;
+    > div {
+      position: relative;
+    }
     &__loading {
       position: absolute;
       top: 0; right: 0; bottom: 0; left: 0;
@@ -47,8 +78,8 @@ img {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 40%;
-        height: 40%;
+        width: 50px;
+        height: 50px;
         border: 5px solid #0086DB;
         border-color: #0086DB #fff;
         border-radius: 50%;

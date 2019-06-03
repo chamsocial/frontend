@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import { compose, graphql, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Dropzone from 'react-dropzone'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+function preventAllEvents(e) {
+  e.preventDefault()
+  e.stopPropagation()
+}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -13,6 +19,10 @@ function reducer(state, action) {
     case 'FILE_UPLOADED': {
       const files = state.files.filter(file => file.tmpId !== action.file.tmpId)
       return { ...state, files: [...files, action.file] }
+    }
+    case 'DELETED_FILE': {
+      const files = state.files.filter(file => file.id !== action.fileId)
+      return { ...state, files }
     }
     default:
       throw new Error()
@@ -52,6 +62,13 @@ function UploadComponent(props) {
     return Promise.all(uploads)
   }
 
+  const deleteFile = fileId => evt => {
+    evt.preventDefault()
+    props.deleteFile({ variables: { fileId } })
+      .then(() => dispatch({ type: 'DELETED_FILE', fileId }))
+      .catch(err => console.log('delete err', err))
+  }
+
   return (
     <Dropzone
       minSize={1024}
@@ -59,26 +76,36 @@ function UploadComponent(props) {
       accept="image/png, image/gif, image/jpg, image/jpeg"
       onDrop={onDrop}
     >
-      {({ getRootProps, getInputProps }) => (
-        <div className="uploader">
-          <div {...getRootProps()}>
+      {({ getRootProps, getInputProps, isDragAccept }) => {
+        let classes = ''
+        if (state.files.length) classes += ' uploader--has-files'
+        if (isDragAccept) classes += ' uploader--can-drop'
+        return (
+          <div {...getRootProps()} className={`uploader ${classes}`}>
             <input {...getInputProps()} />
             <div className="uploader__desc">
               Drop files or <span>browse</span> to upload.
             </div>
+            {!!state.files.length && (
+              <div className="uploader__files" onClick={preventAllEvents}>{/* eslint-disable-line */}
+                {state.files.map(file => (
+                  <div key={file.tmpId || file.id} className="uploader__file">
+                    <div>
+                      <img src={file.preview} alt="preview" />
+                      {!file.id && <div className="uploader__file__loading" />}
+                      {file.id && (
+                        <button type="button" className="uploader__close" onClick={deleteFile(file.id)}>
+                          <FontAwesomeIcon icon="times-circle" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          {!!state.files.length && (
-            <div className="uploader__files">
-              {state.files.map(file => (
-                <div key={file.tmpId || file.id} className="uploader__file">
-                  <img src={file.preview} alt="preview" />
-                  {!file.id && <div className="uploader__file__loading" />}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+        )
+      }}
     </Dropzone>
   )
 }
@@ -88,29 +115,13 @@ UploadComponent.defaultProps = {
 UploadComponent.propTypes = {
   createDraft: PropTypes.func.isRequired,
   uploadFile: PropTypes.func.isRequired,
+  deleteFile: PropTypes.func.isRequired,
   postId: PropTypes.string,
   files: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })).isRequired,
 }
 
-const GET_POST_MEDIA = gql`
-  query getPostMediaQuery($postId: ID!) {
-    postMedia(postId: $postId) {
-      id
-      url
-    }
-  }
-`
-
-const UPLOAD_FILE = gql`
-  mutation uploadFile($file: Upload!, $postId: ID!) {
-    uploadFile(file: $file, postId: $postId) {
-      id
-      url
-    }
-  }
-`
 
 const MediaWrapper = ({ getMedia, ...props }) => {
   if (getMedia && (getMedia.loading || getMedia.error)) return 'Loading or error!'
@@ -118,11 +129,7 @@ const MediaWrapper = ({ getMedia, ...props }) => {
     ? getMedia.postMedia.map(f => ({ ...f, preview: `${apiPath}${f.url}` }))
     : []
   return (
-    <Mutation mutation={UPLOAD_FILE}>
-      {uploadFile => (
-        <UploadComponent uploadFile={uploadFile} files={files} {...props} />
-      )}
-    </Mutation>
+    <UploadComponent files={files} {...props} />
   )
 }
 MediaWrapper.propTypes = {
@@ -132,7 +139,32 @@ MediaWrapper.propTypes = {
 }
 
 
+const GET_POST_MEDIA = gql`
+  query getPostMediaQuery($postId: ID!) {
+    postMedia(postId: $postId) {
+      id
+      url
+    }
+  }
+`
+const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!, $postId: ID!) {
+    uploadFile(file: $file, postId: $postId) {
+      id
+      url
+    }
+  }
+`
+const DELETE_FILE = gql`
+  mutation deleteFile($fileId: ID!) {
+    deleteFile(id: $fileId)
+  }
+`
+
+
 const Upload = compose(
+  graphql(UPLOAD_FILE, { name: 'uploadFile' }),
+  graphql(DELETE_FILE, { name: 'deleteFile' }),
   graphql(GET_POST_MEDIA, {
     name: 'getMedia',
     skip: ({ postId }) => !postId,

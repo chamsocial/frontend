@@ -70,7 +70,7 @@ class CreatePostComponent extends Component {
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
-        {!postId && <Drafts />}
+        {!postId && 1 === 0 && <Drafts />}
         <h1>
           {!postId ? 'Create post' : `Editing draft: ${postId}`}
         </h1>
