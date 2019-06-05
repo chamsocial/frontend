@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
+import { Query, compose, graphql } from 'react-apollo'
 
 import Upload from './Upload'
 import GroupSelect from './GroupSelect'
@@ -29,9 +29,27 @@ class CreatePostComponent extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  onSubmit(e) {
-    e.preventDefault()
-    console.log(this.state)
+  onSubmit(evt) {
+    evt.preventDefault()
+    const {
+      postId, title, content, group,
+    } = this.state
+    const { editPost } = this.props
+
+    if (postId) {
+      editPost({
+        variables: {
+          id: postId,
+          title,
+          content,
+          status: 'published',
+          groupId: group.id,
+        },
+      })
+        .then(resp => console.log('Edit publish:', resp))
+        .catch(err => console.log('Edit error:', err))
+    }
+    // console.log(this.state)
   }
 
   setGroup(group) {
@@ -112,6 +130,7 @@ CreatePostComponent.defaultProps = {
 }
 CreatePostComponent.propTypes = {
   createPost: PropTypes.func.isRequired,
+  editPost: PropTypes.func.isRequired,
   postId: PropTypes.string,
   draft: PropTypes.shape({
     title: PropTypes.string,
@@ -138,45 +157,43 @@ const CREATE_POST = gql`
   }
 `
 
-const CreatePost = ({ postId }) => (
+const EDIT_POST = gql`
+  mutation editPostMutation($id: ID! $title: String! $content: String! $status: PostStatus! $groupId: ID!) {
+    editPost(id: $id, title: $title, content: $content, status: $status, groupId: $groupId) {
+      id
+    }
+  }
+`
+
+const CreatePostQuery = ({ postId, createPost, editPost }) => (
   <Query query={GET_DRAFT} skip={!postId} variables={{ postId }}>
     {({ loading, error, data }) => {
       if (loading) return 'Loading -ish'
       if (error && error.graphQLErrors) return error.graphQLErrors[0].message
       if (error) return 'Nope'
       return (
-        <Mutation mutation={CREATE_POST}>
-          {(createPost, createData) => (
-            <CreatePostComponent
-              createPost={createPost}
-              postId={postId}
-              createData={createData}
-              draft={data && data.draft}
-            />
-          )}
-        </Mutation>
+        <CreatePostComponent
+          createPost={createPost}
+          editPost={editPost}
+          postId={postId}
+          draft={data && data.draft}
+        />
       )
     }}
   </Query>
 )
-CreatePost.defaultProps = {
+CreatePostQuery.defaultProps = {
   postId: null,
 }
-CreatePost.propTypes = {
+CreatePostQuery.propTypes = {
   postId: PropTypes.string,
+  createPost: PropTypes.func.isRequired,
+  editPost: PropTypes.func.isRequired,
 }
 
-// const CreatePost = compose(
-//   graphql(GET_DRAFT, {
-//     name: 'getDraft',
-//     skip: ({ postId }) => !postId,
-//     options: ({ postId }) => ({ variables: { postId } }),
-//   }),
-//   graphql(CREATE_POST, {
-//     props: ({ mutate }) => ({
-//       createPost: variables => mutate({ variables }),
-//     }),
-//   }),
-// )(Wrapper)
+const CreatePost = compose(
+  graphql(CREATE_POST, { name: 'createPost' }),
+  graphql(EDIT_POST, { name: 'editPost' }),
+)(CreatePostQuery)
 
 export default CreatePost

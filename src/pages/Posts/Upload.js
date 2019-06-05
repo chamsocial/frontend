@@ -1,6 +1,6 @@
 import React, { useReducer, memo } from 'react'
 import PropTypes from 'prop-types'
-import { compose, graphql, Mutation } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import Dropzone from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

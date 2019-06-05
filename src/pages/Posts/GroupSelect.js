@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Downshift from 'downshift'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const groups = [
   /* eslint-disable */
@@ -44,11 +45,19 @@ const GroupSelect = React.memo(({
         {console.log('Group')}
         <label htmlFor="group">Group</label>
         <div className="downshift__input">
-          <input ref={groupInput} {...getInputProps({ id: 'group', className: 'form-control', onFocus: () => openMenu() })} />
+          <input
+            {...getInputProps({
+              id: 'group',
+              ref: groupInput,
+              className: 'form-control',
+              placeholder: 'Select group',
+              onFocus: () => openMenu(),
+            })}
+          />
 
           {selectedItem && (
             <button type="button" onClick={unsetGroup} className="downshift__clear">
-              ⓧ
+              <FontAwesomeIcon icon="times-circle" />
             </button>
           )}
 
