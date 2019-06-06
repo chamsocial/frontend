@@ -34,27 +34,26 @@ class CreatePostComponent extends Component {
     const {
       postId, title, content, group,
     } = this.state
-    const { editPost } = this.props
+    const { editPost, createPost } = this.props
 
-    if (postId) {
-      editPost({
-        variables: {
-          id: postId,
-          title,
-          content,
-          status: 'published',
-          groupId: group.id,
-        },
-      })
-        .then(resp => console.log('Edit publish:', resp))
-        .catch(err => console.log('Edit error:', err))
+    let submitFn = createPost
+    const variables = {
+      title,
+      content,
+      status: 'published',
     }
-    // console.log(this.state)
+    if (postId) {
+      submitFn = editPost
+      variables.id = postId
+      variables.groupId = group.id
+    }
+
+    submitFn({ variables })
+      .then(resp => console.log('Edit publish:', resp))
+      .catch(err => console.log('Edit error:', err))
   }
 
-  setGroup(group) {
-    this.setState({ group })
-  }
+  setGroup(group) { this.setState({ group }) }
 
   createDraft() {
     const { title, content, postId } = this.state

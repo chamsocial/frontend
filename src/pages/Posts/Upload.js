@@ -132,10 +132,13 @@ const MediaWrapper = ({ getMedia, ...props }) => {
     <UploadComponent files={files} {...props} />
   )
 }
+MediaWrapper.defaultProps = {
+  getMedia: null,
+}
 MediaWrapper.propTypes = {
   getMedia: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-  }).isRequired,
+  }),
 }
 
 
