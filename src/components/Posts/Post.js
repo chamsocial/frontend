@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import { dateToString } from '../../utils'
 import Loading from '../partials/Loading'
 import Comments from '../Comments'
+import Media from './Media'
 import { singlePostQuery } from '../../graphql/post-queries'
 
 export function Post({ data }) {
@@ -21,6 +22,7 @@ export function Post({ data }) {
         <div className="post-content">
           <ReactMarkdown source={content} />
         </div>
+        <Media postId={post.id} />
         <div className="meta">
           { dateToString(createdAt) }
           <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
