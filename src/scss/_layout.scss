@@ -1,0 +1,114 @@
+
+/**
+ * General
+ */
+.container {
+  max-width: 970px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+.page {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.main {
+  flex: 1;
+}
+.sidebar {
+  width: 200px;
+  margin-left: 30px;
+}
+
+
+/**
+ * Page
+ */
+// Page transition animations
+.transition-wrapper {
+  position: relative;
+}
+.fade-enter {
+  opacity: 0.01;
+  transform: translateY(-10px);
+}
+.fade-enter.fade-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 200ms ease-in, opacity 300ms ease-in;
+}
+.fade-exit {
+  display: none;
+}
+
+
+/**
+ * Header
+ */
+.header {
+  background: #0086DB;
+  color: #fff;
+  border-bottom: 1px solid #002842;
+  margin-bottom: 20px;
+  line-height: 55px;
+  height: 55px;
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+  a {
+    color: #fff;
+  }
+}
+.logo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+
+/**
+ * Footer
+ */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+  padding: 15px 0 30px;
+  border-top: 1px solid #eee;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  text-align: center;
+}
+
+
+/**
+ * Pagination
+ */
+.pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+  width: 100%;
+  display: flex;
+}
+.pagination > li {
+  display: inline-block;
+}
+.pagination > li > a {
+  display: inline-block;
+  padding: 3px 8px;
+}
+.pagination > .active > a {
+  color: #000;
+}
+
+.pagination .prev,
+.pagination .next {
+  transform: scale(1.4)
+}
+.pagination .prev {
+  margin-right: auto;
+}
+.pagination .next {
+  margin-left: auto;
+}

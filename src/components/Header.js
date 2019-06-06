@@ -7,10 +7,10 @@ export function HeaderComponent({ auth }) {
   const { user } = auth
 
   return (
-    <div className="App-header">
-      <div className="container header">
+    <div className="header">
+      <div className="container">
         <h2 className="logo">
-          <Link to="/">Chamsocial</Link>
+          <Link to="/">ChamSocial</Link>
         </h2>
         <div>
           {user
