@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { Query, compose, graphql } from 'react-apollo'
+import { withRouter } from 'react-router-dom'
 
 import Upload from './Upload'
 import GroupSelect from './GroupSelect'
@@ -34,22 +35,23 @@ class CreatePostComponent extends Component {
     const {
       postId, title, content, group,
     } = this.state
-    const { editPost, createPost } = this.props
+    const { editPost, createPost, history } = this.props
 
     let submitFn = createPost
     const variables = {
       title,
       content,
       status: 'published',
+      groupId: group ? group.id : null,
     }
     if (postId) {
       submitFn = editPost
       variables.id = postId
-      variables.groupId = group.id
     }
 
     submitFn({ variables })
-      .then(resp => console.log('Edit publish:', resp))
+      .then(({ data }) => history.push(`/posts/${data.editPost ? data.editPost.slug : data.createPost.slug}`))
+      // .then(resp => console.log('Edit', resp))
       .catch(err => console.log('Edit error:', err))
   }
 
@@ -82,6 +84,7 @@ class CreatePostComponent extends Component {
     const {
       title, content, group, postId,
     } = this.state
+    const { draft } = this.props
 
     console.log('Create props', this.props)
 
@@ -116,8 +119,7 @@ class CreatePostComponent extends Component {
         </div>
 
         <div className="form-group">
-          <Button type="submit">Publish</Button>
-          {postId && <Button type="submit">Discard draft</Button>}
+          <Button type="submit">{ draft.status === 'published' ? 'Update' : 'Publish' }</Button>
         </div>
       </form>
     )
@@ -135,6 +137,9 @@ CreatePostComponent.propTypes = {
     title: PropTypes.string,
     content: PropTypes.string,
   }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 }
 
 
@@ -144,6 +149,7 @@ const GET_DRAFT = gql`
       id
       title
       content
+      status
       group {
         id
         title,
@@ -154,9 +160,10 @@ const GET_DRAFT = gql`
 `
 
 const CREATE_POST = gql`
-  mutation createPostMutation($title: String! $content: String! $status: PostStatus) {
-    createPost(title: $title, content: $content, status: $status) {
+  mutation createPostMutation($title: String! $content: String! $status: PostStatus $groupId: ID) {
+    createPost(title: $title, content: $content, status: $status, groupId: $groupId) {
       id
+      slug
     }
   }
 `
@@ -165,11 +172,14 @@ const EDIT_POST = gql`
   mutation editPostMutation($id: ID! $title: String! $content: String! $status: PostStatus! $groupId: ID!) {
     editPost(id: $id, title: $title, content: $content, status: $status, groupId: $groupId) {
       id
+      slug
     }
   }
 `
 
-const CreatePostQuery = ({ postId, createPost, editPost }) => (
+const CreatePostQuery = ({
+  postId, createPost, editPost, history,
+}) => (
   <Query query={GET_DRAFT} skip={!postId} variables={{ postId }}>
     {({ loading, error, data }) => {
       if (loading) return 'Loading -ish'
@@ -181,6 +191,7 @@ const CreatePostQuery = ({ postId, createPost, editPost }) => (
           editPost={editPost}
           postId={postId}
           draft={data && data.draft}
+          history={history}
         />
       )
     }}
@@ -193,11 +204,14 @@ CreatePostQuery.propTypes = {
   postId: PropTypes.string,
   createPost: PropTypes.func.isRequired,
   editPost: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 }
 
 const CreatePost = compose(
   graphql(CREATE_POST, { name: 'createPost' }),
   graphql(EDIT_POST, { name: 'editPost' }),
-)(CreatePostQuery)
+)(withRouter(CreatePostQuery))
 
 export default CreatePost

@@ -128,8 +128,8 @@ UploadComponent.propTypes = {
 
 
 const MediaWrapper = ({ getMedia, ...props }) => {
-  if (getMedia && (getMedia.loading || getMedia.error)) return 'Loading or error!'
-  const files = getMedia
+  // if (getMedia && (getMedia.loading || getMedia.error)) return 'Loading or error!'
+  const files = getMedia && getMedia.postMedia
     ? getMedia.postMedia.map(f => ({ ...f, preview: `${apiPath}${f.url}` }))
     : []
   return (
