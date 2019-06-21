@@ -101,7 +101,7 @@ const SomeComponent = withRouter(({ location }) => (
           <PrivateRoute exact path="/users/:slug" component={UserProfile} />
           <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
           <PrivateRoute exact path="/posts/create" component={CreatePost} />
-          <PrivateRoute exact path="/posts/create/:postId" component={CreatePost} />
+          <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
           <PrivateRoute path="/posts/:slug" component={Post} />
           <Route exact path="/" component={Home} />
           <Route path="/page/:page" component={Home} />

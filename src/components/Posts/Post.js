@@ -13,8 +13,9 @@ export function Post({ data }) {
   const { loading, error, post } = data
   if (loading || error) return <Loading error={error} />
   const {
-    title, createdAt, content, author, comments,
+    title, createdAt, content, author, comments, canEdit,
   } = post
+
   return (
     <div>
       <div className="Post-item">
@@ -23,8 +24,9 @@ export function Post({ data }) {
           <ReactMarkdown source={content} />
         </div>
         <Media postId={post.id} />
+        {canEdit && <Link to={`/posts/${post.id}/edit`}>Edit</Link>}
         <div className="meta">
-          { dateToString(createdAt) }
+          {dateToString(createdAt)}
           <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
         </div>
       </div>

@@ -20,7 +20,7 @@ const DraftsComponent = props => {
       <ul>
         {drafts.map(draft => (
           <li key={draft.id}>
-            <Link to={`/posts/create/${draft.id}`}>
+            <Link to={`/posts/${draft.id}/edit`}>
               {draft.title || 'Unnamed'}
             </Link>
             <button type="button" onClick={deleteOnClick(draft.id, deleteDraft)}>
