@@ -17,7 +17,7 @@ class CreatePostComponent extends Component {
       postId: props.postId || null,
       title: draft.title || '',
       content: draft.content || '',
-      group: null,
+      group: draft.group || null,
     }
 
     this.groupInput = React.createRef()
@@ -144,6 +144,11 @@ const GET_DRAFT = gql`
       id
       title
       content
+      group {
+        id
+        title,
+        description
+      }
     }
   }
 `

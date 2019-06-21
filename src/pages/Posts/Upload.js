@@ -5,10 +5,15 @@ import gql from 'graphql-tag'
 import Dropzone from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+
+const apiPath = process.env.REACT_APP_API_URL
+
+
 function preventAllEvents(e) {
   e.preventDefault()
   e.stopPropagation()
 }
+
 
 function reducer(state, action) {
   switch (action.type) {
@@ -28,7 +33,7 @@ function reducer(state, action) {
       throw new Error()
   }
 }
-const apiPath = process.env.REACT_APP_API_URL
+
 
 function UploadComponent(props) {
   const {
@@ -36,7 +41,6 @@ function UploadComponent(props) {
   } = props
   const [state, dispatch] = useReducer(reducer, { files })
 
-  console.log('Upload', postId, state)
   async function onDrop(newFiles) {
     let id = postId
     if (!postId) id = await createDraft()
