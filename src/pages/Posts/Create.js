@@ -25,7 +25,6 @@ class CreatePostComponent extends Component {
 
     this.update = this.update.bind(this)
     this.setGroup = this.setGroup.bind(this)
-    this.unsetGroup = this.unsetGroup.bind(this)
     this.createDraft = this.createDraft.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.deleteCurrentDraft = this.deleteCurrentDraft.bind(this)
@@ -74,12 +73,6 @@ class CreatePostComponent extends Component {
     this.setState({ [id]: value })
   }
 
-  unsetGroup() {
-    this.setState({ group: null }, () => {
-      this.groupInput.current.focus()
-    })
-  }
-
   deleteCurrentDraft() {
     const { postId } = this.state
     const { deleteDraft, history } = this.props
@@ -107,7 +100,15 @@ class CreatePostComponent extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="content">Content</label>
-          <textarea id="content" onChange={this.update} value={content} />
+          <textarea id="content" onChange={this.update} value={content} required />
+        </div>
+
+        <div className="form-group">
+          <GroupSelect
+            group={group}
+            setGroup={this.setGroup}
+            groupInput={this.groupInput}
+          />
         </div>
 
         <h4>Add images</h4>
@@ -116,16 +117,7 @@ class CreatePostComponent extends Component {
           postId={postId}
         />
 
-        <div className="form-group">
-          <GroupSelect
-            group={group}
-            setGroup={this.setGroup}
-            unsetGroup={this.unsetGroup}
-            groupInput={this.groupInput}
-          />
-        </div>
-
-        <div className="form-group space-between">
+        <div className="form-buttons space-between">
           <Button type="submit">{ isPublised ? 'Update' : 'Publish' }</Button>
           {postId && !isPublised && (
             <button type="button" className="btn btn--warn" onClick={this.deleteCurrentDraft}>Delete draft</button>

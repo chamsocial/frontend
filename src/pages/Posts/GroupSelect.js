@@ -12,7 +12,7 @@ function filterMatches(inputValue) {
 
 
 const GroupSelect = React.memo(({
-  setGroup, group, unsetGroup, groupInput, groupsList,
+  setGroup, group, groupInput, groupsList,
 }) => {
   if (groupsList.loading || groupsList.error) return null
   const { groups } = groupsList
@@ -32,6 +32,8 @@ const GroupSelect = React.memo(({
         inputValue,
         selectedItem,
         openMenu,
+        clearSelection,
+        highlightedIndex,
       }) => (
         <div className="downshift">
           <label htmlFor="group">Group</label>
@@ -42,12 +44,16 @@ const GroupSelect = React.memo(({
                 ref: groupInput,
                 className: 'form-control',
                 placeholder: 'Select group',
-                onFocus: () => openMenu(),
+                required: true,
+                onFocus: () => {
+                  clearSelection()
+                  openMenu()
+                },
               })}
             />
 
             {selectedItem && (
-              <button type="button" onClick={unsetGroup} className="downshift__clear">
+              <button type="button" onClick={() => groupInput.current.focus()} className="downshift__clear">
                 <FontAwesomeIcon icon="times-circle" />
               </button>
             )}
@@ -61,6 +67,10 @@ const GroupSelect = React.memo(({
                       key: item.id,
                       index,
                       item,
+                      style: {
+                        backgroundColor: highlightedIndex === index ? 'lightgray' : 'white',
+                        fontWeight: selectedItem === item ? 'bold' : 'normal',
+                      },
                     }
                     return (
                       <li {...getItemProps(itemProps)}>
@@ -86,7 +96,6 @@ GroupSelect.propTypes = {
     title: PropTypes.string.isRequired,
   }),
   setGroup: PropTypes.func.isRequired,
-  unsetGroup: PropTypes.func.isRequired,
   groupInput: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
   groupsList: PropTypes.shape({ loading: PropTypes.bool }).isRequired,
 }
