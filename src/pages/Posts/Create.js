@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { Query, compose, graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 
 import Upload from './Upload'
@@ -28,6 +28,7 @@ class CreatePostComponent extends Component {
     this.unsetGroup = this.unsetGroup.bind(this)
     this.createDraft = this.createDraft.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.deleteCurrentDraft = this.deleteCurrentDraft.bind(this)
   }
 
   onSubmit(evt) {
@@ -80,17 +81,23 @@ class CreatePostComponent extends Component {
     })
   }
 
+  deleteCurrentDraft() {
+    const { postId } = this.state
+    const { deleteDraft, history } = this.props
+    deleteDraft(postId)
+      .then(() => history.push('/', { flashMessage: 'Draft deleted' }))
+  }
+
+
   render() {
     const {
       title, content, group, postId,
     } = this.state
-    const { draft } = this.props
-
-    console.log('Create props', this.props)
+    const { draft, deleteDraft } = this.props
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
-        {!postId && 1 === 0 && <Drafts />}
+        {!postId && <Drafts deleteDraft={deleteDraft} />}
         <h1>
           {!postId ? 'Create post' : `Editing draft: ${postId}`}
         </h1>
@@ -118,8 +125,11 @@ class CreatePostComponent extends Component {
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-group space-between">
           <Button type="submit">{ draft.status === 'published' ? 'Update' : 'Publish' }</Button>
+          {postId && draft.status !== 'published' && (
+            <button type="button" className="btn btn--warn" onClick={this.deleteCurrentDraft}>Delete draft</button>
+          )}
         </div>
       </form>
     )
@@ -132,6 +142,7 @@ CreatePostComponent.defaultProps = {
 CreatePostComponent.propTypes = {
   createPost: PropTypes.func.isRequired,
   editPost: PropTypes.func.isRequired,
+  deleteDraft: PropTypes.func.isRequired,
   postId: PropTypes.string,
   draft: PropTypes.shape({
     title: PropTypes.string,
@@ -142,6 +153,35 @@ CreatePostComponent.propTypes = {
   }).isRequired,
 }
 
+
+/**
+ * Loading wrapper
+ */
+
+const CreatePostQuery = ({ draftQuery, ...props }) => {
+  if (draftQuery) {
+    if (draftQuery.loading) return 'Loading -ish'
+    if (draftQuery.error && draftQuery.error.graphQLErrors) {
+      return draftQuery.error.graphQLErrors[0].message
+    }
+    if (draftQuery.error) return 'Nope'
+  }
+  return (
+    <CreatePostComponent
+      draft={draftQuery && draftQuery.draft}
+      {...props}
+    />
+  )
+}
+CreatePostQuery.defaultProps = { draftQuery: undefined }
+CreatePostQuery.propTypes = {
+  draftQuery: PropTypes.shape({ loading: PropTypes.bool }),
+}
+
+
+/**
+ * GraphQL queries and mutations
+ */
 
 const GET_DRAFT = gql`
   query getDraftQuery($postId: ID!) {
@@ -177,41 +217,22 @@ const EDIT_POST = gql`
   }
 `
 
-const CreatePostQuery = ({
-  postId, createPost, editPost, history,
-}) => (
-  <Query query={GET_DRAFT} skip={!postId} variables={{ postId }}>
-    {({ loading, error, data }) => {
-      if (loading) return 'Loading -ish'
-      if (error && error.graphQLErrors) return error.graphQLErrors[0].message
-      if (error) return 'Nope'
-      return (
-        <CreatePostComponent
-          createPost={createPost}
-          editPost={editPost}
-          postId={postId}
-          draft={data && data.draft}
-          history={history}
-        />
-      )
-    }}
-  </Query>
-)
-CreatePostQuery.defaultProps = {
-  postId: null,
-}
-CreatePostQuery.propTypes = {
-  postId: PropTypes.string,
-  createPost: PropTypes.func.isRequired,
-  editPost: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-}
+const DELETE_DRAFT = gql`
+  mutation deteleDraftMutation($id: ID!) {
+    deleteDraft(id: $id)
+  }
+`
+
 
 const CreatePost = compose(
+  graphql(GET_DRAFT, { skip: ({ postId }) => !postId, name: 'draftQuery' }),
   graphql(CREATE_POST, { name: 'createPost' }),
   graphql(EDIT_POST, { name: 'editPost' }),
+  graphql(DELETE_DRAFT, {
+    props: ({ mutate }) => ({
+      deleteDraft: id => mutate({ variables: { id }, refetchQueries: ['getDraftsQuery'] }),
+    }),
+  }),
 )(withRouter(CreatePostQuery))
 
 export default CreatePost

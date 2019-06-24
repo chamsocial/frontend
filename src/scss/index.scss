@@ -6,7 +6,9 @@
 @import "pages";
 @import "uploader";
 
-
+// Yellow FFDD49
+// Green 0F7173
+// Black/Dark 272932
 
 .btn {
   background: #0086DB;
@@ -24,8 +26,14 @@
   border-radius: .25rem;
   transition: opacity .3s;
 
-  &-block {
+  &--block {
     display: block;
+  }
+  &--warn {
+    background-color: #999;
+  }
+  &--danger {
+    background: #FF595E;
   }
 }
 

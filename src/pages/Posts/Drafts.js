@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { compose, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
 function deleteOnClick(id, fn) {
@@ -47,19 +47,7 @@ const GET_DRAFTS = gql`
     }
   }
 `
-const DELETE_DRAFT = gql`
-  mutation deteleDraftMutation($id: ID!) {
-    deleteDraft(id: $id)
-  }
-`
 
-const Drafts = compose(
-  graphql(GET_DRAFTS, { name: 'getDrafts' }),
-  graphql(DELETE_DRAFT, {
-    props: ({ mutate }) => ({
-      deleteDraft: id => mutate({ variables: { id }, refetchQueries: ['getDraftsQuery'] }),
-    }),
-  }),
-)(DraftsComponent)
+const Drafts = graphql(GET_DRAFTS, { name: 'getDrafts' })(DraftsComponent)
 
 export default Drafts

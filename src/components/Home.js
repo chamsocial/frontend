@@ -19,7 +19,7 @@ export function Home(props) {
   return (
     <div className="page">
       <div className="sidebar">
-        <Link to="/posts/create" className="btn btn-block">Create a post</Link>
+        <Link to="/posts/create" className="btn btn--block">Create a post</Link>
       </div>
       <div className="main post-list">
         {posts.map(post => <PostListItem key={post.id} post={post} />)}
