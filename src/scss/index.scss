@@ -22,12 +22,23 @@
   user-select: none;
   border: 1px solid transparent;
   padding: .5rem 1rem;
-  font-size: 1rem;
+  font-size: inherit;
   border-radius: .25rem;
   transition: opacity .3s;
 
   &--block {
     display: block;
+  }
+  &--small {
+    font-size: 0.75rem;
+  }
+  &--link {
+    background: none;
+    color: #0086DB;
+    padding: 0;
+    &--desc {
+      color: #999;
+    }
   }
   &--warn {
     background-color: #999;

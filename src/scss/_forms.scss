@@ -17,6 +17,7 @@ input {
 select { height: 34px; }
 textarea {
   min-height: 150px;
+  display: block;
 }
 .form-group {
   margin: 0 0 20px;

@@ -52,7 +52,6 @@ class CreatePostComponent extends Component {
 
     submitFn({ variables })
       .then(({ data }) => history.push(`/posts/${data.editPost ? data.editPost.slug : data.createPost.slug}`))
-      // .then(resp => console.log('Edit', resp))
       .catch(err => console.log('Edit error:', err))
   }
 
@@ -94,13 +93,14 @@ class CreatePostComponent extends Component {
       title, content, group, postId,
     } = this.state
     const { draft, deleteDraft } = this.props
+    const isPublised = draft.status === 'published'
 
     return (
       <form onSubmit={this.onSubmit} className="narrow-form">
-        {!postId && <Drafts deleteDraft={deleteDraft} />}
         <h1>
-          {!postId ? 'Create post' : `Editing draft: ${postId}`}
+          {!postId ? 'Create post' : `Edit ${isPublised ? 'post' : 'draft'}`}
         </h1>
+        {!postId && <Drafts deleteDraft={deleteDraft} />}
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input value={title} id="title" onChange={this.update} required />
@@ -126,8 +126,8 @@ class CreatePostComponent extends Component {
         </div>
 
         <div className="form-group space-between">
-          <Button type="submit">{ draft.status === 'published' ? 'Update' : 'Publish' }</Button>
-          {postId && draft.status !== 'published' && (
+          <Button type="submit">{ isPublised ? 'Update' : 'Publish' }</Button>
+          {postId && !isPublised && (
             <button type="button" className="btn btn--warn" onClick={this.deleteCurrentDraft}>Delete draft</button>
           )}
         </div>
