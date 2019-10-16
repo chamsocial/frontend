@@ -59,6 +59,10 @@ function UserEdit({ match, history }) {
   return <LazyLoad getComponent={() => import('./components/User/Edit')} history={history} {...match.params} />
 }
 
+function UserEmailSettings({ match }) {
+  return <LazyLoad getComponent={() => import('./components/User/EmailSettings')} {...match.params} />
+}
+
 class Logout extends Component {
   constructor(props) {
     super(props)
@@ -100,6 +104,7 @@ const SomeComponent = withRouter(({ location }) => (
           <Route exact path="/user/activate/:code" component={Activation} />
           <PrivateRoute exact path="/users/:slug" component={UserProfile} />
           <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
+          <PrivateRoute exact path="/users/:slug/emails" component={UserEmailSettings} />
           <PrivateRoute exact path="/posts/create" component={CreatePost} />
           <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
           <PrivateRoute path="/posts/:slug" component={Post} />

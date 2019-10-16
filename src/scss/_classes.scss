@@ -1,5 +1,19 @@
 .float-right { float: right }
 
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.block {
+  margin: 0 0 20px;
+}
+
+
+/**
+ * Typography
+ */
+
 .meta {
   font-size: 12px;
   color: #aaa;
@@ -10,7 +24,5 @@
   color: #aaa;
 }
 
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
+.text-left { text-align: left; }
+.text-center { text-align: center; }

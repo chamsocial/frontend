@@ -12,12 +12,12 @@ function Profile({ data, auth }) {
   let buttons = null
   if (user.id === auth.user.id) {
     buttons = (
-      <div>
-        <Link key="edit" to={`/users/${user.slug}/edit`}>Edit</Link>
+      <div className="block">
+        <Link to={`/users/${user.slug}/edit`}>Edit</Link>
         {' '}|{' '}
-        <Link key="logout" to="/logout">Logout</Link>
-        <br />
-        <br />
+        <Link to={`/users/${user.slug}/emails`}>Email settings</Link>
+        {' '}|{' '}
+        <Link to="/logout">Logout</Link>
       </div>
     )
   }

@@ -42,7 +42,7 @@ const GroupSelect = React.memo(({
               {...getInputProps({
                 id: 'group',
                 ref: groupInput,
-                className: 'form-control',
+                className: 'input',
                 placeholder: 'Select group',
                 required: true,
                 onFocus: () => {

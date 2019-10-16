@@ -97,7 +97,7 @@ class CreatePostComponent extends Component {
         {!postId && <Drafts deleteDraft={deleteDraft} />}
         <div className="form-group">
           <label htmlFor="title">Title</label>
-          <input value={title} id="title" onChange={this.update} required />
+          <input className="input" value={title} id="title" onChange={this.update} required />
         </div>
         <div className="form-group">
           <label htmlFor="content">Content</label>

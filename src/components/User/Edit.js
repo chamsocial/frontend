@@ -79,21 +79,21 @@ class Edit extends Component {
             <div className="row">
               <div className="col">
                 <label htmlFor="firstName">First name</label>
-                <FastField name="firstName" id="firstName" />
+                <FastField className="input" name="firstName" id="firstName" />
               </div>
               <div className="col">
                 <label htmlFor="lastName">Last name</label>
-                <FastField name="lastName" id="lastName" />
+                <FastField className="input" name="lastName" id="lastName" />
               </div>
             </div>
             <div className="row">
               <div className="col">
                 <label htmlFor="companyName">Company</label>
-                <FastField name="companyName" id="companyName" />
+                <FastField className="input" name="companyName" id="companyName" />
               </div>
               <div className="col">
                 <label htmlFor="jobtitle">Jobtitle</label>
-                <FastField name="jobtitle" id="jobtitle" />
+                <FastField className="input" name="jobtitle" id="jobtitle" />
               </div>
             </div>
             <div className="row">
