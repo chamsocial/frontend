@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import { compose, graphql } from 'react-apollo'
+import * as compose from 'lodash.flowright'
+import { graphql } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 
 import Upload from './Upload'
