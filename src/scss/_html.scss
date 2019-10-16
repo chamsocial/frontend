@@ -1,5 +1,5 @@
 * { box-sizing: border-box; }
-html, body { background: #fcfcfc; }
+html, body { background: #f3f6f7; }
 body {
   margin: 0;
   padding: 0;
@@ -13,6 +13,8 @@ h1 {
   font-size: 30px;
   font-weight: 300;
   color: #555;
+  margin: 0 0 20px;
+  line-height: 1.1;
 }
 h2 {
   font-weight: 400;

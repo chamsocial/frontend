@@ -74,7 +74,7 @@ class Edit extends Component {
         }}
       >
         {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="box">
             <h2>Edit your profile {user.username}</h2>
             <div className="row">
               <div className="col">
@@ -117,9 +117,7 @@ class Edit extends Component {
             {error && (
               <div className="alert alert-danger">{error}</div>
             )}
-            <div className="form-group">
-              <Button type="submit">Update</Button>
-            </div>
+            <Button type="submit">Update</Button>
           </form>
         )}
       </Formik>

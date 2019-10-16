@@ -22,21 +22,24 @@ function Profile({ data, auth }) {
     )
   }
   return (
-    <div>
-      <img src={user.avatarUrl} className="profile__img float-right" alt="Profil" />
-      <h1>{user.username}</h1>
-      {!!user.firstName && !!user.lastName && (
-        <div className="meta">{user.firstName} {user.lastName}</div>
-      )}
-      {buttons}
-      {!!user.companyName && <div><strong>Company:</strong> {user.companyName}</div>}
-      {!!user.interests && <div><strong>Interests:</strong> {user.interests}</div>}
-      {!!user.aboutme && <div><strong>About:</strong> {user.aboutme}</div>}
-      {!!user.jobtitle && <div><strong>Jobtitle:</strong> {user.jobtitle}</div>}
-      <br />
-      <h2>Posts:</h2>
-      {user.posts.map(post => <PostListItem key={post.id} post={post} />)}
-    </div>
+    <>
+      <div className="box">
+        <img src={user.avatarUrl} className="profile__img float-right" alt="Profil" />
+        <h1>{user.username}</h1>
+        {!!user.firstName && !!user.lastName && (
+          <div className="meta">{user.firstName} {user.lastName}</div>
+        )}
+        {buttons}
+        {!!user.companyName && <div><strong>Company:</strong> {user.companyName}</div>}
+        {!!user.interests && <div><strong>Interests:</strong> {user.interests}</div>}
+        {!!user.aboutme && <div><strong>About:</strong> {user.aboutme}</div>}
+        {!!user.jobtitle && <div><strong>Jobtitle:</strong> {user.jobtitle}</div>}
+      </div>
+      <div className="box">
+        <h2>Posts:</h2>
+        {user.posts.map(post => <PostListItem key={post.id} post={post} />)}
+      </div>
+    </>
   )
 }
 Profile.propTypes = {
@@ -60,7 +63,7 @@ const profileQuery = gql`query userQuery ($slug: String!) {
     aboutme
     jobtitle
     avatarUrl
-    posts {
+    posts(count: 5) {
       id
       title
       slug
