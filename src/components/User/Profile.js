@@ -14,7 +14,7 @@ function Profile({ data, auth }) {
     buttons = (
       <div>
         <Link key="edit" to={`/users/${user.slug}/edit`}>Edit</Link>
-        {' | '}
+        {' '}|{' '}
         <Link key="logout" to="/logout">Logout</Link>
         <br />
         <br />

@@ -9,13 +9,14 @@
     "semi": ["error", "never"],
     "arrow-parens": ["error", "as-needed"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-one-expression-per-line": false,
-    "jsx-a11y/label-has-for": false,
+    "react/jsx-one-expression-per-line": 0,
+    "jsx-a11y/label-has-for": 0,
     "jsx-a11y/label-has-associated-control": [ 2, {
       "labelComponents": ["label"],
       "labelAttributes": ["htmlFor"],
       "controlComponents": ["input"]
-    }]
+    }],
+    "react/prop-types": 0
   },
   "settings": {
     "import/resolver": {

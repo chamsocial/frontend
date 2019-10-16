@@ -55,6 +55,7 @@ class Comment extends Component {
             {replyButton}
             { dateToString(createdAt) } - {author.username}
           </div>
+          {/* eslint-disable-next-line react/no-danger */}
           <div dangerouslySetInnerHTML={{ __html: content }} />
           {form}
         </div>

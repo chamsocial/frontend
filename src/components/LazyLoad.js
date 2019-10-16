@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 
 class LazyLoad extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      AsyncModule: null
+      AsyncModule: null,
     }
   }
 
-  componentDidMount () {
-    this.props.getComponent()
+  componentDidMount() {
+    const { getComponent } = this.props
+    getComponent()
       .then(module => module.default)
       .then(AsyncModule => this.setState({ AsyncModule }))
   }
 
-  render () {
+  render() {
     const { Loader, ...childProps } = this.props
     const { AsyncModule } = this.state
 
