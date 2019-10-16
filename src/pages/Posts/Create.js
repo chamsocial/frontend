@@ -212,7 +212,7 @@ const EDIT_POST = gql`
 
 const DELETE_DRAFT = gql`
   mutation deteleDraftMutation($id: ID!) {
-    deleteDraft(id: $id)
+    deletePost(id: $id)
   }
 `
 

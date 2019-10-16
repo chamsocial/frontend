@@ -62,6 +62,9 @@ const postsQuery = gql`query postsQuery($page: Int!) {
 export default graphql(postsQuery, {
   options: data => {
     const { page = 1 } = data
-    return { variables: { page: parseInt(page, 10) } }
+    return {
+      variables: { page: parseInt(page, 10) },
+      fetchPolicy: 'network-only',
+    }
   },
 })(Home)

@@ -7,14 +7,14 @@ import FlashMessages from './components/FlashMessages'
 
 const Router = () => (
   <BrowserRouter>
-    <div>
+    <>
       <Header />
       <div className="container">
         <FlashMessages />
         <Routes />
         <Footer />
       </div>
-    </div>
+    </>
   </BrowserRouter>
 )
 

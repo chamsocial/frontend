@@ -3,6 +3,7 @@
 @import "classes";
 @import "forms";
 @import "layout";
+@import "buttons";
 @import "pages";
 @import "uploader";
 
@@ -10,50 +11,3 @@
 // Green 0F7173
 // Black/Dark 272932
 
-.btn {
-  background: #0086DB;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  line-height: 1.25;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: .5rem 1rem;
-  font-size: inherit;
-  border-radius: .25rem;
-  transition: opacity .3s;
-
-  &--block {
-    display: block;
-  }
-  &--small {
-    font-size: 0.75rem;
-  }
-  &--link {
-    background: none;
-    color: #0086DB;
-    padding: 0;
-    &--desc {
-      color: #999;
-    }
-  }
-  &--warn {
-    background-color: #999;
-  }
-  &--danger {
-    background: #FF595E;
-  }
-}
-
-.btn:disabled {
-  opacity: 0.3;
-  cursor: wait;
-}
-
-.desc {
-  font-size: 12px;
-  color: #777;
-}

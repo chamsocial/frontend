@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
-import { dateToString } from '../../utils'
-import Loading from '../partials/Loading'
-import Comments from '../Comments'
-import Media from './Media'
-import { singlePostQuery } from '../../graphql/post-queries'
+import { dateToString } from '../../../utils'
+import Loading from '../../partials/Loading'
+import Comments from '../../Comments'
+import Media from '../Media'
+import { singlePostQuery } from '../../../graphql/post-queries'
+import DeletePost from './DeletePost'
 
 export function Post({ data }) {
   const { loading, error, post } = data
@@ -24,7 +25,13 @@ export function Post({ data }) {
           <ReactMarkdown source={content} />
         </div>
         <Media postId={post.id} />
-        {canEdit && <Link to={`/posts/${post.id}/edit`}>Edit</Link>}
+        {canEdit && (
+          <>
+            <Link to={`/posts/${post.id}/edit`}>Edit</Link>
+            {' '}|{' '}
+            <DeletePost postId={post.id} />
+          </>
+        )}
         <div className="meta">
           {dateToString(createdAt)}
           <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
