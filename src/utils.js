@@ -1,5 +1,3 @@
-/* global fetch */
-
 function toJson(res) { return res.json() }
 
 export function dateToString(date) {
@@ -19,11 +17,12 @@ export function dateToString(date) {
 
 export const request = {
   post(url, body, opt = {}) {
-    const options = Object.assign({
+    const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    }, opt)
+      ...opt,
+    }
 
     return fetch(url, options).then(toJson)
   },

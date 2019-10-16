@@ -78,8 +78,7 @@ const GroupSelect = React.memo(({
                         <div className="desc">{item.description}</div>
                       </li>
                     )
-                  })
-                }
+                  })}
               </ul>
             )}
           </div>

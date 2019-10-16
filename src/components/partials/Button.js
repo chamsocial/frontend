@@ -45,7 +45,7 @@ class Button extends Component {
   * @param  {object} nextState The new states
   * @return {void}
   */
-  componentWillUpdate(nextProps) {
+  componentDidUpdate(nextProps) {
     const { showDone, loading } = this.props
 
     // If the done text should be shown

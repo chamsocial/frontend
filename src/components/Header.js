@@ -15,8 +15,7 @@ export function HeaderComponent({ auth }) {
         <div>
           {user
             ? <Link to={`/users/${user.slug}`}>{user.username}</Link>
-            : <span><Link to="/signup">Signup</Link> / <Link to="/login">Login</Link></span>
-          }
+            : <span><Link to="/signup">Signup</Link> / <Link to="/login">Login</Link></span>}
         </div>
       </div>
     </div>
