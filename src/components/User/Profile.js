@@ -13,7 +13,7 @@ function Profile({ data, auth }) {
   if (user.id === auth.user.id) {
     buttons = (
       <div className="block">
-        <Link to={`/users/${user.slug}/edit`}>Edit</Link>
+        <Link to="/users/edit">Edit</Link>
         {' '}|{' '}
         <Link to="/users/emails">Email settings</Link>
         {' '}|{' '}

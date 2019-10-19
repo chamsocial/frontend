@@ -103,9 +103,8 @@ const SomeComponent = withRouter(({ location }) => (
           <Route exact path="/logout" component={LogoutMapped} />
           <Route exact path="/user/activate/:code" component={Activation} />
           <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
+          <PrivateRoute exact path="/users/edit" component={UserEdit} />
           <PrivateRoute exact path="/users/:slug" component={UserProfile} />
-          {/* @TODO: remove slug from edit */}
-          <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
           <PrivateRoute exact path="/posts/create" component={CreatePost} />
           <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
           <PrivateRoute path="/posts/:slug" component={Post} />

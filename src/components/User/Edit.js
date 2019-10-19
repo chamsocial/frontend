@@ -21,17 +21,6 @@ class Edit extends Component {
     this.submitUserEdits = this.submitUserEdits.bind(this)
   }
 
-  componentDidMount() {
-    const { slug, auth, history } = this.props
-    if (!auth.user || slug !== auth.user.slug) {
-      const to = {
-        pathname: `/users/${auth.user.slug}/edit`,
-        state: { flashMessage: `You are not allowed to edit ${slug}'s profile but here is yours` },
-      }
-      history.push(to)
-    }
-  }
-
   submitUserEdits(values) {
     const { updateUser, history } = this.props
     const variables = {
@@ -61,7 +50,7 @@ class Edit extends Component {
   render() {
     const { error } = this.state
     const { data } = this.props
-    const { user } = data
+    const user = data.me
 
     return (
       <Formik
@@ -128,12 +117,11 @@ class Edit extends Component {
 }
 Edit.propTypes = {
   updateUser: PropTypes.func.isRequired,
-  slug: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
   data: PropTypes.shape({
-    user: PropTypes.shape({
+    me: PropTypes.shape({
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       jobtitle: PropTypes.string,
@@ -148,8 +136,8 @@ Edit.propTypes = {
 }
 
 
-const editUserQuery = gql`query editUserQuery ($slug: String!) {
-  user(slug: $slug) {
+const editUserQuery = gql`query editUserQuery {
+  me {
     id
     slug
     username
@@ -167,11 +155,11 @@ const editUserQuery = gql`query editUserQuery ($slug: String!) {
 
 const userProfileMutation = gql`
   mutation userProfileMutation(
-    $slug: String!, $firstName: String, $lastName: String, $companyName: String
+    $firstName: String, $lastName: String, $companyName: String
     $jobtitle: String, $lang: Lang, $interests: String, $aboutme: String
   ) {
     updateUser(
-      slug: $slug, firstName: $firstName, lastName: $lastName, companyName: $companyName
+      firstName: $firstName, lastName: $lastName, companyName: $companyName
       jobtitle: $jobtitle, lang: $lang, interests: $interests, aboutme: $aboutme
     ) {
       id
@@ -190,14 +178,11 @@ const userProfileMutation = gql`
 
 const loadEdit = GraphLoader(Edit)
 const graphEdit = compose(
-  graphql(editUserQuery, {
-    options: data => ({ variables: { slug: data.slug } }),
-  }),
+  graphql(editUserQuery),
   graphql(userProfileMutation, {
-    props: ({ mutate, ownProps }) => ({
+    props: ({ mutate }) => ({
       updateUser: data => {
         const variables = { ...data }
-        variables.slug = ownProps.slug
         return mutate({ variables })
       },
     }),
