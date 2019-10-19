@@ -8,6 +8,7 @@ import Router from './Router'
 
 library.add(faTimes, faTimesCircle, faTrashAlt)
 
+// Prevent file drag'n drop to load file in the browser
 window.addEventListener('dragover', e => e.preventDefault(), false)
 window.addEventListener('drop', e => e.preventDefault(), false)
 

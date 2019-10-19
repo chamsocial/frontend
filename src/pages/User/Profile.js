@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
-import GraphLoader from '../partials/GraphLoader'
-import { withAuth } from '../Auth/AuthContext'
-import PostListItem from '../Posts/ListItem'
+import GraphLoader from '../../components/partials/GraphLoader'
+import { withAuth } from '../../components/Auth/AuthContext'
+import PostListItem from '../../components/Posts/ListItem'
 
 function Profile({ data, auth }) {
   const { user } = data
@@ -75,7 +75,7 @@ const profileQuery = gql`query userQuery ($slug: String!) {
 
 const loadProfile = GraphLoader(Profile)
 const graphProfile = graphql(profileQuery, {
-  options: data => ({ variables: { slug: data.slug } }),
+  options: data => ({ variables: { slug: data.match.params.slug } }),
 })(withAuth(loadProfile))
 
 export default graphProfile

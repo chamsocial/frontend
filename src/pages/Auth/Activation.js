@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
-import { withAuth } from './AuthContext'
-import Loading from '../partials/Loading'
-import Alert from '../partials/Alert'
+import { withAuth } from '../../components/Auth/AuthContext'
+import Loading from '../../components/partials/Loading'
+import Alert from '../../components/partials/Alert'
 
 export class Activation extends Component {
   constructor(props) {
@@ -17,8 +17,8 @@ export class Activation extends Component {
   }
 
   componentDidMount() {
-    const { code, activate, auth } = this.props
-    activate({ code })
+    const { match, activate, auth } = this.props
+    activate({ code: match.params.code })
       .then(({ data: { activateUser } }) => {
         auth.setUser(activateUser)
         this.setState({ isLoading: false, error: false })
@@ -39,7 +39,11 @@ export class Activation extends Component {
 }
 
 Activation.propTypes = {
-  code: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      code: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
   activate: PropTypes.func.isRequired,
   auth: PropTypes.shape({
     setUser: PropTypes.func.isRequired,

@@ -1,119 +1,66 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext, lazy, Suspense } from 'react'
 import {
-  Route, Switch, withRouter,
+  Route, Switch, withRouter, Redirect,
 } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import TransitionGroup from 'react-transition-group/TransitionGroup'
-import LazyLoad from './components/LazyLoad'
-import CustomRedirect from './components/CustomRedirect'
 import Loading from './components/partials/Loading'
-import { withAuth } from './components/Auth/AuthContext'
+import { authContext } from './components/Auth/AuthContext'
 
-function Home({ match }) {
-  return <LazyLoad getComponent={() => import('./pages/Home')} {...match.params} />
-}
-function Login({ location, history }) {
-  return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} history={history} />
-}
-Login.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.any,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+// Pages
+const Home = lazy(() => import('./pages/Home'))
+
+// Auth
+const Login = lazy(() => import('./pages/Auth/Login'))
+const Signup = lazy(() => import('./pages/Auth/Signup'))
+const Activation = lazy(() => import('./pages/Auth/Activation'))
+function Logout() {
+  const auth = useContext(authContext)
+  auth.logout()
+  return <Loading />
 }
 
-function Signup({ location }) {
-  return <LazyLoad getComponent={() => import('./components/Auth/Signup')} location={location} />
-}
-Signup.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.any,
-  }).isRequired,
-}
-function Post({ match }) {
-  return <LazyLoad getComponent={() => import('./components/Posts/Post')} {...match.params} />
-}
-function CreatePost({ match }) {
-  return <LazyLoad getComponent={() => import('./pages/Posts/Create')} {...match.params} />
-}
+// Post routes
+const Post = lazy(() => import('./pages/Posts/Post'))
+const CreatePost = lazy(() => import('./pages/Posts/Create'))
 
-function Activation({ match }) {
-  return <LazyLoad getComponent={() => import('./components/Auth/Activation')} code={match.params.code} />
-}
-Activation.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      code: PropTypes.string,
-    }),
-  }).isRequired,
-}
-
-function UserProfile({ match }) {
-  return <LazyLoad getComponent={() => import('./components/User/Profile')} {...match.params} />
-}
-
-function UserEdit({ match, history }) {
-  return <LazyLoad getComponent={() => import('./components/User/Edit')} history={history} {...match.params} />
-}
-
-function UserEmailSettings({ match }) {
-  return <LazyLoad getComponent={() => import('./components/User/EmailSettings')} {...match.params} />
-}
-
-class Logout extends Component {
-  constructor(props) {
-    super(props)
-    props.auth.logout()
-  }
-
-  render() {
-    return <Loading />
-  }
-}
-Logout.propTypes = {
-  auth: PropTypes.shape({
-    logout: PropTypes.func.isRequired,
-  }).isRequired,
-}
-const LogoutMapped = withAuth(Logout)
+// User routes
+const UserProfile = lazy(() => import('./pages/User/Profile'))
+const UserEdit = lazy(() => import('./pages/User/Edit'))
+const UserEmailSettings = lazy(() => import('./pages/User/EmailSettings'))
 
 
-const PrivateRoute = withAuth(({ component: RouteComponent, auth, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => (
-      auth.user
-        ? <RouteComponent {...props} />
-        : <CustomRedirect {...props} />
-    )}
-  />
-))
+function PrivateRoute({ component: Component, ...rest }) {
+  const auth = useContext(authContext)
+  if (!auth.user) return <Redirect to={{ pathname: '/login', state: { from: rest.location } }} />
+  return <Route {...rest} component={Component} />
+}
 
-// <Route render={(location) => { instead of withRouter?
+
 const SomeComponent = withRouter(({ location }) => (
   <TransitionGroup className="transition-wrapper" exit={false}>
     <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
       <div className="cham-route">
-        <Switch key={location.key} location={location}>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/logout" component={LogoutMapped} />
-          <Route exact path="/user/activate/:code" component={Activation} />
-          <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
-          <PrivateRoute exact path="/users/edit" component={UserEdit} />
-          <PrivateRoute exact path="/users/:slug" component={UserProfile} />
-          <PrivateRoute exact path="/posts/create" component={CreatePost} />
-          <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
-          <PrivateRoute path="/posts/:slug" component={Post} />
-          <Route exact path="/" component={Home} />
-          <Route path="/page/:page" component={Home} />
-        </Switch>
+        <Suspense fallback={<Loading />}>
+          <Switch key={location.key} location={location}>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/logout" component={Logout} />
+            <Route exact path="/user/activate/:code" component={Activation} />
+            <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
+            <PrivateRoute exact path="/users/edit" component={UserEdit} />
+            <PrivateRoute exact path="/users/:slug" component={UserProfile} />
+            <PrivateRoute exact path="/posts/create" component={CreatePost} />
+            <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
+            <PrivateRoute path="/posts/:slug" component={Post} />
+            <Route exact path="/" component={Home} />
+            <Route path="/page/:page" component={Home} />
+          </Switch>
+        </Suspense>
       </div>
     </CSSTransition>
   </TransitionGroup>
 ))
+
 
 export default SomeComponent

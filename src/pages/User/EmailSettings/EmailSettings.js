@@ -1,6 +1,5 @@
 import React from 'react'
 import gql from 'graphql-tag'
-// import { Link } from 'react-router-dom'
 import { useQuery } from 'react-apollo'
 import Loading from 'components/partials/Loading'
 import Form from './Form'

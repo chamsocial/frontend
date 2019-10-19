@@ -1,11 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import Loading from '../../components/partials/Loading'
 import PostListItem from '../../components/Posts/ListItem'
 import Sidebar from './Sidebar'
+
 
 const LATEST_POSTS = gql`query postsQuery {
   posts(postsPerPage: 10) {
@@ -25,11 +25,8 @@ const LATEST_POSTS = gql`query postsQuery {
 }`
 
 
-function Home({ page }) {
-  const { error, loading, data } = useQuery(LATEST_POSTS, {
-    variables: { page: parseInt(page, 10) },
-    fetchPolicy: 'network-only',
-  })
+function Home() {
+  const { error, loading, data } = useQuery(LATEST_POSTS, { fetchPolicy: 'network-only' })
 
   return (
     <div className="layout-1">
@@ -70,12 +67,5 @@ function Home({ page }) {
     </div>
   )
 }
-Home.defaultProps = {
-  page: '1',
-}
-Home.propTypes = {
-  page: PropTypes.string,
-}
-
 
 export default Home

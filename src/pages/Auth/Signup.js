@@ -4,9 +4,8 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
 import { Formik, FastField, ErrorMessage } from 'formik'
-import Button from '../partials/Button'
-import Alert from '../partials/Alert'
-import './Login.css'
+import Button from '../../components/partials/Button'
+import Alert from '../../components/partials/Alert'
 
 function reqMinLength(key, value, length = 3) {
   if (!value) return `${key} is required`

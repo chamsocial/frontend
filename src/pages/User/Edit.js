@@ -6,9 +6,9 @@ import gql from 'graphql-tag'
 import {
   Formik, FastField, ErrorMessage,
 } from 'formik'
-import GraphLoader from '../partials/GraphLoader'
-import Button from '../partials/Button'
-import { withAuth } from '../Auth/AuthContext'
+import GraphLoader from '../../components/partials/GraphLoader'
+import Button from '../../components/partials/Button'
+
 
 class Edit extends Component {
   constructor(props) {
@@ -48,6 +48,7 @@ class Edit extends Component {
   }
 
   render() {
+    console.log(this.props)
     const { error } = this.state
     const { data } = this.props
     const user = data.me
@@ -130,9 +131,6 @@ Edit.propTypes = {
       lang: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  auth: PropTypes.shape({
-    user: PropTypes.object.isRequired,
-  }).isRequired,
 }
 
 
@@ -178,7 +176,7 @@ const userProfileMutation = gql`
 
 const loadEdit = GraphLoader(Edit)
 const graphEdit = compose(
-  graphql(editUserQuery),
+  graphql(editUserQuery, { options: { fetchPolicy: 'network-only' } }),
   graphql(userProfileMutation, {
     props: ({ mutate }) => ({
       updateUser: data => {
@@ -188,5 +186,4 @@ const graphEdit = compose(
     }),
   }),
 )(loadEdit)
-const connectedEdit = withAuth(graphEdit)
-export default connectedEdit
+export default graphEdit

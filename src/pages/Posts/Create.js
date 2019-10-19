@@ -16,7 +16,7 @@ class CreatePostComponent extends Component {
     super(props)
     const draft = props.draft || {}
     this.state = {
-      postId: props.postId || null,
+      postId: props.match.params.postId || null,
       title: draft.title || '',
       content: draft.content || '',
       group: draft.group || null,
@@ -129,14 +129,12 @@ class CreatePostComponent extends Component {
   }
 }
 CreatePostComponent.defaultProps = {
-  postId: null,
   draft: {},
 }
 CreatePostComponent.propTypes = {
   createPost: PropTypes.func.isRequired,
   editPost: PropTypes.func.isRequired,
   deleteDraft: PropTypes.func.isRequired,
-  postId: PropTypes.string,
   draft: PropTypes.shape({
     title: PropTypes.string,
     content: PropTypes.string,
@@ -218,7 +216,11 @@ const DELETE_DRAFT = gql`
 
 
 const CreatePost = compose(
-  graphql(GET_DRAFT, { skip: ({ postId }) => !postId, name: 'draftQuery' }),
+  graphql(GET_DRAFT, {
+    skip: ({ match }) => !match.params.postId,
+    options: data => ({ variables: { postId: data.match.params.postId } }),
+    name: 'draftQuery',
+  }),
   graphql(CREATE_POST, { name: 'createPost' }),
   graphql(EDIT_POST, { name: 'editPost' }),
   graphql(DELETE_DRAFT, {

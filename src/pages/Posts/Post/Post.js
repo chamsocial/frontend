@@ -4,9 +4,9 @@ import { graphql } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { dateToString } from '../../../utils'
-import Loading from '../../partials/Loading'
-import Comments from '../../Comments'
-import Media from '../Media'
+import Loading from '../../../components/partials/Loading'
+import Comments from '../../../components/Comments'
+import Media from '../../../components/Posts/Media'
 import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
 
@@ -48,5 +48,5 @@ Post.propTypes = {
 }
 
 export default graphql(singlePostQuery, {
-  options: data => ({ variables: { slug: data.slug } }),
+  options: data => ({ variables: { slug: data.match.params.slug } }),
 })(Post)

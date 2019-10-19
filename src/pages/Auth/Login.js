@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
-import Button from '../partials/Button'
-import Alert from '../partials/Alert'
-import { withAuth } from './AuthContext'
-import './Login.css'
+import Button from '../../components/partials/Button'
+import Alert from '../../components/partials/Alert'
+import { withAuth } from '../../components/Auth/AuthContext'
+
 
 export class LoginForm extends Component {
   constructor(props) {
@@ -112,7 +112,7 @@ const LOGIN = gql`
 
 const Login = graphql(LOGIN, {
   props: ({ mutate }) => ({
-    login: authValues => mutate({ variables: authValues }),
+    login: authValues => mutate({ variables: authValues, refetchQueries: ['authQuery'] }),
   }),
 })(withAuth(LoginForm))
 
