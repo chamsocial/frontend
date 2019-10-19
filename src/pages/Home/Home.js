@@ -8,7 +8,7 @@ import PostListItem from '../../components/Posts/ListItem'
 import Sidebar from './Sidebar'
 
 const LATEST_POSTS = gql`query postsQuery {
-  posts {
+  posts(postsPerPage: 10) {
     list {
       id
       title
