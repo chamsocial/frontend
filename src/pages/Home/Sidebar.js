@@ -1,4 +1,6 @@
 import React, { useContext } from 'react'
+import gql from 'graphql-tag'
+import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import { authContext } from 'components/Auth/AuthContext'
 
@@ -45,6 +47,32 @@ function NotLoggedIn() {
 }
 
 
+const GROUPS_LIST = gql`query groupsListQuery {
+  groups {
+    id
+    slug
+    title
+  }
+}`
+
+
+function Groups() {
+  const { loading, error, data } = useQuery(GROUPS_LIST)
+  if (loading || error) return null
+
+  return (
+    <div className="block">
+      <h1>Groups</h1>
+      {data.groups.map(group => (
+        <div key={group.id}>
+          <Link to={`/groups/${group.slug}`}>{group.title}</Link>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+
 function Sidebar() {
   const userContext = useContext(authContext)
 
@@ -55,6 +83,10 @@ function Sidebar() {
           ? <User user={userContext.user} />
           : <NotLoggedIn />
       }
+
+      <hr />
+
+      <Groups />
     </div>
   )
 }
