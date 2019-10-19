@@ -44,6 +44,16 @@
     color: #26B864;
     cursor: pointer;
   }
+
+  &--header {
+    border: 1px solid #fff;
+    transition: all .2s;
+    &:hover {
+      text-shadow: 0 0 2px darken(#0086DB, 20%), 0 0 1px darken(#0086DB, 20%);
+      background: rgba(255, 255, 255, .3);
+      border-color: rgba(255, 255, 255, .7);
+    }
+  }
 }
 
 .btn:disabled {

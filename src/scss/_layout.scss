@@ -87,11 +87,12 @@
   background: #0086DB;
   color: #fff;
   border-bottom: 1px solid #002842;
-  line-height: 55px;
   height: 55px;
   .container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 100%;
   }
   a {
     color: #fff;

@@ -1,10 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { withAuth } from './Auth/AuthContext'
+import { authContext } from './Auth/AuthContext'
 
-export function HeaderComponent({ auth }) {
-  const { user } = auth
+export function Header() {
+  const { user } = useContext(authContext)
 
   return (
     <div className="header">
@@ -14,19 +13,18 @@ export function HeaderComponent({ auth }) {
         </h2>
         <div>
           {user
-            ? <Link to={`/users/${user.slug}`}>{user.username}</Link>
-            : <span><Link to="/signup">Signup</Link> / <Link to="/login">Login</Link></span>}
+            ? <Link className="btn btn--header" to={`/users/${user.slug}`}>{user.username}</Link>
+            : (
+              <>
+                <Link className="btn btn--header" to="/login">Login</Link>
+                {' '}
+                <Link className="btn btn--header" to="/signup">Signup</Link>
+              </>
+            )}
         </div>
       </div>
     </div>
   )
 }
-HeaderComponent.propTypes = {
-  auth: PropTypes.shape({
-    user: PropTypes.shape({
-      username: PropTypes.string,
-    }),
-  }).isRequired,
-}
 
-export default withAuth(HeaderComponent)
+export default Header
