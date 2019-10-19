@@ -1,5 +1,6 @@
-/* global fetch */
-export function dateToString (date) {
+function toJson(res) { return res.json() }
+
+export function dateToString(date) {
   if (!date) return '-'
 
   const d = new Date(date)
@@ -8,26 +9,25 @@ export function dateToString (date) {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }
   const formated = d.toLocaleDateString(undefined, options)
   return `${formated}`
 }
 
 export const request = {
-  post (url, body, opt = {}) {
-    const options = Object.assign({
+  post(url, body, opt = {}) {
+    const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }, opt)
+      body: JSON.stringify(body),
+      ...opt,
+    }
 
     return fetch(url, options).then(toJson)
   },
-  get (url, token) {
-    return fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
+  get(url, token) {
+    return fetch(url, { headers: { Authorization: `Bearer ${token}` } })
       .then(toJson)
-  }
+  },
 }
-
-function toJson (res) { return res.json() }

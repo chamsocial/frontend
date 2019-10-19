@@ -1,29 +1,27 @@
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { BrowserRouter as Router } from 'react-router-dom'
-import Routes from './Routes'
-import Header from './components/Header'
-import FlashMessages from './components/FlashMessages'
-import './App.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTimes, faTimesCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import apollo from './utils/apollo'
+import Auth from './components/Auth'
+import Router from './Router'
 
-import { client as apolloClient } from './lib/apollo'
-import store from './lib/store'
-import './lib/networkInterface'
+library.add(faTimes, faTimesCircle, faTrashAlt)
 
-function App () {
+// Prevent file drag'n drop to load file in the browser
+window.addEventListener('dragover', e => e.preventDefault(), false)
+window.addEventListener('drop', e => e.preventDefault(), false)
+
+
+function App() {
   return (
-    <ApolloProvider client={apolloClient} store={store}>
-      <Router>
-        <div>
-          <Header />
-          <div className='container'>
-            <FlashMessages />
-            <Routes />
-          </div>
-        </div>
-      </Router>
+    <ApolloProvider client={apollo.client}>
+      <Auth>
+        <Router />
+      </Auth>
     </ApolloProvider>
   )
 }
+
 
 export default App

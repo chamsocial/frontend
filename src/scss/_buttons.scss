@@ -1,0 +1,62 @@
+.btn {
+  background: #0086DB;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+  transition: opacity .3s;
+  font-weight: normal;
+
+  &--block {
+    display: block;
+  }
+  &--small {
+    font-size: 0.75rem;
+  }
+  &--link {
+    background: none;
+    color: #0086DB;
+    padding: 0;
+    &--desc {
+      color: #999;
+    }
+  }
+  &--warn {
+    background-color: #999;
+  }
+  &--danger {
+    background: #FF595E;
+  }
+
+  &--link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #26B864;
+    cursor: pointer;
+  }
+
+  &--header {
+    border: 1px solid #fff;
+    transition: all .2s;
+    &:hover {
+      text-shadow: 0 0 2px darken(#0086DB, 20%), 0 0 1px darken(#0086DB, 20%);
+      background: rgba(255, 255, 255, .3);
+      border-color: rgba(255, 255, 255, .7);
+    }
+  }
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: wait;
+}

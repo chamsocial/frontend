@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /*
  |--------------------------------------------------------------------------
  | Button
@@ -8,6 +9,7 @@
  |
  */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './Button.css'
 
 /**
@@ -28,11 +30,11 @@ import './Button.css'
  */
 
 class Button extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
-      isDone: false
+      isDone: false,
     }
   }
 
@@ -43,11 +45,8 @@ class Button extends Component {
   * @param  {object} nextState The new states
   * @return {void}
   */
-  componentWillUpdate (nextProps, nextState) {
-    const {
-      showDone,
-      loading
-    } = this.props
+  componentDidUpdate(nextProps) {
+    const { showDone, loading } = this.props
 
     // If the done text should be shown
     if (!showDone) return
@@ -55,7 +54,7 @@ class Button extends Component {
     // If the current state is loading and the new is done loading
     if (!(loading === true && nextProps.loading === false)) return
 
-    this.setState({ isDone: 'success' })
+    // this.setState({ isDone: 'success' })
 
     // Remove the is done status message after X seconds
     const time = (typeof showDone === 'number') ? showDone : 2000
@@ -67,27 +66,30 @@ class Button extends Component {
    *
    * @return {jsx} The final button
    */
-  render () {
+  render() {
     const { isDone } = this.state
     const {
       id,
       loading,
       loadingText = 'Saving...',
       doneText = 'Everything saved!',
-      type = 'success',
-      wrapperDisplay
+      btn = 'success',
+      wrapperDisplay,
+      type,
+      onClick,
+      attr,
     } = this.props
 
     let {
       done,
       children,
       className = '',
-      wrapperClass = ''
+      wrapperClass = '',
     } = this.props
 
     // Set classes
     wrapperClass += ' action-btn-wrapper'
-    className += ' action-btn btn btn-' + type
+    className += ` action-btn btn btn-${btn}`
 
     // Update varaiables if is loading
     if (loading) {
@@ -96,18 +98,27 @@ class Button extends Component {
     }
 
     // Display a done message if is done
-    if (isDone) done = <span className='action-btn-is-done'>{doneText}</span>
+    if (isDone) done = <span className="action-btn-is-done">{doneText}</span>
 
     // Return the final button
     return (
       <span id={id} className={wrapperClass} style={{ display: wrapperDisplay }}>
-        <button {...this.props.attr} className={className} onClick={this.props.onClick} disabled={this.props.loading}>
+        <button
+          type={type}
+          className={className}
+          onClick={onClick}
+          disabled={loading}
+          {...attr}
+        >
           {children}
         </button>
         {done}
       </span>
     )
   }
+}
+Button.propTypes = {
+  type: PropTypes.oneOf(['submit', 'button']).isRequired,
 }
 
 export default Button

@@ -1,25 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { authContext } from './Auth/AuthContext'
 
-export function Header ({ user }) {
-  return <div className='App-header'>
-    <div className='container header'>
-      <h2 className='logo'>
-        <Link to='/'>Chamsocial</Link>
-      </h2>
-      <div>
-        {user
-          ? <Link to='/logout'>Logout</Link>
-          : <span><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link></span>
-        }
+export function Header() {
+  const { user } = useContext(authContext)
+
+  return (
+    <div className="header">
+      <div className="container">
+        <h2 className="logo">
+          <Link to="/">ChamSocial</Link>
+        </h2>
+        <div>
+          {user
+            ? <Link className="btn btn--header" to={`/users/${user.slug}`}>{user.username}</Link>
+            : (
+              <>
+                <Link className="btn btn--header" to="/login">Login</Link>
+                {' '}
+                <Link className="btn btn--header" to="/signup">Signup</Link>
+              </>
+            )}
+        </div>
       </div>
     </div>
-  </div>
+  )
 }
 
-function mapStateToProps (state) {
-  return { user: state.auth.user }
-}
-
-export default connect(mapStateToProps)(Header)
+export default Header

@@ -1,13 +1,15 @@
 import gql from 'graphql-tag'
 
+export const x = 'y'
 export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
   post(slug: $slug) {
     id
     title
     slug
     content
-    created_at
-    comments_count
+    createdAt
+    commentsCount
+    canEdit
     author {
       id
       slug
@@ -44,9 +46,9 @@ export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
 }
 fragment CommentParts on Comment {
   id
-  created_at
+  createdAt
   content
-  parent_id
+  parentId
   author {
     id
     username
