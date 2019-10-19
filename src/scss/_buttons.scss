@@ -10,9 +10,10 @@
   user-select: none;
   border: 1px solid transparent;
   padding: .5rem 1rem;
-  font-size: inherit;
+  font-size: 1rem;
   border-radius: .25rem;
   transition: opacity .3s;
+  font-weight: normal;
 
   &--block {
     display: block;

@@ -117,7 +117,9 @@ class Edit extends Component {
             {error && (
               <div className="alert alert-danger">{error}</div>
             )}
-            <Button type="submit">Update</Button>
+            <div className="form-group">
+              <Button type="submit">Update</Button>
+            </div>
           </form>
         )}
       </Formik>

@@ -11,7 +11,7 @@ import Loading from './components/partials/Loading'
 import { withAuth } from './components/Auth/AuthContext'
 
 function Home({ match }) {
-  return <LazyLoad getComponent={() => import('./components/Home')} {...match.params} />
+  return <LazyLoad getComponent={() => import('./pages/Home')} {...match.params} />
 }
 function Login({ location, history }) {
   return <LazyLoad getComponent={() => import('./components/Auth/Login')} location={location} history={history} />
@@ -102,9 +102,10 @@ const SomeComponent = withRouter(({ location }) => (
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/logout" component={LogoutMapped} />
           <Route exact path="/user/activate/:code" component={Activation} />
+          <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
           <PrivateRoute exact path="/users/:slug" component={UserProfile} />
+          {/* @TODO: remove slug from edit */}
           <PrivateRoute exact path="/users/:slug/edit" component={UserEdit} />
-          <PrivateRoute exact path="/users/:slug/emails" component={UserEmailSettings} />
           <PrivateRoute exact path="/posts/create" component={CreatePost} />
           <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
           <PrivateRoute path="/posts/:slug" component={Post} />

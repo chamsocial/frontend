@@ -19,18 +19,18 @@ h1 {
 h2 {
   font-weight: 400;
   font-size: 18px;
-  margin: 0 0 10px;
-}
-h2 a {
-  color: #444;
+  margin: 0 0 5px;
 }
 h4 {
   font-size: 1rem;
   margin: 0 0 5px;
 }
 a {
-  color: #26B864;
+  color: #02667d;
   text-decoration: none;
+  &:hover {
+    color: #222;
+  }
 }
 
 p {
@@ -45,7 +45,7 @@ hr {
   border: 0;
   height: 1px;
   background: #ddd;
-  margin-bottom: 20px;
+  margin: 0 0 20px;
 }
 
 

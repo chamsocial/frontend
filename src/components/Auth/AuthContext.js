@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import apollo from 'utils/apollo'
 
 const { REACT_APP_API_URL } = process.env
-export const { Provider, Consumer } = React.createContext()
+export const authContext = React.createContext()
+export const { Provider, Consumer } = authContext
 
 function logout() {
   fetch(`${REACT_APP_API_URL}/logout`, { credentials: 'include' })

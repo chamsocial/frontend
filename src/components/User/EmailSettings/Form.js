@@ -61,7 +61,9 @@ function Form({ groups }) {
       {data && data.updateEmailSubscriptions && <div className="alert alert-success">Settings updated</div>}
       {error && <div className="alert alert-danger">Something went wrong, please try again.</div>}
 
-      <button type="submit" disabled={loading} className="btn">Update email settings</button>
+      <div className="form-group">
+        <button type="submit" disabled={loading} className="btn">Update email settings</button>
+      </div>
     </form>
   )
 }

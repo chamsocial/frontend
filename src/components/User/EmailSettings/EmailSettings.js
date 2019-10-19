@@ -7,12 +7,6 @@ import Form from './Form'
 
 
 const EMAIL_SETTINGS = gql`query userEmailSubscriptionsQuery {
-  userEmailSubscriptions {
-    id
-    groupId
-    joinedAt
-    type
-  }
   groups {
     id
     title

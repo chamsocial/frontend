@@ -12,8 +12,8 @@ const Router = () => (
       <div className="container">
         <FlashMessages />
         <Routes />
-        <Footer />
       </div>
+      <Footer />
     </>
   </BrowserRouter>
 )

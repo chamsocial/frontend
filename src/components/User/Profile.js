@@ -15,7 +15,7 @@ function Profile({ data, auth }) {
       <div className="block">
         <Link to={`/users/${user.slug}/edit`}>Edit</Link>
         {' '}|{' '}
-        <Link to={`/users/${user.slug}/emails`}>Email settings</Link>
+        <Link to="/users/emails">Email settings</Link>
         {' '}|{' '}
         <Link to="/logout">Logout</Link>
       </div>
@@ -23,7 +23,7 @@ function Profile({ data, auth }) {
   }
   return (
     <>
-      <div className="box">
+      <div className="box box--row">
         <img src={user.avatarUrl} className="profile__img float-right" alt="Profil" />
         <h1>{user.username}</h1>
         {!!user.firstName && !!user.lastName && (
@@ -33,7 +33,7 @@ function Profile({ data, auth }) {
         {!!user.companyName && <div><strong>Company:</strong> {user.companyName}</div>}
         {!!user.interests && <div><strong>Interests:</strong> {user.interests}</div>}
         {!!user.aboutme && <div><strong>About:</strong> {user.aboutme}</div>}
-        {!!user.jobtitle && <div><strong>Jobtitle:</strong> {user.jobtitle}</div>}
+        {!!user.jobtitle && <p><strong>Jobtitle:</strong> {user.jobtitle}</p>}
       </div>
       <div className="box">
         <h2>Posts:</h2>
