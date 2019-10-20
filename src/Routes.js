@@ -22,7 +22,8 @@ function Logout() {
 
 // Post routes
 const Post = lazy(() => import('./pages/Posts/Post'))
-const CreatePost = lazy(() => import('./pages/Posts/Create'))
+// const CreatePost = lazy(() => import('./pages/Posts/Create'))
+const CreatePost = () => <div className="box"><h1>Create posts coming soon!</h1></div>
 
 // User routes
 const UserProfile = lazy(() => import('./pages/User/Profile'))
