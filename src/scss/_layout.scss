@@ -150,3 +150,29 @@
 .pagination .next {
   margin-left: auto;
 }
+
+
+/**
+ * Lightbox
+ */
+.lightbox {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, .7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    background: rgba(255, 255, 255, .3);
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, .5);
+  }
+}

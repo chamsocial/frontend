@@ -1,21 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const apiUrl = process.env.REACT_APP_API_URL
+const portalDom = document.getElementById('portals')
+
 
 export function PostMedia({ data }) {
+  const [img, setImg] = useState()
   const { loading, error, postMedia } = data
   if (loading || error || !postMedia.length) return null
 
+  const onClick = isImage => evt => {
+    if (!isImage) return
+    evt.preventDefault()
+    setImg(evt.currentTarget.href)
+  }
+
   return (
-    <div>
-      {postMedia.map(media => (
-        <span key={media.id}>
-          <img src={`${apiUrl}${media.url}`} alt="Media" width="200" />
-        </span>
-      ))}
+    <div className="post-media">
+      {img && (
+        ReactDOM.createPortal((
+          <div className="lightbox" onClick={() => setImg('')}>{/* eslint-disable-line */}
+            <img src={img} alt="Big version" />
+          </div>
+        ), portalDom)
+      )}
+      {postMedia.map(media => {
+        const isImage = media.type === 'image'
+        return (
+          <a
+            key={media.id}
+            className={`media ${!isImage && 'media--link'}`}
+            href={`${apiUrl}${media.url}`}
+            onClick={onClick(isImage)}
+          >
+            {isImage && <img src={`${apiUrl}/img/200/200${media.url}`} alt="Media" />}
+            {!isImage && 'View file'}
+          </a>
+        )
+      })}
     </div>
   )
 }
@@ -31,6 +57,7 @@ const GET_POST_MEDIA = gql`
     postMedia(postId: $postId) {
       id
       url
+      type
     }
   }
 `

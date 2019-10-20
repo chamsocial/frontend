@@ -8,6 +8,31 @@
 
 /* Post */
 .post-content { margin-bottom: 30px; }
+.post-media {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 20px;
+  padding: 20px 0 0;
+  border: 1px solid #ddd;
+  border-width: 1px 0;
+  .media {
+    display: block;
+    padding: 0px;
+    margin: 0 20px 20px 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    &:last-child {
+      margin-right: 0;
+    }
+    &--link {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+  }
+  img { width: 100px; }
+}
 .comment {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
