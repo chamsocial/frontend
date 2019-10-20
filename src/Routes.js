@@ -19,6 +19,7 @@ function Logout() {
   auth.logout()
   return <Loading />
 }
+const FourOhFour = lazy(() => import('./pages/Auth/FourOhFour'))
 
 // Post routes
 const Post = lazy(() => import('./pages/Posts/Post'))
@@ -56,6 +57,7 @@ const SomeComponent = withRouter(({ location }) => (
             <PrivateRoute path="/posts/:slug" component={Post} />
             <Route exact path="/" component={Home} />
             <Route path="/page/:page" component={Home} />
+            <Route component={FourOhFour} />
           </Switch>
         </Suspense>
       </div>

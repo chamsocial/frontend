@@ -12,6 +12,9 @@ import DeletePost from './DeletePost'
 
 export function Post({ data }) {
   const { loading, error, post } = data
+  if (error && error.message.includes('NO_POSTS_FOUND')) {
+    return <div className="box text-center"><h1>No post found</h1></div>
+  }
   if (loading || error) return <Loading error={error} />
   const {
     title, createdAt, content, author, comments, canEdit,
