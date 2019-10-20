@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const apiUrl = process.env.REACT_APP_API_URL
+const fileUrl = process.env.REACT_APP_FILE_URL
 const portalDom = document.getElementById('portals')
 
 
@@ -33,8 +34,8 @@ export function PostMedia({ data }) {
         return (
           <a
             key={media.id}
-            className={`media ${!isImage && 'media--link'}`}
-            href={`${apiUrl}${media.url}`}
+            className={`media ${!isImage ? 'media--link' : ''}`}
+            href={`${fileUrl}${media.url}`}
             onClick={onClick(isImage)}
           >
             {isImage && <img src={`${apiUrl}/img/200/200${media.url}`} alt="Media" />}
