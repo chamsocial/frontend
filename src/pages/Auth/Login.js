@@ -2,17 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
+import { Link } from 'react-router-dom'
 import Button from '../../components/partials/Button'
 import Alert from '../../components/partials/Alert'
 import { withAuth } from '../../components/Auth/AuthContext'
+
+
+const { REACT_APP_DEV_USER = '', REACT_APP_DEV_PASS = '' } = process.env
 
 
 export class LoginForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'spathon',
-      password: 'hello1',
+      username: REACT_APP_DEV_USER || '',
+      password: REACT_APP_DEV_PASS || '',
       message: false,
       isLoading: false,
     }
@@ -69,19 +73,21 @@ export class LoginForm extends Component {
     }
 
     return (
-      <form onSubmit={this.onSubmit} className="narrow-form">
+      <form onSubmit={this.onSubmit} className="narrow-form box">
+        <h1>Login</h1>
         {redirectMessage}
         {messageComponent}
         <div className="form-group">
           <label htmlFor="username">Username or email</label>
-          <input value={username} onChange={this.setUsername} required />
+          <input className="input" value={username} onChange={this.setUsername} required />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" value={password} onChange={this.setPassword} required />
+          <input className="input" type="password" value={password} onChange={this.setPassword} required />
         </div>
         <div className="form-group">
           <Button type="submit" loading={isLoading} loadingText="Logging in...">Login</Button>
+          {' '}or <Link to="/signup">Signup</Link>
         </div>
       </form>
     )

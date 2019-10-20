@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { Formik, FastField, ErrorMessage } from 'formik'
 import Button from '../../components/partials/Button'
 import Alert from '../../components/partials/Alert'
@@ -78,26 +78,27 @@ export class SignupForm extends Component {
         }}
       >
         {({ handleSubmit }) => (
-          <form className="login-form" onSubmit={handleSubmit}>
+          <form className="login-formrrow-form box" onSubmit={handleSubmit}>
             <h1>Signup</h1>
             <div className="form-group">
               <label htmlFor="username">Username</label>
-              <FastField name="username" id="username" />
+              <FastField className="input" name="username" id="username" />
               <ErrorMessage name="username" />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <FastField type="email" name="email" id="email" />
+              <FastField className="input" type="email" name="email" id="email" />
               <ErrorMessage name="email" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <FastField type="password" name="password" id="password" />
+              <FastField className="input" type="password" name="password" id="password" />
               <ErrorMessage name="password" />
             </div>
             {errorMessage}
             <div className="form-group">
               <Button loading={isLoading} type="submit">Give me access, please.</Button>
+              {' '}or <Link to="/login">Login</Link>
             </div>
           </form>
         )}
