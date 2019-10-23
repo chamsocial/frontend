@@ -4,10 +4,11 @@ import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
 import GraphLoader from '../../components/partials/GraphLoader'
-import { withAuth } from '../../components/Auth/AuthContext'
+import { useAuthState } from '../../components/Auth/context'
 import PostListItem from '../../components/Posts/ListItem'
 
-function Profile({ data, auth }) {
+function Profile({ data }) {
+  const auth = useAuthState()
   const { user } = data
   let buttons = null
   if (user.id === auth.user.id) {
@@ -46,9 +47,6 @@ Profile.propTypes = {
   data: PropTypes.shape({
     user: PropTypes.object,
   }).isRequired,
-  auth: PropTypes.shape({
-    user: PropTypes.object.isRequired,
-  }).isRequired,
 }
 
 const profileQuery = gql`query userQuery ($slug: String!) {
@@ -76,6 +74,6 @@ const profileQuery = gql`query userQuery ($slug: String!) {
 const loadProfile = GraphLoader(Profile)
 const graphProfile = graphql(profileQuery, {
   options: data => ({ variables: { slug: data.match.params.slug } }),
-})(withAuth(loadProfile))
+})(loadProfile)
 
 export default graphProfile

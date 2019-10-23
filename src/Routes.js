@@ -1,11 +1,11 @@
-import React, { useContext, lazy, Suspense } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import {
   Route, Switch, withRouter, Redirect,
 } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import TransitionGroup from 'react-transition-group/TransitionGroup'
 import Loading from './components/partials/Loading'
-import { authContext } from './components/Auth/AuthContext'
+import { useAuthState, useAuthDispatch } from './components/Auth/context'
 
 // Pages
 const Home = lazy(() => import('./pages/Home'))
@@ -15,8 +15,10 @@ const Login = lazy(() => import('./pages/Auth/Login'))
 const Signup = lazy(() => import('./pages/Auth/Signup'))
 const Activation = lazy(() => import('./pages/Auth/Activation'))
 function Logout() {
-  const auth = useContext(authContext)
-  auth.logout()
+  const authDispatch = useAuthDispatch()
+  useEffect(() => {
+    authDispatch({ type: 'logout' })
+  }, [authDispatch])
   return <Loading />
 }
 const FourOhFour = lazy(() => import('./pages/Auth/FourOhFour'))
@@ -33,8 +35,8 @@ const UserEmailSettings = lazy(() => import('./pages/User/EmailSettings'))
 
 
 function PrivateRoute({ component: Component, ...rest }) {
-  const auth = useContext(authContext)
-  if (!auth.user) return <Redirect to={{ pathname: '/login', state: { from: rest.location } }} />
+  const { user } = useAuthState()
+  if (!user) return <Redirect to={{ pathname: '/login', state: { from: rest.location } }} />
   return <Route {...rest} component={Component} />
 }
 
@@ -48,7 +50,7 @@ const SomeComponent = withRouter(({ location }) => (
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/logout" component={Logout} />
-            <Route exact path="/user/activate/:code" component={Activation} />
+            <Route exact path="/users/activate/:code" component={Activation} />
             <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
             <PrivateRoute exact path="/users/edit" component={UserEdit} />
             <PrivateRoute exact path="/users/:slug" component={UserProfile} />

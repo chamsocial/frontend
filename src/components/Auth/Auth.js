@@ -2,28 +2,32 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo'
-import { AuthContext } from './AuthContext'
+import Loading from 'components/partials/Loading'
+import { AuthProvider } from './context'
+
 
 const AUTH = gql`query authQuery {
   me {
     id
     username
     slug
+    bouncing
   }
 }`
 
-const Auth = ({ children }) => {
+
+function Auth({ children }) {
   const { loading, error, data } = useQuery(AUTH)
-  if (loading) return 'Loading...'
-  if (error) return 'Error!'
+  if (loading || error) return <Loading error={error} />
   return (
-    <AuthContext user={data.me}>
+    <AuthProvider user={data.me}>
       {children}
-    </AuthContext>
+    </AuthProvider>
   )
 }
 Auth.propTypes = {
   children: PropTypes.node.isRequired,
 }
+
 
 export default Auth

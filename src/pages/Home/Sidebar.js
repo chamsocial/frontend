@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
-import { authContext } from 'components/Auth/AuthContext'
+import { useAuthState } from 'components/Auth/context'
 
 
 function User({ user }) {
@@ -74,18 +74,12 @@ function Groups() {
 
 
 function Sidebar() {
-  const userContext = useContext(authContext)
+  const { user } = useAuthState()
 
   return (
     <div>
-      {
-        userContext.user
-          ? <User user={userContext.user} />
-          : <NotLoggedIn />
-      }
-
+      {user ? <User user={user} /> : <NotLoggedIn />}
       <hr />
-
       <Groups />
     </div>
   )

@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { authContext } from './Auth/AuthContext'
+import { useAuthState } from './Auth/context'
 
-export function Header() {
-  const { user } = useContext(authContext)
+function Header() {
+  const { user } = useAuthState()
 
   return (
     <div className="header">
