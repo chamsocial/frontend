@@ -25,7 +25,7 @@ const DraftsComponent = props => {
         <span>Edit an existing draft or discard drafts</span>
         <button type="button" className="btn btn--small btn--link" onClick={() => setShow(false)}>Hide</button>
       </p>
-      <ul className="list">
+      <ul className="list list--lined">
         {drafts.map(draft => (
           <li key={draft.id} className="space-between">
             <Link to={`/posts/${draft.id}/edit`}>

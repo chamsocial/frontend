@@ -1,9 +1,7 @@
 import React from 'react'
-import gql from 'graphql-tag'
-import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import { useAuthState } from 'components/Auth/context'
-
+import Groups from 'components/Groups'
 
 function User({ user }) {
   return (
@@ -43,32 +41,6 @@ function NotLoggedIn() {
         <Link to="/login" className="btn">Login</Link> or <Link className="btn" to="/signup">Signup</Link>
       </p>
     </>
-  )
-}
-
-
-const GROUPS_LIST = gql`query groupsListQuery {
-  groups {
-    id
-    slug
-    title
-  }
-}`
-
-
-function Groups() {
-  const { loading, error, data } = useQuery(GROUPS_LIST)
-  if (loading || error) return null
-
-  return (
-    <div className="block">
-      <h1>Groups</h1>
-      {data.groups.map(group => (
-        <div key={group.id}>
-          <Link to={`/groups/${group.slug}`}>{group.title}</Link>
-        </div>
-      ))}
-    </div>
   )
 }
 

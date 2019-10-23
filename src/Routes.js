@@ -26,6 +26,7 @@ const FourOhFour = lazy(() => import('./pages/Auth/FourOhFour'))
 // Post routes
 const Post = lazy(() => import('./pages/Posts/Post'))
 const PostList = lazy(() => import('./pages/Posts/List/List'))
+const GroupList = lazy(() => import('./pages/Posts/List/Group'))
 // const CreatePost = lazy(() => import('./pages/Posts/Create'))
 const CreatePost = () => <div className="box"><h1>Create posts coming soon!</h1></div>
 
@@ -60,6 +61,7 @@ const SomeComponent = withRouter(({ location }) => (
             <PrivateRoute path="/posts/:slug" component={Post} />
             <Route exact path="/" component={Home} />
             <Route path="/posts" component={PostList} />
+            <Route path="/groups/:groupSlug" component={GroupList} />
             <Route component={FourOhFour} />
           </Switch>
         </Suspense>
