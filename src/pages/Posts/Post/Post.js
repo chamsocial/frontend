@@ -21,9 +21,10 @@ export function Post({ data }) {
   } = post
 
   return (
-    <div>
-      <div className="Post-item">
+    <>
+      <div className="box box--padded box--row">
         <h1>{title}</h1>
+        <hr />
         <div className="post-content">
           <ReactMarkdown source={content} />
         </div>
@@ -40,8 +41,10 @@ export function Post({ data }) {
           <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
         </div>
       </div>
-      <Comments postSlug={post.slug} comments={comments} />
-    </div>
+      <div className="box box--padded">
+        <Comments postSlug={post.slug} comments={comments} />
+      </div>
+    </>
   )
 }
 Post.propTypes = {

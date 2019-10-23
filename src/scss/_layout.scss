@@ -65,9 +65,9 @@
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
-  &--row {
-    margin: 0 0 20px;
-  }
+
+  &--row { margin: 0 0 20px; }
+  &--padded { padding-bottom: 20px; }
 }
 
 /**
