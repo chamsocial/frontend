@@ -44,8 +44,7 @@ function PostsList({ location }) {
     <div className="layout-posts">
       <div className="content box">
         <h1 className="space-between">
-          Recent posts
-          <Link to="/posts" className="btn">See all posts</Link>
+          Posts
         </h1>
         {posts.list.map(post => <PostListItem key={post.id} post={post} />)}
         <div>

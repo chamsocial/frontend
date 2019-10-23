@@ -58,8 +58,8 @@ function Form({ groups }) {
         </tbody>
       </table>
 
-      {data && data.updateEmailSubscriptions && <div className="alert alert-success">Settings updated</div>}
-      {error && <div className="alert alert-danger">Something went wrong, please try again.</div>}
+      {data && data.updateEmailSubscriptions && <div className="alert alert--success">Settings updated</div>}
+      {error && <div className="alert alert--danger">Something went wrong, please try again.</div>}
 
       <div className="form-group">
         <button type="submit" disabled={loading} className="btn">Update email settings</button>

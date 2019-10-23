@@ -105,7 +105,7 @@ class Edit extends Component {
               <FastField component="textarea" name="aboutme" id="aboutme" />
             </div>
             {error && (
-              <div className="alert alert-danger">{error}</div>
+              <div className="alert alert--danger">{error}</div>
             )}
             <div className="form-group">
               <Button type="submit">Update</Button>
