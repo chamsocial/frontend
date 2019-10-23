@@ -35,6 +35,9 @@ const UserProfile = lazy(() => import('./pages/User/Profile'))
 const UserEdit = lazy(() => import('./pages/User/Edit'))
 const UserEmailSettings = lazy(() => import('./pages/User/EmailSettings'))
 
+// General routes
+const About = lazy(() => import('./pages/General/About'))
+
 
 function PrivateRoute({ component: Component, ...rest }) {
   const { user } = useAuthState()
@@ -52,6 +55,8 @@ const SomeComponent = withRouter(({ location }) => (
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/logout" component={Logout} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/contact" component={About} />
             <Route exact path="/users/activate/:code" component={Activation} />
             <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
             <PrivateRoute exact path="/users/edit" component={UserEdit} />
