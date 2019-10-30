@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import gql from 'graphql-tag'
 import Downshift from 'downshift'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,11 +11,22 @@ function filterMatches(inputValue) {
 }
 
 
-const GroupSelect = React.memo(({
-  setGroup, group, groupInput, groupsList,
-}) => {
-  if (groupsList.loading || groupsList.error) return null
-  const { groups } = groupsList
+const GET_GROUPS = gql`
+  query getGroupsQuery {
+    groups {
+      id
+      title
+      description
+    }
+  }
+`
+
+
+function GroupSelect({ setGroup, group }) {
+  const groupInput = useRef(null)
+  const { loading, error, data } = useQuery(GET_GROUPS)
+  if (loading || error) return null
+  const { groups } = data
 
   return (
     <Downshift
@@ -86,29 +97,17 @@ const GroupSelect = React.memo(({
       )}
     </Downshift>
   )
-})
+}
 GroupSelect.defaultProps = {
   group: null,
 }
 GroupSelect.propTypes = {
   group: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }),
   setGroup: PropTypes.func.isRequired,
-  groupInput: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
-  groupsList: PropTypes.shape({ loading: PropTypes.bool }).isRequired,
 }
 
 
-const GET_GROUPS = gql`
-  query getGroupsQuery {
-    groups {
-      id
-      title
-      description
-    }
-  }
-`
-
-
-export default graphql(GET_GROUPS, { name: 'groupsList' })(GroupSelect)
+export default GroupSelect
