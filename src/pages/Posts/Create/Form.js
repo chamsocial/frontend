@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Button from '../../../components/partials/Button'
@@ -27,7 +27,10 @@ const EDIT_POST = gql`
 `
 
 
-function Form({ draft, isDraft, deleteDraft }) {
+function Form({
+  draft, isDraft, deleteDraft, isEdit,
+}) {
+  const [redirect, setRedirect] = useState(null)
   const [state, setState] = useState(draft)
   const [createPost] = useMutation(CREATE_POST)
   const [editPost] = useMutation(EDIT_POST)
@@ -49,6 +52,11 @@ function Form({ draft, isDraft, deleteDraft }) {
   function submit(evt) {
     evt.preventDefault()
     submitPost('published')
+      .then(({ data }) => {
+        const slug = data.editPost ? data.editPost.slug : data.createPost.slug
+        const message = isEdit ? 'The post has been updated' : 'The post has been published'
+        setRedirect({ url: `/posts/${slug}`, message })
+      })
   }
 
   const createDraft = async () => (
@@ -73,7 +81,9 @@ function Form({ draft, isDraft, deleteDraft }) {
       .then(() => setState({ ...state, redirect: { pathname: '/', state: { flashMessage: 'Draft deleted!' } } }))
   }
 
-  if (state.redirect) return <Redirect to={state.redirect} />
+  if (redirect) {
+    return <Redirect to={{ pathname: redirect.url, state: { flashMessage: redirect.message } }} />
+  }
 
   return (
     <form onSubmit={submit} className="narrow-form">
@@ -101,6 +111,9 @@ function Form({ draft, isDraft, deleteDraft }) {
         {isDraft && (
           <button type="button" className="btn btn--warn" onClick={onDelete}>Delete draft</button>
         )}
+        {!isDraft && draft.id && (
+          <Link to={`/posts/${draft.slug}`} className="btn btn--warn">Cancel</Link>
+        )}
       </div>
     </form>
   )
@@ -110,6 +123,7 @@ Form.defaultProps = {
 }
 Form.propTypes = {
   isDraft: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
   deleteDraft: PropTypes.func.isRequired,
   draft: PropTypes.shape({
     title: PropTypes.string,

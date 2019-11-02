@@ -13,6 +13,7 @@ const GET_POST_EDIT = gql`
       id
       title
       content
+      slug
       status
       group {
         id
@@ -38,12 +39,18 @@ function CreatePost({ match }) {
   })
   if (loading || error) return <Loading error={error} />
   const isDraft = !!(data && data.draft && data.draft.status === 'draft')
+  const isEdit = !!(!isDraft && data && data.draft)
 
   return (
     <div className="box">
       <h1>{!postId ? 'Create Post' : `Edit ${isDraft ? 'draft' : 'post'}`}</h1>
       {!postId && <Drafts deleteDraft={deleteDraft} />}
-      <Form draft={data && data.draft} isDraft={isDraft} deleteDraft={deleteDraft} />
+      <Form
+        draft={data && data.draft}
+        isDraft={isDraft}
+        isEdit={isEdit}
+        deleteDraft={deleteDraft}
+      />
     </div>
   )
 }

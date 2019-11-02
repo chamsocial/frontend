@@ -64,5 +64,5 @@ const GET_POST_MEDIA = gql`
 `
 
 export default graphql(GET_POST_MEDIA, {
-  options: data => ({ variables: { postId: data.postId } }),
+  options: data => ({ variables: { postId: data.postId }, fetchPolicy: 'cache-and-network' }),
 })(PostMedia)
