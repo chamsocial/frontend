@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-apollo'
 import gql from 'graphql-tag'
 import { useAuthState } from 'components/Auth/context'
 import Loading from 'components/partials/Loading'
 import { dateToString } from 'utils'
+import ReplyForm from './ReplyForm'
 
 
 const MESSAGE_THREAD = gql`query messageThreadQuery($threadId: ID!) {
@@ -54,14 +56,29 @@ function Messages({ match }) {
       <div>
         {thread.messages.map(message => (
           <div key={message.id} className={`message ${message.user.id === user.id ? 'message--me' : ''}`}>
-            <strong>{message.user.username}</strong>
             <div className="message__text">{message.message}</div>
-            <small>{dateToString(message.createdAt)}</small>
+            <div className="message__meta meta space-between">
+              <span>{message.user.username}</span>
+              <span>{dateToString(message.createdAt)}</span>
+            </div>
           </div>
         ))}
       </div>
+
+      <hr />
+
+      <h1>Reply</h1>
+      <ReplyForm threadId={threadId} />
+
     </div>
   )
+}
+Messages.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      threadId: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 }
 
 
