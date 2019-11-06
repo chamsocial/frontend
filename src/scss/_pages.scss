@@ -124,3 +124,23 @@
   font-size: 12px;
   color: #a94442;
 }
+
+
+/**
+ * Message
+ */
+.message {
+  margin: 0 0 20px;
+  &--me {
+    .message__text {
+      background: #d3eeff;
+      border-color: #abdfff;
+    }
+  }
+  &__text {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 10px;
+    background: #f6f9fa;
+  }
+}
