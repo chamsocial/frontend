@@ -93,7 +93,7 @@ CommentsFormComponent.propTypes = {
 }
 
 const commentMutation = gql`
-  mutation commentMutation($comment: String!, $postSlug: String!, $parentId: Int) {
+  mutation commentMutation($comment: String!, $postSlug: String!, $parentId: ID) {
     createComment(comment: $comment, postSlug: $postSlug, parentId: $parentId) {
       id
       createdAt
