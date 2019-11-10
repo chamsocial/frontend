@@ -70,4 +70,21 @@ form.narrow-form {
       }
     }
   }
+
+
+  &__multi {
+    display: flex;
+    .input {
+      border: 0;
+      padding: 5px;
+      margin: 0;
+    }
+    &__item {
+      border: 1px solid #ddd;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin: 0 5px 0 0;
+      white-space: nowrap;
+    }
+  }
 }

@@ -38,6 +38,7 @@ const UserEmailSettings = lazy(() => import('./pages/User/EmailSettings'))
 // Private messages
 const MessageList = lazy(() => import('./pages/Messages/List'))
 const MessageView = lazy(() => import('./pages/Messages/View'))
+const MessageCreateFromPost = lazy(() => import('./pages/Messages/Create/FromPost'))
 
 // General routes
 const About = lazy(() => import('./pages/General/About'))
@@ -69,6 +70,7 @@ const SomeComponent = withRouter(({ location }) => (
             <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
             <PrivateRoute exact path="/posts/:slug" component={Post} />
             <PrivateRoute exact path="/messages/:threadId" component={MessageView} />
+            <PrivateRoute exact path="/messages/post/:slug" component={MessageCreateFromPost} />
             <PrivateRoute exact path="/messages" component={MessageList} />
             <Route exact path="/" component={Home} />
             <Route path="/posts" component={PostList} />
