@@ -21,12 +21,17 @@ const MESSAGES = gql`query messagesListQuery {
 
 
 function Messages() {
-  const { loading, error, data } = useQuery(MESSAGES)
+  const { loading, error, data } = useQuery(MESSAGES, { fetchPolicy: 'network-only' })
   if (loading || error) return <Loading error={error} />
 
   return (
     <div className="box">
-      <h1>Private messages</h1>
+      <div className="space-between">
+        <h1>Private messages</h1>
+        <span>
+          <Link to="/messages/new" className="btn">New private message</Link>
+        </span>
+      </div>
       <table className="table table--striped">
         <thead>
           <tr>

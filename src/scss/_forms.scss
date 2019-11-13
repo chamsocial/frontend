@@ -73,18 +73,53 @@ form.narrow-form {
 
 
   &__multi {
-    display: flex;
-    .input {
-      border: 0;
-      padding: 5px;
-      margin: 0;
-    }
     &__item {
-      border: 1px solid #ddd;
-      padding: 1px 5px;
+      position: relative;
+      display: inline-block;
+      background: $lightPrimaryBg;
+      border: 1px solid $lightPrimaryBorder;
+      padding: 3px 7px;
       border-radius: 3px;
-      margin: 0 5px 0 0;
+      margin: 0 10px 10px 0;
       white-space: nowrap;
+      font: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        background: #f9f9f9;
+        border-color: #ccc;
+      }
+      &:hover::after,
+      &:hover::before {
+        opacity: 1;
+      }
+      &::after,
+      &::before {
+        pointer-events: none;
+        opacity: 0;
+        display: block;
+        position: absolute;
+        left: 50%;
+        background: $lightPrimaryBg;
+        border: 1px solid $lightPrimaryBorder;
+        transition: opacity 0.3s ease-out;
+      }
+      &::after {
+        content: "";
+        bottom: calc(110% - 3px);
+        transform: translateX(-50%) rotate(45deg);
+        width: 6px;
+        height: 6px;
+        border-width: 0 1px 1px 0;
+      }
+      &::before {
+        content: attr(title);
+        bottom: 110%;
+        transform: translateX(-50%);
+        padding: 2px 5px;
+        font-size: 12px;
+        border-radius: 3px;
+      }
     }
   }
 }

@@ -35,7 +35,8 @@ function Messages({ match }) {
   const { threadId } = match.params
   const { user } = useAuthState()
   const { loading, error, data } = useQuery(MESSAGE_THREAD, { variables: { threadId } })
-  if (loading || error || !data) return <Loading error={error} />
+  if (loading || error) return <Loading error={error} />
+  if (!data || !data.messageThread) return <h1>No message found!</h1>
   const thread = data.messageThread
 
   return (

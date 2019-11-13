@@ -13,10 +13,7 @@ function User({ user }) {
           <Link to={`/users/${user.slug}`}>Visit profile</Link>
         </li>
         <li>
-          <a href="https://www.chamsocial.com/en/messages">
-            Private messages{' '}
-            <span className="desc">(Old site)</span>
-          </a>
+          <Link to="/messages">Private messages</Link>
         </li>
         <li>
           <Link to="/users/emails">E-mail subscriptions settings</Link>

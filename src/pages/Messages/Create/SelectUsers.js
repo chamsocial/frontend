@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Downshift from 'downshift'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 const GET_USERS = gql`query messageUsersQuery($search: String!) {
@@ -12,6 +11,7 @@ const GET_USERS = gql`query messageUsersQuery($search: String!) {
     username
   }
 }`
+
 
 function SelectUsers({ setUser, removeUser, users }) {
   const [search, setSearch] = useState('')
@@ -38,31 +38,34 @@ function SelectUsers({ setUser, removeUser, users }) {
       }) => (
         <div className="downshift">
           <label htmlFor="group">Recipients</label>
-          <div className="downshift__input">
-            <div className="downshift__multi input">
+          {users && !!users.length && (
+            <div>
               {users.map(user => (
-                <div className="downshift__multi__item" key={user.id}>
+                <button
+                  type="button"
+                  className="downshift__multi__item"
+                  title="Remove"
+                  key={user.id}
+                  onClick={() => removeUser(user.id)}
+                >
                   {user.username}
-                  {' '}
-                  <button type="button" className="btn btn--link" onClick={() => removeUser(user.id)}>
-                    <FontAwesomeIcon icon="times" />
-                  </button>
-                </div>
+                </button>
               ))}
-              <input
-                {...getInputProps({
-                  id: 'group',
-                  className: 'input',
-                  placeholder: 'Select group',
-                  required: true,
-                  value: inputValue,
-                  onFocus: () => {
-                    clearSelection()
-                    openMenu()
-                  },
-                })}
-              />
             </div>
+          )}
+          <div className="downshift__input">
+            <input
+              {...getInputProps({
+                id: 'users',
+                className: 'input',
+                placeholder: 'Add recipient',
+                value: inputValue,
+                onFocus: () => {
+                  clearSelection()
+                  openMenu()
+                },
+              })}
+            />
             {isOpen && userList && !!userList.length && (
               <ul {...getMenuProps()} className="downshift__dropdown">
                 {userList

@@ -33,7 +33,6 @@ function PrivateMessageForm({ post }) {
       </>
     )
   }
-  console.log(data, post)
 
   function onSubmit(evt) {
     evt.preventDefault()

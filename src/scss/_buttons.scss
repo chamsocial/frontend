@@ -22,14 +22,6 @@
     font-size: 0.75rem;
     padding: .2rem .5rem;
   }
-  &--link {
-    background: none;
-    color: #0086DB;
-    padding: 0;
-    &--desc {
-      color: #999;
-    }
-  }
   &--warn {
     background-color: #999;
   }
@@ -47,6 +39,9 @@
     font: inherit;
     color: #02667d;
     cursor: pointer;
+    &--desc {
+      color: #999;
+    }
   }
 
   &--header {
