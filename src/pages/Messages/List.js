@@ -49,7 +49,7 @@ function Messages() {
                 <Link to={`/messages/${message.id}`}>{message.subject}</Link>
               </td>
               <td>{dateToString(message.lastMessageAt)}</td>
-              <td>{message.lastMessageAt < message.seenAt ? '✔︎' : ''}</td>
+              <td>{message.lastMessageAt <= message.seenAt ? '✔︎' : ''}</td>
             </tr>
           ))}
         </tbody>
