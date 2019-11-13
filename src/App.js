@@ -2,13 +2,13 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
-  faTimes, faTimesCircle, faTrashAlt, faComment,
+  faTimes, faTimesCircle, faTrashAlt, faComment, faBell,
 } from '@fortawesome/free-solid-svg-icons'
 import apollo from './utils/apollo'
 import Auth from './components/Auth'
 import Router from './Router'
 
-library.add(faTimes, faTimesCircle, faTrashAlt, faComment)
+library.add(faTimes, faTimesCircle, faTrashAlt, faComment, faBell)
 
 // Prevent file drag'n drop to load file in the browser
 window.addEventListener('dragover', e => e.preventDefault(), false)

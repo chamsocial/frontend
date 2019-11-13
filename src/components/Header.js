@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthState } from './Auth/context'
+import Notifications from './Notifications'
+
 
 function Header() {
   const { user } = useAuthState()
@@ -13,8 +15,13 @@ function Header() {
         </h2>
         <div>
           {user
-            ? <Link className="btn btn--header" to={`/users/${user.slug}`}>{user.username}</Link>
-            : (
+            ? (
+              <div className="flex" style={{ display: 'flex' }}>
+                <Notifications />
+                <span>&nbsp;&nbsp;</span>
+                <Link className="btn btn--header" to={`/users/${user.slug}`}>{user.username}</Link>
+              </div>
+            ) : (
               <>
                 <Link className="btn btn--header" to="/login">Login</Link>
                 {' '}
@@ -26,5 +33,6 @@ function Header() {
     </div>
   )
 }
+
 
 export default Header
