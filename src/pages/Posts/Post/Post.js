@@ -9,6 +9,7 @@ import Comments from '../../../components/Comments'
 import Media from '../../../components/Posts/Media'
 import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
+import PostReply from './components/PostReply'
 
 export function Post({ data }) {
   const { loading, error, post } = data
@@ -40,6 +41,9 @@ export function Post({ data }) {
           {dateToString(createdAt)}
           <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
         </div>
+      </div>
+      <div className="box box--row">
+        <PostReply post={post} />
       </div>
       <div className="box box--padded">
         <Comments postSlug={post.slug} comments={comments} />

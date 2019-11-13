@@ -16,7 +16,9 @@ const GET_USERS = gql`query messageUsersQuery($search: String!) {
 function SelectUsers({ setUser, removeUser, users }) {
   const [search, setSearch] = useState('')
   const { data } = useQuery(GET_USERS, { skip: !search, variables: { search } })
-  const userList = data ? data.userSearch : []
+  const userList = data
+    ? data.userSearch.filter(u => !users.find(sUser => sUser.id === u.id))
+    : []
 
   return (
     <Downshift
@@ -61,13 +63,14 @@ function SelectUsers({ setUser, removeUser, users }) {
                 })}
               />
             </div>
-            {isOpen && (
+            {isOpen && userList && !!userList.length && (
               <ul {...getMenuProps()} className="downshift__dropdown">
-                {userList.map(user => (
-                  <li {...getItemProps({ key: user.id, item: user })}>
-                    {user.username}
-                  </li>
-                ))}
+                {userList
+                  .map(user => (
+                    <li {...getItemProps({ key: user.id, item: user })}>
+                      {user.username}
+                    </li>
+                  ))}
               </ul>
             )}
           </div>
