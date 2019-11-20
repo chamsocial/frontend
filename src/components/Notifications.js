@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo'
@@ -18,6 +18,18 @@ const NOTIFICATIONS = gql`query notificationsQuery {
 function Notifications() {
   const [isOpen, toggleOpen] = useState(false)
   const { loading, data, refetch } = useQuery(NOTIFICATIONS)
+  const node = useRef()
+  useEffect(() => {
+    function handleClick(evt) {
+      if (node.current.contains(evt.target)) return
+      toggleOpen(false)
+    }
+    if (isOpen) document.addEventListener('mousedown', handleClick)
+    return () => {
+      if (isOpen) document.removeEventListener('mousedown', handleClick)
+    }
+  }, [isOpen])
+
   let count = null
   if (data && data.notifications) count = data.notifications.length
   const classNames = ['notif']
@@ -30,7 +42,7 @@ function Notifications() {
   }
 
   return (
-    <div style={{ position: 'relative' }} className={classNames.join(' ')}>
+    <div style={{ position: 'relative' }} ref={node} className={classNames.join(' ')}>
       <button type="button" className="btn btn--header" onClick={() => toggleOpen(prev => !prev)}>
         <FontAwesomeIcon icon="bell" />
         {count !== null && <div className="notif-badge">{count}</div>}
