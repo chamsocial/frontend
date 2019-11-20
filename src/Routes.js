@@ -12,6 +12,8 @@ const Home = lazy(() => import('./pages/Home'))
 
 // Auth
 const Login = lazy(() => import('./pages/Auth/Login'))
+const ForgotPassword = lazy(() => import('./pages/Auth/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/Auth/ResetPassword'))
 const Signup = lazy(() => import('./pages/Auth/Signup'))
 const Activation = lazy(() => import('./pages/Auth/Activation'))
 function Logout() {
@@ -58,6 +60,8 @@ const SomeComponent = withRouter(({ location }) => (
         <Suspense fallback={<Loading />}>
           <Switch key={location.key} location={location}>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/reset-password/:token" component={ResetPassword} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/about" component={About} />

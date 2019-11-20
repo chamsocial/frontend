@@ -52,6 +52,9 @@ function LoginForm({ location }) {
       <div className="form-group">
         <label htmlFor="password">Password</label>
         <input className="input" type="password" value={password} onChange={evt => setPassword(evt.target.value)} required />
+        <div className="desc text-right">
+          <Link to="forgot-password">Forgot password?</Link>
+        </div>
       </div>
       {error && <Alert type="danger">Invalid username/email or password.</Alert>}
       <div className="form-group">
