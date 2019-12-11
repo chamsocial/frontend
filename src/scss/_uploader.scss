@@ -16,6 +16,10 @@ img {
     border: 1px solid #0bcc2b;
     box-shadow: 0 0 7px 1px #0bcc2b;
   }
+  &--can-not-drop {
+    border: 1px solid #cc280b;
+    box-shadow: 0 0 7px 1px #cc280b;
+  }
   &__desc {
     text-align: center;
     padding: 60px 20px;
