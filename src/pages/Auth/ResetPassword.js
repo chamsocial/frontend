@@ -6,6 +6,8 @@ import { Redirect } from 'react-router-dom'
 import Loading from 'components/partials/Loading'
 import Button from 'components/partials/Button'
 import Alert from 'components/partials/Alert'
+import { useAuthDispatch } from 'components/Auth/context'
+import { authFields } from 'graphql/fragments'
 
 
 const FORGOT_PASSWORD_TOKEN = gql`
@@ -15,8 +17,11 @@ const FORGOT_PASSWORD_TOKEN = gql`
 `
 const RESET_PASSWORD = gql`
   mutation resetPasswordMutation($token: String!, $password: String!) {
-    resetPassword(token: $token, password: $password)
+    resetPassword(token: $token, password: $password) {
+      ...AuthFields
+    }
   }
+  ${authFields}
 `
 
 function ResetPassword({ match }) {
@@ -24,18 +29,23 @@ function ResetPassword({ match }) {
   const { loading, error, data } = useQuery(FORGOT_PASSWORD_TOKEN, { variables: { token } })
   const [resetPassword, mutation] = useMutation(RESET_PASSWORD)
   const [password, setPassword] = useState('')
+  const authDispatch = useAuthDispatch()
 
   if (loading) return <Loading />
   if (error) return <Alert type="danger">Something went wrong, please try again.</Alert>
-  if (data.resetPassword === null) return <Alert type="danger">Invalid or expired reset url/token.</Alert>
+  if (data.resetPassword === null) return <Alert type="danger">Invalid or expired reset token.</Alert>
   if (mutation.data && mutation.data.resetPassword) {
-    return <Redirect to={{ pathname: '/login', state: { flashMessage: 'Your password has been reset!' } }} />
+    return <Redirect to={{ pathname: '/', state: { flashMessage: 'You have been logged in and your password has been reset!' } }} />
   }
 
   function onSubmit(evt) {
     evt.preventDefault()
     if (mutation.loading) return
     resetPassword({ variables: { token, password } })
+      .then(resp => {
+        authDispatch({ type: 'login', user: resp.data.resetPassword })
+      })
+      .catch(() => {})
   }
 
   return (
