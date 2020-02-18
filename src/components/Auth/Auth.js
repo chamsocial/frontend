@@ -3,17 +3,18 @@ import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo'
 import Loading from 'components/partials/Loading'
+import { authFields } from 'graphql/fragments'
 import { AuthProvider } from './context'
 
 
-const AUTH = gql`query authQuery {
-  me {
-    id
-    username
-    slug
-    bouncing
+const AUTH = gql`
+  query authQuery {
+    me {
+      ...AuthFields
+    }
   }
-}`
+  ${authFields}
+`
 
 
 function Auth({ children }) {

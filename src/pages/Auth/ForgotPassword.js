@@ -22,7 +22,7 @@ function ForgotPassword() {
 
   function onSubmit(evt) {
     evt.preventDefault()
-    forgotPassword({ variables: { username } })
+    forgotPassword({ variables: { username } }).catch(() => {})
   }
 
   return (

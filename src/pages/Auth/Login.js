@@ -3,22 +3,22 @@ import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { useMutation } from 'react-apollo'
 import { Link, Redirect } from 'react-router-dom'
-import Button from '../../components/partials/Button'
-import Alert from '../../components/partials/Alert'
-import { useAuthState, useAuthDispatch } from '../../components/Auth/context'
+import Button from 'components/partials/Button'
+import Alert from 'components/partials/Alert'
+import { useAuthState, useAuthDispatch } from 'components/Auth/context'
+import { authFields } from 'graphql/fragments'
 
 
 const { REACT_APP_DEV_USER = '', REACT_APP_DEV_PASS = '' } = process.env
 const LOGIN = gql`
   mutation LoginMutation($username: String! $password: String!) {
     login(username: $username, password: $password) {
-      id
-      slug
-      bouncing
-      username
+      ...AuthFields
     }
   }
+  ${authFields}
 `
+
 
 function LoginForm({ location }) {
   const [login, { loading, error }] = useMutation(LOGIN)
@@ -39,6 +39,7 @@ function LoginForm({ location }) {
       .then(resp => {
         authDispatch({ type: 'login', user: resp.data.login })
       })
+      .catch(() => {})
   }
 
   return (

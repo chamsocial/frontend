@@ -1,6 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 import gql from 'graphql-tag'
 
-export const x = 'y'
+
 export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
   post(slug: $slug) {
     id
