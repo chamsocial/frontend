@@ -3,21 +3,21 @@ import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Redirect } from 'react-router-dom'
-import { useAuthDispatch } from '../../components/Auth/context'
-import Loading from '../../components/partials/Loading'
-import Alert from '../../components/partials/Alert'
+import { useAuthDispatch } from 'components/Auth/context'
+import Loading from 'components/partials/Loading'
+import Alert from 'components/partials/Alert'
+import { authFields } from 'graphql/fragments'
 
 
 const ACTIVATION = gql`
   mutation activationMutation($code: String!) {
     activateUser(code: $code) {
-      id
-      username
-      slug
-      email
+      ...AuthFields
     }
   }
+  ${authFields}
 `
+
 
 function Activation({ match }) {
   const [activate, { error, data }] = useMutation(ACTIVATION)
@@ -27,7 +27,7 @@ function Activation({ match }) {
     activate({ variables: { code } })
       .then(({ data: { activateUser } }) => {
         authDispatch({ type: 'login', user: activateUser })
-      })
+      }).catch(() => {})
   }, [code, activate, authDispatch])
   if (error) return <Alert type="danger">Could not find activation code or it&apos;s already been used.</Alert>
   if (!data || !data.activateUser) return <Loading />
