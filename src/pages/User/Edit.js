@@ -48,7 +48,6 @@ class Edit extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { error } = this.state
     const { data } = this.props
     const user = data.me

@@ -5,7 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import FlashMessages from './components/FlashMessages'
 
-const Router = () => {
+function Router() {
   return (
     <BrowserRouter>
       <Header />
