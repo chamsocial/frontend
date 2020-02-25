@@ -1,136 +1,11 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import * as compose from 'lodash.flowright'
-import { graphql } from 'react-apollo'
+import { useQuery, useMutation } from 'react-apollo'
+import { Redirect, Link } from 'react-router-dom'
 import gql from 'graphql-tag'
-import {
-  Formik, FastField, ErrorMessage,
-} from 'formik'
-import GraphLoader from '../../components/partials/GraphLoader'
-import Button from '../../components/partials/Button'
-
-
-class Edit extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      error: false,
-    }
-
-    this.submitUserEdits = this.submitUserEdits.bind(this)
-  }
-
-  submitUserEdits(values) {
-    const { updateUser, history } = this.props
-    const variables = {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      companyName: values.companyName,
-      jobtitle: values.jobtitle,
-      interests: values.interests,
-      aboutme: values.aboutme,
-      lang: values.lang,
-    }
-    updateUser(variables)
-      .then(() => {
-        history.push({
-          pathname: `/users/${values.slug}/`,
-          state: { flashMessage: 'Your profile has been updated.' },
-        })
-      })
-      .catch(e => {
-        if (e.graphQLErrors) {
-          return this.setState({ error: e.graphQLErrors[0].message })
-        }
-        return this.setState({ error: 'Something unexpected went wrong.' })
-      })
-  }
-
-  render() {
-    const { error } = this.state
-    const { data } = this.props
-    const user = data.me
-
-    return (
-      <Formik
-        initialValues={user}
-        onSubmit={this.submitUserEdits}
-        validate={({ lang }) => {
-          const errors = {}
-          if (!lang) errors.lang = 'Language is required'
-          return errors
-        }}
-      >
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit} className="box">
-            <h2>Edit your profile {user.username}</h2>
-            <div className="row">
-              <div className="col">
-                <label htmlFor="firstName">First name</label>
-                <FastField className="input" name="firstName" id="firstName" />
-              </div>
-              <div className="col">
-                <label htmlFor="lastName">Last name</label>
-                <FastField className="input" name="lastName" id="lastName" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <label htmlFor="companyName">Company</label>
-                <FastField className="input" name="companyName" id="companyName" />
-              </div>
-              <div className="col">
-                <label htmlFor="jobtitle">Jobtitle</label>
-                <FastField className="input" name="jobtitle" id="jobtitle" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <label htmlFor="lang">Language</label>
-                <FastField component="select" name="lang" id="lang">
-                  <option value="en">English</option>
-                  <option value="fr">Français</option>
-                </FastField>
-                <ErrorMessage name="lang" id="lang" />
-              </div>
-              <div className="col">
-                <label htmlFor="interests">Interests</label>
-                <FastField component="textarea" name="interests" id="interests" />
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="aboutme">About me</label>
-              <FastField component="textarea" name="aboutme" id="aboutme" />
-            </div>
-            {error && (
-              <div className="alert alert--danger">{error}</div>
-            )}
-            <div className="form-group">
-              <Button type="submit">Update</Button>
-            </div>
-          </form>
-        )}
-      </Formik>
-    )
-  }
-}
-Edit.propTypes = {
-  updateUser: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-  data: PropTypes.shape({
-    me: PropTypes.shape({
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      jobtitle: PropTypes.string,
-      interests: PropTypes.string,
-      aboutme: PropTypes.string,
-      lang: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-}
+import Button from 'components/partials/Button'
+import Loading from 'components/partials/Loading'
+import Alert from 'components/partials/Alert'
 
 
 const editUserQuery = gql`query editUserQuery {
@@ -148,8 +23,6 @@ const editUserQuery = gql`query editUserQuery {
   }
 }
 `
-
-
 const userProfileMutation = gql`
   mutation userProfileMutation(
     $firstName: String, $lastName: String, $companyName: String
@@ -173,16 +46,102 @@ const userProfileMutation = gql`
   }
 `
 
-const loadEdit = GraphLoader(Edit)
-const graphEdit = compose(
-  graphql(editUserQuery, { options: { fetchPolicy: 'network-only' } }),
-  graphql(userProfileMutation, {
-    props: ({ mutate }) => ({
-      updateUser: data => {
-        const variables = { ...data }
-        return mutate({ variables })
-      },
-    }),
-  }),
-)(loadEdit)
-export default graphEdit
+
+function Edit({ profile }) {
+  const [state, setState] = useState({
+    firstName: profile.firstName || '',
+    lastName: profile.lastName || '',
+    companyName: profile.companyName || '',
+    jobtitle: profile.jobtitle || '',
+    interests: profile.interests || '',
+    aboutme: profile.aboutme || '',
+    lang: profile.lang || 'en',
+  })
+  const [updateProfile, { loading, error, data }] = useMutation(userProfileMutation)
+
+  function submitProfileChange(evt) {
+    evt.preventDefault()
+    if (loading) return
+    updateProfile({ variables: state }).catch(() => {})
+  }
+
+  function onChange(evt) {
+    const { value, id } = evt.target
+    setState(currState => ({ ...currState, [id]: value }))
+  }
+
+  if (data?.updateUser?.id) {
+    return (
+      <Redirect to={{
+        pathname: `/users/${profile.slug}/`,
+        state: { flashMessage: 'Your profile has been updated.' },
+      }}
+      />
+    )
+  }
+
+  return (
+    <form onSubmit={submitProfileChange} className="box">
+      <h1>Edit your profile {profile.username}</h1>
+      <div className="row">
+        <div className="col">
+          <label htmlFor="firstName">First name</label>
+          <input className="input" id="firstName" value={state.firstName} onChange={onChange} />
+        </div>
+        <div className="col">
+          <label htmlFor="lastName">Last name</label>
+          <input className="input" id="lastName" value={state.lastName} onChange={onChange} />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <label htmlFor="companyName">Company</label>
+          <input className="input" id="companyName" value={state.companyName} onChange={onChange} />
+        </div>
+        <div className="col">
+          <label htmlFor="jobtitle">Jobtitle</label>
+          <input className="input" id="jobtitle" value={state.jobtitle} onChange={onChange} />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <label htmlFor="aboutme">About me</label>
+          <textarea id="aboutme" value={state.aboutme} onChange={onChange} />
+        </div>
+        <div className="col">
+          <label htmlFor="interests">Interests</label>
+          <textarea id="interests" value={state.interests} onChange={onChange} />
+        </div>
+      </div>
+      <div className="form-group">
+        <label htmlFor="lang">Language</label>
+        <select component="select" id="lang" value={state.lang} onChange={onChange}>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+
+      {error && <Alert type="danger">Failed to save profile. Please reload and try again.</Alert>}
+      <div className="form-group space-between">
+        <Button type="submit" loading={loading}>Update</Button>
+        <Link to={`/users/${profile.slug}`}>Cancel</Link>
+      </div>
+    </form>
+  )
+}
+Edit.propTypes = {
+  profile: PropTypes.shape({
+    id: PropTypes.any.isRequired,
+    firstName: PropTypes.string,
+  }).isRequired,
+}
+
+
+function LoadProfileData() {
+  const { data, loading, error } = useQuery(editUserQuery, { fetchPolicy: 'network-only' })
+  if (loading || error) return <Loading error={error} />
+  return <Edit profile={data.me} />
+}
+
+
+export default LoadProfileData
