@@ -13,6 +13,8 @@ const CREATE_POST = gql`
     createPost(title: $title, content: $content, status: $status, groupId: $groupId) {
       id
       slug
+      title
+      content
     }
   }
 `
@@ -22,6 +24,8 @@ const EDIT_POST = gql`
     editPost(id: $id, title: $title, content: $content, status: $status, groupId: $groupId) {
       id
       slug
+      title
+      content
     }
   }
 `

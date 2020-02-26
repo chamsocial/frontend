@@ -21,7 +21,7 @@ function PostListItem({ post }) {
       <div className="meta">
         {dateToString(createdAt)}
         {' '}
-        {commentsCount && <><FontAwesomeIcon icon="comment" /> {commentsCount}</>}
+        {!!commentsCount && <><FontAwesomeIcon icon="comment" /> {commentsCount}</>}
         {authorInfo}
       </div>
     </div>

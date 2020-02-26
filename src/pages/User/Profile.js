@@ -39,7 +39,7 @@ function Profile({ data }) {
         {!!user.jobtitle && <p><strong>Jobtitle:</strong> {user.jobtitle}</p>}
       </div>
       <div className="box">
-        <h2>Posts:</h2>
+        <h2>Latest posts:</h2>
         {user.posts.map(post => <PostListItem key={post.id} post={post} />)}
       </div>
     </>
@@ -63,7 +63,7 @@ const profileQuery = gql`query userQuery ($slug: String!) {
     aboutme
     jobtitle
     avatarUrl
-    posts(count: 5) {
+    posts(count: 10) {
       id
       title
       slug
