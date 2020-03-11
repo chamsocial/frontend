@@ -16,6 +16,7 @@ const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupI
       slug
       createdAt
       commentsCount
+      hasMedia
       author {
         id
         slug

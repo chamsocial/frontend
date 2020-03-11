@@ -15,6 +15,7 @@ const LATEST_POSTS = gql`query postsQuery {
       slug
       createdAt
       commentsCount
+      hasMedia
       author {
         id
         slug

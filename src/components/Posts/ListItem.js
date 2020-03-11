@@ -6,7 +6,7 @@ import { dateToString } from '../../utils'
 
 function PostListItem({ post }) {
   const {
-    title, slug, author, createdAt, commentsCount,
+    title, slug, author, createdAt, commentsCount, hasMedia,
   } = post
   let authorInfo = null
   if (author) {
@@ -21,7 +21,9 @@ function PostListItem({ post }) {
       <div className="meta">
         {dateToString(createdAt)}
         {' '}
-        {!!commentsCount && <><FontAwesomeIcon icon="comment" /> {commentsCount}</>}
+        {hasMedia && <FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="image" />}
+        {' '}
+        {!!commentsCount && <><FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="comment" /> {commentsCount}</>}
         {authorInfo}
       </div>
     </div>
