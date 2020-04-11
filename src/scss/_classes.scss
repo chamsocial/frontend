@@ -1,4 +1,5 @@
 .float-right { float: right }
+.float-left { float: left }
 
 .space-between {
   display: flex;
@@ -31,3 +32,8 @@
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 .text-center { text-align: center; }
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}

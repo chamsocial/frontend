@@ -10,11 +10,20 @@ body {
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 1.9rem;
   font-weight: 300;
   color: #555;
   margin: 0 0 20px;
   line-height: 1.1;
+  letter-spacing: 1px;
+  word-break: break-word;
+}
+@media (max-width: 400px) {
+  .h1--long { font-size: 1.5rem; }
+}
+.subtitle {
+  margin: -15px 0 20px;
+  color: #777;
 }
 h2 {
   font-weight: 400;

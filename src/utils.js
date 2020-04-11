@@ -1,5 +1,6 @@
 function toJson(res) { return res.json() }
 
+
 export function dateToString(date) {
   if (!date) return '-'
 
@@ -13,6 +14,18 @@ export function dateToString(date) {
   }
   const formated = d.toLocaleDateString(undefined, options)
   return `${formated}`
+}
+
+
+export function prettyDate(date) {
+  if (!date) return '-'
+
+  const options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }
+  return new Date(date).toLocaleDateString(undefined, options)
 }
 
 export const request = {
