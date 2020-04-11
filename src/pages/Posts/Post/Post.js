@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { dateToString } from '../../../utils'
@@ -11,26 +11,28 @@ import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
 import PostReply from './components/PostReply'
 
-export function Post({ data }) {
-  const { loading, error, post } = data
+
+export function Post({ match }) {
+  const { loading, error, data } = useQuery(singlePostQuery, {
+    variables: { slug: match.params.slug },
+    fetchPolicy: 'network-only',
+  })
   if (error && error.message.includes('NO_POSTS_FOUND')) {
     return <div className="box text-center"><h1>No post found</h1></div>
   }
   if (loading || error) return <Loading error={error} />
-  const {
-    title, createdAt, content, author, comments, canEdit,
-  } = post
+  const { post } = data
 
   return (
     <>
       <div className="box box--padded box--row">
-        <h1>{title}</h1>
+        <h1>{post.title}</h1>
         <hr />
         <div className="post-content">
-          <ReactMarkdown source={content} />
+          <ReactMarkdown source={post.content} />
         </div>
         <Media postId={post.id} />
-        {canEdit && (
+        {post.canEdit && (
           <>
             <Link to={`/posts/${post.id}/edit`}>Edit</Link>
             {' '}|{' '}
@@ -38,25 +40,24 @@ export function Post({ data }) {
           </>
         )}
         <div className="meta">
-          {dateToString(createdAt)}
-          <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
+          {dateToString(post.createdAt)}
+          <Link to={`/users/${post.author.slug}`} className="float-right">{post.author.username}</Link>
         </div>
       </div>
       <div className="box box--row">
         <PostReply post={post} />
       </div>
       <div className="box box--padded">
-        <Comments postSlug={post.slug} comments={comments} />
+        <Comments postSlug={post.slug} comments={post.comments} />
       </div>
     </>
   )
 }
 Post.propTypes = {
-  data: PropTypes.shape({
-    loading: PropTypes.bool,
+  match: PropTypes.shape({
+    params: PropTypes.object,
   }).isRequired,
 }
 
-export default graphql(singlePostQuery, {
-  options: data => ({ variables: { slug: data.match.params.slug } }),
-})(Post)
+
+export default Post
