@@ -53,10 +53,7 @@ export class CommentsFormComponent extends Component {
       .then(() => {
         this.setState(() => ({ comment: '', status: 'sent' }))
         // @TODO scroll to comment
-        this.timeoutStatus = setTimeout(() => {
-          this.setState(() => ({ status: '' }))
-          closeMe()
-        }, 2000)
+        this.timeoutStatus = setTimeout(() => closeMe(), 1500)
       })
       .catch(() => {
         this.setState(() => ({ status: '' }))
@@ -68,12 +65,14 @@ export class CommentsFormComponent extends Component {
     const { comment, status } = this.state
     let buttonText = 'Send comment'
     if (status === 'loading') buttonText = 'Saving..'
-    if (status === 'sent') buttonText = 'Comment added!'
+    if (status === 'sent') {
+      return <div className="alert alert--success">The comment has been added!</div>
+    }
 
     return (
       <form onSubmit={this.sendComment}>
         <div className="form-group">
-          <textarea onChange={this.updateMessage} value={comment} />
+          <textarea onChange={this.updateMessage} value={comment} className="textarea--small" />
         </div>
         <div className="form-group">
           <button type="submit" className="btn" disabled={(status === 'loading' || comment.length < 3)}>

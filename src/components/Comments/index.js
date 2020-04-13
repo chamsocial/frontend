@@ -5,11 +5,6 @@ import CommentsForm from './Form'
 
 function Comments({ comments, postSlug }) {
   const [isOpen, setOpen] = useState(false)
-  const commentsList = !comments.length
-    ? <div>No comments</div>
-    : comments.map(comment => (
-      <Comment key={comment.id} postSlug={postSlug} comment={comment} />
-    ))
 
   return (
     <div>
@@ -21,8 +16,12 @@ function Comments({ comments, postSlug }) {
           </button>
         </div>
       </div>
-      {isOpen && (<CommentsForm postSlug={postSlug} />)}
-      {commentsList}
+      {isOpen && (<CommentsForm postSlug={postSlug} closeMe={() => setOpen(false)} />)}
+      {!comments.length
+        ? <div>No comments. Be the first!</div>
+        : comments.map(comment => (
+          <Comment key={comment.id} postSlug={postSlug} comment={comment} />
+        ))}
     </div>
   )
 }

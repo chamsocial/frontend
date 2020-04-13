@@ -25,6 +25,12 @@
       transform: rotate(180deg) scale(1.5);
     }
   }
+
+  &--success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #9bd0a7;
+  }
 }
 
 .alert--warn {
