@@ -16,7 +16,11 @@ function Comments({ comments, postSlug }) {
           </button>
         </div>
       </div>
-      {isOpen && (<CommentsForm postSlug={postSlug} closeMe={() => setOpen(false)} />)}
+      {isOpen && (
+        <div className="form-group">
+          <CommentsForm postSlug={postSlug} closeMe={() => setOpen(false)} />
+        </div>
+      )}
       {!comments.length
         ? <div>No comments. Be the first!</div>
         : comments.map(comment => (

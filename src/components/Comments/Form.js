@@ -74,7 +74,7 @@ export class CommentsFormComponent extends Component {
         <div className="form-group">
           <textarea onChange={this.updateMessage} value={comment} className="textarea--small" />
         </div>
-        <div className="form-group">
+        <div>
           <button type="submit" className="btn" disabled={(status === 'loading' || comment.length < 3)}>
             {buttonText}
           </button>

@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ReactMarkdown from 'react-markdown'
+import { Link } from 'react-router-dom'
+import { dateToString } from 'utils'
 import CommentsForm from './Form'
-import { dateToString } from '../../utils'
+
 
 class Comment extends Component {
   constructor(props) {
@@ -39,25 +42,26 @@ class Comment extends Component {
       )
     }
 
-    let form = null
-    let replyButton = null
-    if (reply) {
-      form = <CommentsForm postSlug={postSlug} parentId={comment.id} closeMe={this.closeForm} />
-    }
-    if (index < 4) {
-      replyButton = <a href="#reply" className="float-right" onClick={this.setReply}>Reply</a>
-    }
-
     return (
       <div>
         <div className="comment">
-          <div className="meta">
-            {replyButton}
-            { dateToString(createdAt) } - {author.username}
+          <div className="meta space-between comment__meta">
+            <Link to={`/users/${author.slug}`}>{author.username}</Link>
+            <span>{dateToString(createdAt)}</span>
           </div>
-          {/* eslint-disable-next-line react/no-danger */}
-          <div dangerouslySetInnerHTML={{ __html: content }} />
-          {form}
+          <div className="comment__content">
+            {index < 4 && (
+              <div className="comment__reply">
+                <a href="#reply" className="meta" onClick={this.setReply}>
+                  {reply ? 'Close' : 'Reply'}
+                </a>
+              </div>
+            )}
+            <ReactMarkdown source={content} />
+          </div>
+          {reply && (
+            <CommentsForm postSlug={postSlug} parentId={comment.id} closeMe={this.closeForm} />
+          )}
         </div>
         {subComments}
       </div>
@@ -74,5 +78,6 @@ Comment.propTypes = {
   index: PropTypes.number,
   postSlug: PropTypes.string.isRequired,
 }
+
 
 export default Comment

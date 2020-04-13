@@ -52,6 +52,7 @@ fragment CommentParts on Comment {
   parentId
   author {
     id
+    slug
     username
   }
 }
