@@ -1,0 +1,91 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .6);
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 100%;
+  margin: 0 auto;
+  padding: 10px 10px 10px;
+
+  &--close {
+    float: right;
+    font-size: 20px;
+    padding: 5px;
+    border: 0;
+    -webkit-appearance: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+    transition: all .3s;
+    &:hover {
+      transform: scale(1.5);
+      color: #d86763;
+    }
+    svg {
+      filter: drop-shadow(0 0 1px rgba(0, 0, 0, .8))
+    }
+  }
+  &--body {
+    clear: both;
+    padding: 15px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+  }
+}
+
+/* Overlay Transitions */
+.modal-transition-enter .overlay {
+  opacity: 0;
+}
+
+.modal-transition-enter-active .overlay {
+  opacity: 1;
+  transition: opacity 120ms;
+}
+
+.modal-transition-exit-active .overlay {
+  opacity: 1;
+}
+
+.modal-transition-exit-active .overlay {
+  opacity: 0;
+  transition: opacity 120ms;
+}
+
+/* Modal Transitions */
+
+.modal-transition-enter .modal {
+  opacity: 0;
+  transform: scale(0.95) translateY(-30px);
+}
+
+.modal-transition-enter-active .modal {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+  transition: opacity 120ms, transform 120ms;
+}
+
+.modal-transition-exit .modal {
+  opacity: 1;
+}
+
+.modal-transition-exit-active .modal {
+  opacity: 0;
+  transform: scale(0.95) translateY(-30px);
+  transition: opacity 200ms, transform 200ms;
+}
