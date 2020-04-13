@@ -54,7 +54,9 @@ export function Post({ match }) {
               </button>
             )}
           >
-            {() => <PrivateMessageForm post={post} postSlug={post.slug} />}
+            {({ closeModal }) => (
+              <PrivateMessageForm post={post} postSlug={post.slug} closeFn={closeModal} />
+            )}
           </Modal>
         </div>
       </div>

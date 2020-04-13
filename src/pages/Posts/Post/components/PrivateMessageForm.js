@@ -15,7 +15,7 @@ const POST_PM = gql`
 `
 
 
-function PrivateMessageForm({ post }) {
+function PrivateMessageForm({ post, closeFn }) {
   const [message, setMessage] = useState('')
   const [sendMessage, { loading, error, data }] = useMutation(POST_PM)
   if (loading || error) return <Loading error={error} />
@@ -23,12 +23,15 @@ function PrivateMessageForm({ post }) {
   if (data && data.message) {
     return (
       <>
-        <hr />
         <p>
           The message has been sent to {post.author.username}.
         </p>
         <p>
           <Link to={`/messages/${data.message.id}`}>View message</Link>
+          {' or '}
+          <button type="button" className="btn btn-link" onClick={closeFn}>
+            close modal
+          </button>
         </p>
       </>
     )

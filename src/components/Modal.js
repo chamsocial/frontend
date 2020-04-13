@@ -34,7 +34,7 @@ const Modal = ({ children, activator }) => {
         <button className="modal--close" type="button" onClick={closeModal}>
           <FontAwesomeIcon icon="times" />
         </button>
-        <div className="modal--body">{children({ openModal })}</div>
+        <div className="modal--body">{children({ openModal, closeModal })}</div>
       </div>
     </div>
   )
