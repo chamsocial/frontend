@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Comment from './Comment'
+import CommentsForm from './Form'
 
 function Comments({ comments, postSlug }) {
+  const [isOpen, setOpen] = useState(false)
   const commentsList = !comments.length
     ? <div>No comments</div>
     : comments.map(comment => (
@@ -11,7 +13,15 @@ function Comments({ comments, postSlug }) {
 
   return (
     <div>
-      <h1>Comments</h1>
+      <div className="space-between">
+        <h1>Comments</h1>
+        <div>
+          <button type="button" onClick={() => setOpen(!isOpen)} className="btn btn--secondary">
+            {isOpen ? 'Close' : 'Write comment'}
+          </button>
+        </div>
+      </div>
+      {isOpen && (<CommentsForm postSlug={postSlug} />)}
       {commentsList}
     </div>
   )

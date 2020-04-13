@@ -10,7 +10,7 @@
   vertical-align: middle;
   user-select: none;
   border: 1px solid transparent;
-  padding: .5rem 1rem;
+  padding: .5rem .7rem;
   font-size: 1rem;
   border-radius: .25rem;
   transition: opacity .3s;
@@ -21,7 +21,7 @@
   }
   &--small {
     font-size: 0.75rem;
-    padding: .2rem .5rem;
+    padding: .2rem .4rem;
   }
   &--warn {
     background-color: #999;
@@ -30,7 +30,22 @@
     background: #FF595E;
   }
   &--secondary {
-    background: #8900db;
+    background: none;
+    color: #005c96;
+    text-shadow: none;
+    border: 1px solid #0086DB;
+    transition: all .3s;
+    &:hover {
+      background: #0086DB;
+      color: #fff;
+      border-color: #0086DB;
+    }
+    // color: #337d54;
+    // border: 1px solid #61a980;
+    // &:hover {
+    //   background: #337d54;
+    //   border-color: #337d54;
+    // }
   }
 
   &--link {

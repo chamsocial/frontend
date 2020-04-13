@@ -46,8 +46,8 @@ function PrivateMessageForm({ post }) {
         <label htmlFor="message">Private reply to {post.author.username}</label>
         <textarea id="message" className="input" value={message} onChange={evt => setMessage(evt.target.value)} />
       </div>
-      <div className="form-group">
-        <button type="submit" disabled={message.length < 3} className="btn btn--secondary">Send private message</button>
+      <div>
+        <button type="submit" disabled={message.length < 3} className="btn">Send private message</button>
       </div>
     </form>
   )

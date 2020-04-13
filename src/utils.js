@@ -6,9 +6,9 @@ export function dateToString(date) {
 
   const d = new Date(date)
   const options = {
-    year: '2-digit',
-    month: '2-digit',
-    day: '2-digit',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   }

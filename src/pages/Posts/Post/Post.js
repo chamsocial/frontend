@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import Modal from 'components/Modal'
 import { dateToString } from '../../../utils'
 import Loading from '../../../components/partials/Loading'
 import Comments from '../../../components/Comments'
 import Media from '../../../components/Posts/Media'
 import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
-import PostReply from './components/PostReply'
+import PrivateMessageForm from './components/PrivateMessageForm'
+// import PostReply from './components/PostReply'
 
 
 export function Post({ match }) {
@@ -39,14 +41,26 @@ export function Post({ match }) {
             <DeletePost postId={post.id} />
           </>
         )}
-        <div className="meta">
-          {dateToString(post.createdAt)}
-          <Link to={`/users/${post.author.slug}`} className="float-right">{post.author.username}</Link>
+        <div className="space-between">
+          <div className="meta">
+            {dateToString(post.createdAt)}
+            <br />
+            <Link to={`/users/${post.author.slug}`}>{post.author.username}</Link>
+          </div>
+          <Modal
+            activator={({ openModal }) => (
+              <button type="button" onClick={openModal} className="btn btn--secondary">
+                Private message
+              </button>
+            )}
+          >
+            {() => <PrivateMessageForm post={post} postSlug={post.slug} />}
+          </Modal>
         </div>
       </div>
-      <div className="box box--row">
+      {/* <div className="box box--row">
         <PostReply post={post} />
-      </div>
+      </div> */}
       <div className="box box--padded">
         <Comments postSlug={post.slug} comments={post.comments} />
       </div>
