@@ -57,7 +57,9 @@ class Comment extends Component {
                 </a>
               </div>
             )}
-            <ReactMarkdown source={content} />
+            <div className="markdown-content">
+              <ReactMarkdown source={content} />
+            </div>
           </div>
           {reply && (
             <CommentsForm postSlug={postSlug} parentId={comment.id} closeMe={this.closeForm} />

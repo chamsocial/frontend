@@ -26,11 +26,11 @@ export function Post({ match }) {
   const { post } = data
 
   return (
-    <>
+    <div className="layout--narrow">
       <div className="box box--padded box--row">
         <h1>{post.title}</h1>
         <hr />
-        <div className="post-content">
+        <div className="post-content markdown-content">
           <ReactMarkdown source={post.content} />
         </div>
         <Media postId={post.id} />
@@ -66,7 +66,7 @@ export function Post({ match }) {
       <div className="box box--padded">
         <Comments postSlug={post.slug} comments={post.comments} />
       </div>
-    </>
+    </div>
   )
 }
 Post.propTypes = {
