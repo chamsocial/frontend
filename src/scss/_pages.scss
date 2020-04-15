@@ -166,8 +166,23 @@
     border-radius: 3px;
     padding: 10px;
     background: #f6f9fa;
+    display: inline-block;
   }
   &__meta {
     padding: 2px 5px 0;
+  }
+  &__unread {
+    background: #e6f0ff;
+    td {
+      border-left-color: #91c7ff;
+      border-right-color: #91c7ff;
+      &:first-child { border-left-width: 3px; }
+      &:nth-of-type(2) { font-weight: 500; }
+      &:last-child { border-right-width: 3px; }
+    }
+  }
+  &__list {
+    td:first-child { max-width: 260px; }
+    .d--date { color: #333; }
   }
 }

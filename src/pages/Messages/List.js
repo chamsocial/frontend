@@ -29,29 +29,32 @@ function Messages() {
       <div className="space-between">
         <h1>Private messages</h1>
         <span>
-          <Link to="/messages/new" className="btn">New private message</Link>
+          <Link to="/messages/new" className="btn btn--secondary">New private message</Link>
         </span>
       </div>
-      <table className="table table--striped">
+      <table className="table table--striped message__list">
         <thead>
-          <tr>
+          <tr className="text-left">
             <th>Users</th>
             <th>Subject</th>
-            <th>Last message</th>
-            <th>Seen</th>
+            <th style={{ minWidth: '160px' }}>Last message</th>
           </tr>
         </thead>
         <tbody>
-          {data.messages.map(message => (
-            <tr key={message.id}>
-              <td>{message.users.map(user => user.username).join(', ')}</td>
-              <td>
-                <Link to={`/messages/${message.id}`}>{message.subject}</Link>
-              </td>
-              <td>{dateToString(message.lastMessageAt)}</td>
-              <td>{message.lastMessageAt <= message.seenAt ? '✔︎' : ''}</td>
-            </tr>
-          ))}
+          {data.messages.map(message => {
+            const hasBeenSeen = message.lastMessageAt <= message.seenAt
+            return (
+              <tr key={message.id} className={`${hasBeenSeen ? '' : 'message__unread'}`}>
+                <td>
+                  {message.users.map(user => user.username).join(', ')}
+                </td>
+                <td>
+                  <Link to={`/messages/${message.id}`}>{message.subject}</Link>
+                </td>
+                <td className="meta">{dateToString(message.lastMessageAt)}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

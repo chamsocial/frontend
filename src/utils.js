@@ -1,3 +1,6 @@
+import React from 'react'
+
+
 function toJson(res) { return res.json() }
 
 
@@ -5,15 +8,20 @@ export function dateToString(date) {
   if (!date) return '-'
 
   const d = new Date(date)
-  const options = {
+  const formatedDate = d.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }
-  const formated = d.toLocaleDateString(undefined, options)
-  return `${formated}`
+  })
+  const hours = String(d.getHours()).padStart(2, '0')
+  const minutes = String(d.getMinutes()).padStart(2, '0')
+  const formatedTime = `${hours}:${minutes}`
+  return (
+    <span className="d">
+      <span className="d--date">{formatedDate},</span>
+      {' '}<span className="d--time">{formatedTime}</span>
+    </span>
+  )
 }
 
 
