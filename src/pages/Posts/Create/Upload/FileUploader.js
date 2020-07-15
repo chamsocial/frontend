@@ -100,7 +100,7 @@ function FileUploader({ files, createDraft, postId }) {
   }
 
   function onDropRejected(rejectedFiles) {
-    setError({ code: 'INVALID_FILE', files: rejectedFiles })
+    setError({ code: 'INVALID_FILE', files: rejectedFiles.map(({ file }) => file) })
   }
 
   return (
