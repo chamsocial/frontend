@@ -32,7 +32,7 @@ function Home() {
   return (
     <div className="layout-1">
       <div className="intro box">
-        <h1>Welcome to ChamSocial</h1>
+        <h1>Welcome to the all new ChamSocial</h1>
         <p>
           <strong>Chamonix online.</strong>
           <br />
@@ -42,6 +42,14 @@ function Home() {
         <p>
           Find or post accommodation, jobs, climbing partners,{' '}
           buy & sell or post anything else you might need / want.
+        </p>
+        <p>
+          <em>
+            We have just released a new version and if you have any issues please send{' '}
+            <a href="mailto:chamsocial@spathon.com">chamsocial@spathon.com</a> a message.
+            <br />
+            You can for now access the old verson at <a href="https://legacy.chamsocial.com">legacy.chamsocial.com</a>.
+          </em>
         </p>
       </div>
       <div className="content box">
