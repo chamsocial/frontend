@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import FileUploader from './FileUploader'
 
 
-const apiPath = process.env.REACT_APP_API_URL
+const apiPath = process.env.REACT_APP_UPLOAD_URL
 const GET_POST_MEDIA = gql`
   query getPostMediaQuery($postId: ID!) {
     postMedia(postId: $postId) {

@@ -8,7 +8,7 @@ import Errors from './Errors'
 import { ONE_KB, TEN_MB } from './utils'
 
 
-const apiPath = process.env.REACT_APP_API_URL
+const apiPath = process.env.REACT_APP_UPLOAD_URL
 function preventAllEvents(e) {
   e.preventDefault()
   e.stopPropagation()
