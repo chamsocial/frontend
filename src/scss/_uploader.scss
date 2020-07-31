@@ -88,13 +88,13 @@ img {
         border-color: #0086DB #fff;
         border-radius: 50%;
         // opacity: .7;
-        animation: loadingIcon 1.5s linear infinite;
+        animation: uploadingIcon 1.5s linear infinite;
       }
     }
   }
 }
 
-@keyframes loadingIcon {
+@keyframes uploadingIcon {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }

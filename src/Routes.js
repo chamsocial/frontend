@@ -54,7 +54,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 }
 
 
-const SomeComponent = withRouter(({ location }) => (
+const Routes = withRouter(({ location }) => (
   <TransitionGroup className="transition-wrapper" exit={false}>
     <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
       <div className="cham-route">
@@ -90,4 +90,4 @@ const SomeComponent = withRouter(({ location }) => (
 ))
 
 
-export default SomeComponent
+export default Routes

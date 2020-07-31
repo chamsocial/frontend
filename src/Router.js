@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import FlashMessages from './components/FlashMessages'
 
+
 function Router() {
   return (
     <BrowserRouter>
@@ -17,5 +18,6 @@ function Router() {
     </BrowserRouter>
   )
 }
+
 
 export default Router
