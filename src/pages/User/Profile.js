@@ -15,8 +15,7 @@ function Profile({ data }) {
   let buttons = null
   if (user.id === auth.user.id) {
     buttons = (
-      <div>
-        <br />
+      <>
         <Link to="/messages">Private messages</Link>
         {' '}&nbsp;|&nbsp;{' '}
         <Link to="/users/edit">Edit</Link>
@@ -24,8 +23,10 @@ function Profile({ data }) {
         <Link to="/users/emails">Email settings</Link>
         {' '}&nbsp;|&nbsp;{' '}
         <Link to="/logout">Logout</Link>
-      </div>
+      </>
     )
+  } else {
+    buttons = <Link to={`/messages/to/${user.slug}`}>Send {user.username} a private message</Link>
   }
   const longUsername = user.username.length > 20
 
@@ -42,6 +43,7 @@ function Profile({ data }) {
         {!!user.jobtitle && <div><strong>Jobtitle:</strong> {user.jobtitle}</div>}
         {!!user.aboutme && <div><strong>About:</strong> {user.aboutme}</div>}
         {!!user.interests && <div><strong>Interests:</strong> {user.interests}</div>}
+        <br />
         {buttons}
       </div>
       <div className="box">
@@ -53,7 +55,9 @@ function Profile({ data }) {
 }
 Profile.propTypes = {
   data: PropTypes.shape({
-    user: PropTypes.object,
+    user: PropTypes.shape({
+      username: PropTypes.string,
+    }),
   }).isRequired,
 }
 

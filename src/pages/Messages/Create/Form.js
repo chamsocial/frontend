@@ -15,9 +15,9 @@ const NEW_PM = gql`
 `
 
 
-function Form() {
+function Form({ toUser }) {
   const [state, setState] = useState({ subject: '', message: '' })
-  const [recipients, setRecipients] = useState([])
+  const [recipients, setRecipients] = useState(toUser ? [toUser] : [])
 
   const [sendMessage, { loading, error, data }] = useMutation(NEW_PM)
   if (loading) return <Loading />

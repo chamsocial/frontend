@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Form from './Form'
 
 
-function FromPost() {
+function NewMessage() {
   return (
     <div className="box">
       <div className="space-between">
@@ -16,4 +16,4 @@ function FromPost() {
 }
 
 
-export default FromPost
+export default NewMessage
