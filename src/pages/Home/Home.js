@@ -44,18 +44,18 @@ function Home() {
           buy & sell or post anything else you might need / want.
         </p>
         <p>
-          <em>
-            We have just released a new version and if you have any issues please send{' '}
+          <small>
+            We have released a new version of ChamSocial and if you have any issues please send{' '}
             <a href="mailto:chamsocial@spathon.com">chamsocial@spathon.com</a> a message.
             <br />
-            You can for now access the old verson at <a href="https://legacy.chamsocial.com">legacy.chamsocial.com</a>.
-          </em>
+            You can for now access the old verson at <a href="https://legacy.chamsocial.com">legacy.chamsocial.com</a>
+          </small>
         </p>
       </div>
       <div className="content box">
         <h1 className="space-between">
           Recent posts
-          <Link to="/posts" className="btn">See all posts</Link>
+          <Link to="/posts" className="btn btn--secondary">See all posts</Link>
         </h1>
         <hr />
         {

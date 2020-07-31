@@ -45,7 +45,7 @@ function LoginForm({ location }) {
   return (
     <form onSubmit={onSubmit} className="narrow-form box">
       <h1>Login</h1>
-      {isRedirect && <Alert>Please login to read the post.</Alert>}
+      {isRedirect && <Alert>Please login to view the page.</Alert>}
       <div className="form-group">
         <label htmlFor="username">Username or email</label>
         <input className="input" value={username} onChange={evt => setUsername(evt.target.value)} required />
@@ -67,7 +67,7 @@ function LoginForm({ location }) {
 }
 LoginForm.propTypes = {
   location: PropTypes.shape({
-    state: PropTypes.any,
+    state: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   }).isRequired,
 }
 

@@ -35,7 +35,9 @@ function NotLoggedIn() {
     <>
       <h1>Hi, visitor!</h1>
       <p>
-        <Link to="/login" className="btn">Login</Link> or <Link className="btn" to="/signup">Signup</Link>
+        <Link to="/login">Login</Link>
+        {' / '}
+        <Link to="/signup">Signup</Link>
       </p>
     </>
   )
