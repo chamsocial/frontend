@@ -49,7 +49,7 @@ function ResetPassword({ match }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="narrow-form box">
+    <form onSubmit={onSubmit} className="box layout--narrow">
       <h1>Reset password for {data.resetPassword}</h1>
       <div className="form-group">
         <label htmlFor="username">New password</label>

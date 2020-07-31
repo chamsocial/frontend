@@ -42,7 +42,7 @@ function CreatePost({ match }) {
   const isEdit = !!(!isDraft && data && data.draft)
 
   return (
-    <div className="box">
+    <div className="box layout--narrow">
       <h1>{!postId ? 'Create Post' : `Edit ${isDraft ? 'draft' : 'post'}`}</h1>
       {!postId && <Drafts deleteDraft={deleteDraft} />}
       <Form

@@ -47,7 +47,7 @@ function Signup() {
   }
 
   return (
-    <form className="login-formrrow-form box" onSubmit={submitUser}>
+    <form className="box layout--narrow" onSubmit={submitUser}>
       <h1>Signup</h1>
       <div className="form-group">
         <label htmlFor="username">Username</label>

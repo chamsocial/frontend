@@ -26,7 +26,7 @@ function ForgotPassword() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="narrow-form box">
+    <form onSubmit={onSubmit} className="box layout--narrow">
       <h1>Forgot password?</h1>
       <div className="form-group">
         <label htmlFor="username">Username or email</label>
@@ -40,7 +40,7 @@ function ForgotPassword() {
 
       <div className="form-group">
         <Button type="submit" loading={loading} loadingText="Logging in...">Reset password</Button>
-        {' '}or <Link to="/ligin">login</Link>
+        {' '}or <Link to="/login">login</Link>
       </div>
     </form>
   )

@@ -43,7 +43,7 @@ function LoginForm({ location }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="narrow-form box">
+    <form onSubmit={onSubmit} className="box layout--narrow">
       <h1>Login</h1>
       {isRedirect && <Alert>Please login to view the page.</Alert>}
       <div className="form-group">

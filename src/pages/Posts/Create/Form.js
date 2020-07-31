@@ -90,7 +90,7 @@ function Form({
   }
 
   return (
-    <form onSubmit={submit} className="narrow-form">
+    <form onSubmit={submit}>
       <div className="form-group">
         <label htmlFor="title">Title</label>
         <input className="input" value={state.title} id="title" onChange={onChange} required />
