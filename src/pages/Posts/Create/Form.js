@@ -82,7 +82,7 @@ function Form({
   function setGroup(group) { setState({ ...state, group }) }
   function onDelete() {
     deleteDraft({ variables: { id: state.id } })
-      .then(() => setState({ ...state, redirect: { pathname: '/', state: { flashMessage: 'Draft deleted!' } } }))
+      .then(() => setRedirect({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
   }
 
   if (redirect) {
@@ -111,7 +111,7 @@ function Form({
       />
 
       <div className="form-group space-between">
-        <Button type="submit">{ isDraft ? 'Publish' : 'Update' }</Button>
+        <Button type="submit">{ isEdit ? 'Update' : 'Publish' }</Button>
         {isDraft && (
           <button type="button" className="btn btn--warn" onClick={onDelete}>Delete draft</button>
         )}
