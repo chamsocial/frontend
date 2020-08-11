@@ -22,7 +22,7 @@ function InvalidFile({ files }) {
       ))}
       <h5>Requirements:</h5>
       <p>
-        &bull; Only PDF-files and images are allowed. <small>(pdf, jpeg, jpg, gif, png)</small>
+        &bull; Only images are allowed. <small>(jpeg, jpg, gif, png)</small>
         <br />
         &bull; File size has to be between {readableBytes(ONE_KB)} and {readableBytes(TEN_MB)}
       </p>

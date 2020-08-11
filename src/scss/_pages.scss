@@ -34,16 +34,16 @@
 }
 
 .post-media {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 20px;
   margin: 0 0 20px;
-  padding: 20px 0 0;
+  padding: 20px 0;
   border: 1px solid #ddd;
   border-width: 1px 0;
   .media {
     display: block;
     padding: 0px;
-    margin: 0 20px 20px 0;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 3px;
@@ -56,7 +56,6 @@
       padding: 0 10px;
     }
   }
-  img { width: 100px; }
 }
 .comment {
   padding: 10px;

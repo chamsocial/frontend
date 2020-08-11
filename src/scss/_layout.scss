@@ -299,3 +299,7 @@ body .layout--narrow {
     right: auto;
   }
 }
+.isToucDevice .lightbox--nav:hover {
+  opacity: .5;
+  background: none;
+}

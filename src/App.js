@@ -18,6 +18,10 @@ library.add(
 window.addEventListener('dragover', e => e.preventDefault(), false)
 window.addEventListener('drop', e => e.preventDefault(), false)
 
+if ('ontouchstart' in window || navigator.maxTouchPoints) {
+  document.body.classList.add('isToucDevice')
+}
+
 
 function App() {
   return (
