@@ -271,4 +271,31 @@ body .layout--narrow {
     border-radius: 3px;
     border: 1px solid rgba(255, 255, 255, .5);
   }
+  &--nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1.5;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0);
+    border: 0;
+    font-size: 50px;
+    opacity: .5;
+    transition: all .3s;
+    outline: none;
+    &:hover {
+      opacity: 1;
+      cursor: pointer;
+      background: rgba(255, 255, 255, .5);
+    }
+    svg {
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 1));
+    }
+  }
+
+  &--prev {
+    left: 0;
+    right: auto;
+  }
 }
