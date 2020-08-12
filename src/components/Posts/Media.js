@@ -56,12 +56,16 @@ export function PostMedia({ data }) {
         ReactDOM.createPortal((
           <div className="lightbox" onClick={() => setImg(null)}>{/* eslint-disable-line */}
             <img src={`${fileUrl}${img.url}`} alt="Big version" />
-            <button type="button" className="lightbox--nav lightbox--prev" onClick={previousImage}>
-              <FontAwesomeIcon icon="angle-left" />
-            </button>
-            <button type="button" className="lightbox--nav lightbox--next" onClick={nextImage}>
-              <FontAwesomeIcon icon="angle-right" />
-            </button>
+            {postMedia.length > 1 && (
+              <>
+                <button type="button" className="lightbox--nav lightbox--prev" onClick={previousImage}>
+                  <FontAwesomeIcon icon="angle-left" />
+                </button>
+                <button type="button" className="lightbox--nav lightbox--next" onClick={nextImage}>
+                  <FontAwesomeIcon icon="angle-right" />
+                </button>
+              </>
+            )}
           </div>
         ), portalDom)
       )}
