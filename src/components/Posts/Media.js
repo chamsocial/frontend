@@ -78,7 +78,7 @@ export function PostMedia({ data }) {
             href={`${fileUrl}${media.url}`}
             onClick={onClick(isImage, media)}
           >
-            {isImage && <img src={`${apiUrl}/img/200/200${media.url}`} alt="Media" />}
+            {isImage && <img src={`${apiUrl}/thumb/${media.userId}/200/200/${media.filename}`} alt="Media" />}
             {!isImage && 'View file'}
           </a>
         )
@@ -98,6 +98,8 @@ const GET_POST_MEDIA = gql`
     postMedia(postId: $postId) {
       id
       url
+      filename
+      userId
       type
     }
   }
