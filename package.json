@@ -16,7 +16,6 @@
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.4",
-    "lodash.flowright": "^3.5.0",
     "node-sass": "^4.9.3",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
@@ -25,7 +24,7 @@
     "react-dropzone": "^11.0.0",
     "react-dropzone-uploader": "^2.10.0",
     "react-filepond": "^7.0.0",
-    "react-markdown": "^4.0.8",
+    "react-markdown": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-transition-group": "^4.0.0"
   },
