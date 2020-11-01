@@ -44,12 +44,7 @@ function Home() {
           buy & sell or post anything else you might need / want.
         </p>
         <p>
-          <small>
-            We have released a new version of ChamSocial and if you have any issues please send{' '}
-            <a href="mailto:chamsocial@spathon.com">chamsocial@spathon.com</a> a message.
-            <br />
-            You can for now access the old verson at <a href="https://legacy.chamsocial.com">legacy.chamsocial.com</a>
-          </small>
+          We have added a 1km radius <Link to="/map/quarantine">map &raquo;</Link>
         </p>
       </div>
       <div className="content box">
