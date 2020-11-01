@@ -148,11 +148,8 @@ function Quarantine() {
 
       <div className="box box--padded box--row space-between lockdown">
         <div className="lockdown__text">
-          <p>
-            This is an interactive map where you can drag
-            {' '}the pin and the circle has a 1km radius.
-          </p>
-          <small>Please use sparsely to prevent hitting our daily google maps API limt.</small>
+          This is an interactive map where you can drag
+          {' '}the pin and the circle has a 1km radius.
         </div>
         <form className="lockdown__form" onSubmit={onSubmit}>
           <label htmlFor="address">Address</label>
