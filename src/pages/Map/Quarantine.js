@@ -8,12 +8,13 @@ const chamonixCenter = { lat: 45.923183187683215, lng: 6.869751360383987 }
 
 
 // eslint-disable-next-line one-var, one-var-declaration-per-line
-let map, marker, bufferCircle, infowindow
+let map, marker, bufferCircle, bigCircle, infowindow
 
 
 function setMarker(latLng, includeMarker = true) {
   if (includeMarker) marker.setPosition(latLng)
   bufferCircle.setCenter(latLng)
+  bigCircle.setCenter(latLng)
   map.panTo(latLng)
 
   const elevator = new google.maps.ElevationService()
@@ -68,6 +69,17 @@ function addMarker(geo) {
     map,
     visible: false,
   })
+  bigCircle = new google.maps.Circle({
+    center: centre,
+    radius: 20000, // meters
+    strokeColor: '#8cc0fc',
+    strokeOpacity: 1,
+    strokeWeight: 1,
+    fillColor: '#8cc0fc',
+    fillOpacity: 0.3,
+    map,
+    visible: false,
+  })
 
   infowindow = new google.maps.InfoWindow({
     content: '<strong>Your location</strong><br>You can drag me!',
@@ -75,6 +87,7 @@ function addMarker(geo) {
   setTimeout(() => {
     infowindow.open(map, marker)
     bufferCircle.setVisible(true)
+    bigCircle.setVisible(true)
   }, 600)
 
   // Move the circle after moving the pin
@@ -87,7 +100,7 @@ function addMarker(geo) {
 
 async function main(mapContainer) {
   map = new google.maps.Map(mapContainer, {
-    zoom: 14,
+    zoom: 11,
     center: chamonixCenter,
     styles: [{
       featureType: 'poi.attraction',
@@ -148,8 +161,12 @@ function Quarantine() {
 
       <div className="box box--padded box--row space-between lockdown">
         <div className="lockdown__text">
-          This is an interactive map where you can drag
-          {' '}the pin and the circle has a 1km radius.
+          <p>
+            This is an interactive map where you can drag
+            {' '}the pin and the circle has a 1km radius.
+          </p>
+          <strong>Update:</strong>
+          {' '}There is now also a 20km radius circle for the new limit staring on November 28th.
         </div>
         <form className="lockdown__form" onSubmit={onSubmit}>
           <label htmlFor="address">Address</label>
