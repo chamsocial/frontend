@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* globals google */
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 const { REACT_APP_GOOGLE_MAPS_API_KEY } = process.env
@@ -123,7 +124,7 @@ function Quarantine() {
   const mapContainer = useRef()
   const geocoderRef = useRef()
 
-  const lockdown = new Date(1604016000 * 1000)
+  const lockdown = new Date(2020, 11, 15)
   const difference = Date.now() - lockdown.getTime()
   const dayOfLockdown = Math.ceil(difference / (1000 * 3600 * 24))
 
@@ -155,7 +156,8 @@ function Quarantine() {
       <div className="space-between">
         <h1>Lockdown map</h1>
         <h1>
-          Day <strong>{dayOfLockdown}</strong> of lockdown
+          Day <strong>{dayOfLockdown}</strong> of
+          {' '}<Link to="/curfew/am-i-allowed-outside">curfew</Link>
         </h1>
       </div>
 
@@ -163,10 +165,12 @@ function Quarantine() {
         <div className="lockdown__text">
           <p>
             This is an interactive map where you can drag
-            {' '}the pin and the circle has a 1km radius.
+            {' '}the pin and the circle has a 1km and a 20km radius.
           </p>
           <strong>Update:</strong>
-          {' '}There is now also a 20km radius circle for the new limit staring on November 28th.
+          {' '}As there is a new curfew you can check
+          {' '}<Link to="/curfew/am-i-allowed-outside">here</Link>
+          {' '}if you are allowed outside
         </div>
         <form className="lockdown__form" onSubmit={onSubmit}>
           <label htmlFor="address">Address</label>

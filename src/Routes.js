@@ -47,6 +47,7 @@ const MessageSendTo = lazy(() => import('./pages/Messages/Create/SendTo'))
 const About = lazy(() => import('./pages/General/About'))
 
 const MapQuarantine = lazy(() => import('./pages/Map/Quarantine'))
+const AllowedOutside = lazy(() => import('./pages/Map/AllowedOutside'))
 
 
 function PrivateRoute({ component: Component, ...rest }) {
@@ -70,6 +71,7 @@ const Routes = withRouter(({ location }) => (
             <Route exact path="/about" component={About} />
             <Route exact path="/contact" component={About} />
             <Route exact path="/map/quarantine" component={MapQuarantine} />
+            <Route exact path="/curfew/am-i-allowed-outside" component={AllowedOutside} />
             <Route exact path="/users/activate/:code" component={Activation} />
             <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
             <PrivateRoute exact path="/users/edit" component={UserEdit} />
