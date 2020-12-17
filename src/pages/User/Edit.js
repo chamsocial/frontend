@@ -131,7 +131,7 @@ function Edit({ profile }) {
 }
 Edit.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.any.isRequired,
+    id: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
     firstName: PropTypes.string,
   }).isRequired,
 }

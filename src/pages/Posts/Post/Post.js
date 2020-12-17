@@ -71,7 +71,9 @@ export function Post({ match }) {
 }
 Post.propTypes = {
   match: PropTypes.shape({
-    params: PropTypes.object,
+    params: PropTypes.shape({
+      slug: PropTypes.string,
+    }),
   }).isRequired,
 }
 
