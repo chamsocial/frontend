@@ -5,7 +5,7 @@ import './allowed.scss'
 
 
 function setTime(date, hours) {
-  date.setHours(date.getHours() + hours)
+  date.setTime(date.getTime() + (hours * 60 * 60 * 1000))
 }
 function padZero(time) {
   return String(time).padStart(2, '0')
@@ -13,16 +13,19 @@ function padZero(time) {
 
 
 function getCurfew() {
-  const date = new Date()
-  const hour = date.getUTCHours() + 1
-  const is = hour >= 20 || hour < 6
-  const today = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const currentTime = new Date()
+  const hour = currentTime.getUTCHours() + 1
+  const month = currentTime.getMonth()
+  const day = currentTime.getDate()
+  const isChristmas = day === 24 && month === 11
+  const is = (hour >= 20 && !isChristmas) || hour < 6
+  const today = new Date(currentTime.getFullYear(), month, day)
 
   if (is && hour < 6) setTime(today, 6)
-  else if (is && hour >= 20) setTime(today, 10)
+  else if ((is && hour >= 20) || isChristmas) setTime(today, 30)
   else setTime(today, 20)
 
-  const timeLeft = today.getTime() - date.getTime()
+  const timeLeft = today.getTime() - currentTime.getTime()
   const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
   const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
   const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
