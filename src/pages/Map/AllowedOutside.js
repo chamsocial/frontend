@@ -52,7 +52,9 @@ function AllowedOutside() {
       </Link>
       {isCurfew.is ? 'No' : 'Yes'}
       <div className="countdown">
-        {isCurfew.countdown}
+        {isCurfew.is ? 'Freedom in:' : 'Curfew starts in:'}
+        <br />
+        <strong>{isCurfew.countdown}</strong>
       </div>
     </div>
   )
