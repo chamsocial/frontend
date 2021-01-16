@@ -22,8 +22,8 @@ function getCurfew() {
   const today = new Date(currentTime.getFullYear(), month, day)
 
   if (is && hour < 6) setTime(today, 6)
-  else if ((is && hour >= 20) || isChristmas) setTime(today, 30)
-  else setTime(today, 20)
+  else if ((is && hour >= 18) || isChristmas) setTime(today, 30)
+  else setTime(today, 18)
 
   const timeLeft = today.getTime() - currentTime.getTime()
   const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
