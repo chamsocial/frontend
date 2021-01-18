@@ -11,19 +11,20 @@ function padZero(time) {
   return String(time).padStart(2, '0')
 }
 
+const MORNING = 6
+const NIGHT = 18
 
 function getCurfew() {
   const currentTime = new Date()
   const hour = currentTime.getUTCHours() + 1
   const month = currentTime.getMonth()
   const day = currentTime.getDate()
-  const isChristmas = day === 24 && month === 11
-  const is = (hour >= 20 && !isChristmas) || hour < 6
+  const is = hour >= NIGHT || hour < MORNING
   const today = new Date(currentTime.getFullYear(), month, day)
 
-  if (is && hour < 6) setTime(today, 6)
-  else if ((is && hour >= 18) || isChristmas) setTime(today, 30)
-  else setTime(today, 18)
+  if (is && hour < MORNING) setTime(today, MORNING)
+  else if (is) setTime(today, 30)
+  else setTime(today, NIGHT)
 
   const timeLeft = today.getTime() - currentTime.getTime()
   const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
