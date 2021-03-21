@@ -12,7 +12,7 @@ function padZero(time) {
 }
 
 const MORNING = 6
-const NIGHT = 18
+const NIGHT = 19
 
 function getCurfew() {
   const currentTime = new Date()
