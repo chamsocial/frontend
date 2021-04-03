@@ -44,7 +44,7 @@ function Home() {
           buy & sell or post anything else you might need / want.
         </p>
         <p>
-          We have added a 1km radius <Link to="/map/quarantine">map &raquo;</Link>
+          We have added a 10km radius <Link to="/map/quarantine">map &raquo;</Link>
         </p>
       </div>
       <div className="content box">
