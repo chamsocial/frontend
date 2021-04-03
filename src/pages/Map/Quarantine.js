@@ -9,13 +9,12 @@ const chamonixCenter = { lat: 45.923183187683215, lng: 6.869751360383987 }
 
 
 // eslint-disable-next-line one-var, one-var-declaration-per-line
-let map, marker, bufferCircle, bigCircle, infowindow
+let map, marker, bufferCircle, infowindow
 
 
 function setMarker(latLng, includeMarker = true) {
   if (includeMarker) marker.setPosition(latLng)
   bufferCircle.setCenter(latLng)
-  bigCircle.setCenter(latLng)
   map.panTo(latLng)
 
   const elevator = new google.maps.ElevationService()
@@ -61,23 +60,12 @@ function addMarker(geo) {
   // Create a 1km circle around the user
   bufferCircle = new google.maps.Circle({
     center: centre,
-    radius: 1000, // meters
+    radius: 10000, // meters
     strokeColor: '#61a0e9',
     strokeOpacity: 1,
     strokeWeight: 1,
     fillColor: '#61a0e9',
     fillOpacity: 0.4,
-    map,
-    visible: false,
-  })
-  bigCircle = new google.maps.Circle({
-    center: centre,
-    radius: 20000, // meters
-    strokeColor: '#8cc0fc',
-    strokeOpacity: 1,
-    strokeWeight: 1,
-    fillColor: '#8cc0fc',
-    fillOpacity: 0.3,
     map,
     visible: false,
   })
@@ -88,7 +76,6 @@ function addMarker(geo) {
   setTimeout(() => {
     infowindow.open(map, marker)
     bufferCircle.setVisible(true)
-    bigCircle.setVisible(true)
   }, 600)
 
   // Move the circle after moving the pin
