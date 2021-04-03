@@ -152,7 +152,7 @@ function Quarantine() {
         <div className="lockdown__text">
           <p>
             This is an interactive map where you can drag
-            {' '}the pin and the circle has a 1km and a 20km radius.
+            {' '}the pin and the circle has a 10km.
           </p>
           <strong>Update:</strong>
           {' '}As there is a new curfew you can check
