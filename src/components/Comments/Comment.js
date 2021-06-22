@@ -58,7 +58,7 @@ class Comment extends Component {
               </div>
             )}
             <div className="markdown-content">
-              <ReactMarkdown source={content} />
+              <ReactMarkdown>{content}</ReactMarkdown>
             </div>
           </div>
           {reply && (

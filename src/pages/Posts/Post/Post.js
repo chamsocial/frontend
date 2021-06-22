@@ -31,7 +31,7 @@ export function Post({ match }) {
         <h1>{post.title}</h1>
         <hr />
         <div className="post-content markdown-content">
-          <ReactMarkdown source={post.content} />
+          <ReactMarkdown>{post.content}</ReactMarkdown>
         </div>
         <Media postId={post.id} />
         {post.canEdit && (
