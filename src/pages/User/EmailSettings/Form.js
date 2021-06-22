@@ -1,6 +1,5 @@
 import React from 'react'
-import gql from 'graphql-tag'
-import { useMutation } from 'react-apollo'
+import { gql, useMutation } from '@apollo/client'
 
 
 const SAVE_EMAIL_SETTINGS = gql`mutation userEmailSubscriptionsMutation( $settings: [EmailSubscriptionInput!]! ) {

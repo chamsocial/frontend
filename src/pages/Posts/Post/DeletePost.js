@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
-import gql from 'graphql-tag'
-import { useMutation } from 'react-apollo'
+import { gql, useMutation } from '@apollo/client'
 
 
 const DELETE_POST = gql`mutation deletePostMutation( $id: ID! ) {

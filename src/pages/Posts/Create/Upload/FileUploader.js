@@ -1,7 +1,6 @@
 import React, { useReducer, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useMutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { gql, useMutation } from '@apollo/client'
 import Dropzone from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Errors from './Errors'

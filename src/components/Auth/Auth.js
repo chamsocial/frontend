@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import gql from 'graphql-tag'
-import { useQuery } from 'react-apollo'
+import { gql, useQuery } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import { authFields } from 'graphql/fragments'
 import { AuthProvider } from './context'

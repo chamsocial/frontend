@@ -1,7 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import gql from 'graphql-tag'
-import { useMutation } from 'react-apollo'
+import { gql, useMutation } from '@apollo/client'
 import { useAuthState, useAuthDispatch } from './Auth/context'
 import Alert from './partials/Alert'
 

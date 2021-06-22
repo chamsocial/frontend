@@ -1,19 +1,34 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { gql, useQuery } from '@apollo/client'
 
 const apiUrl = process.env.REACT_APP_API_URL
 const fileUrl = process.env.REACT_APP_FILE_URL
 const portalDom = document.getElementById('portals')
 
 
-export function PostMedia({ data }) {
+const GET_POST_MEDIA = gql`
+  query postMediaQuery($postId: ID!) {
+    postMedia(postId: $postId) {
+      id
+      url
+      filename
+      userId
+      type
+    }
+  }
+`
+
+
+function PostMedia({ postId }) {
   const [img, setImg] = useState(null)
-  const { loading, error, postMedia } = data
-  if (loading || error || !postMedia.length) return null
+  const { loading, error, data } = useQuery(GET_POST_MEDIA, {
+    variables: { postId }, fetchPolicy: 'cache-and-network',
+  })
+  if (loading || error || !data || !data.postMedia.length) return null
+  const { postMedia } = data
   const lastIndex = postMedia.length - 1
 
   const onClick = (isImage, image) => evt => {
@@ -87,24 +102,8 @@ export function PostMedia({ data }) {
   )
 }
 PostMedia.propTypes = {
-  data: PropTypes.shape({
-    loading: PropTypes.bool,
-  }).isRequired,
+  postId: PropTypes.string.isRequired,
 }
 
 
-const GET_POST_MEDIA = gql`
-  query postMediaQuery($postId: ID!) {
-    postMedia(postId: $postId) {
-      id
-      url
-      filename
-      userId
-      type
-    }
-  }
-`
-
-export default graphql(GET_POST_MEDIA, {
-  options: data => ({ variables: { postId: data.postId }, fetchPolicy: 'cache-and-network' }),
-})(PostMedia)
+export default PostMedia

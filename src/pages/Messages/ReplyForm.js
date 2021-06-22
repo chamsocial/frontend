@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useMutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { gql, useMutation } from '@apollo/client'
 
 
 const MESSAGE_CREATE = gql`mutation messageCreateMutation($threadId: ID!, $message: String!) {

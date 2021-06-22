@@ -1,6 +1,5 @@
 import React from 'react'
-import gql from 'graphql-tag'
-import { useQuery } from 'react-apollo'
+import { gql, useQuery } from '@apollo/client'
 import { Link } from 'react-router-dom'
 
 const GROUPS_LIST = gql`query groupsListQuery {

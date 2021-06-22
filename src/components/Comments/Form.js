@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import { graphql } from '@apollo/client/react/hoc'
+import { gql } from '@apollo/client'
 import { singlePostQuery } from '../../graphql/post-queries'
 
 function loopComments(comments, newComment) {

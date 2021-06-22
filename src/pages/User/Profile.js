@@ -1,17 +1,43 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
-import { graphql } from 'react-apollo'
+import { gql, useQuery } from '@apollo/client'
 import { prettyDate } from 'utils'
-import GraphLoader from '../../components/partials/GraphLoader'
-import { useAuthState } from '../../components/Auth/context'
-import PostListItem from '../../components/Posts/ListItem'
+import Loading from 'components/partials/Loading'
+import { useAuthState } from 'components/Auth/context'
+import PostListItem from 'components/Posts/ListItem'
 
 
-function Profile({ data }) {
+const profileQuery = gql`query userQuery ($slug: String!) {
+  user(slug: $slug) {
+    id
+    slug
+    username
+    firstName
+    lastName
+    companyName
+    interests
+    aboutme
+    jobtitle
+    avatarUrl
+    createdAt
+    posts(count: 10) {
+      id
+      title
+      slug
+      createdAt
+      commentsCount
+    }
+  }
+}`
+
+
+function Profile({ match }) {
+  const { data: { user } = {}, loading, error } = useQuery(profileQuery, {
+    variables: { slug: match.params.slug },
+  })
   const auth = useAuthState()
-  const { user } = data
+  if (loading || error) return <Loading error={error} />
   let buttons = null
   if (user.id === auth.user.id) {
     buttons = (
@@ -54,39 +80,12 @@ function Profile({ data }) {
   )
 }
 Profile.propTypes = {
-  data: PropTypes.shape({
-    user: PropTypes.shape({
-      username: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      slug: PropTypes.string,
     }),
   }).isRequired,
 }
 
-const profileQuery = gql`query userQuery ($slug: String!) {
-  user(slug: $slug) {
-    id
-    slug
-    username
-    firstName
-    lastName
-    companyName
-    interests
-    aboutme
-    jobtitle
-    avatarUrl
-    createdAt
-    posts(count: 10) {
-      id
-      title
-      slug
-      createdAt
-      commentsCount
-    }
-  }
-}`
 
-const loadProfile = GraphLoader(Profile)
-const graphProfile = graphql(profileQuery, {
-  options: data => ({ variables: { slug: data.match.params.slug } }),
-})(loadProfile)
-
-export default graphProfile
+export default Profile

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Downshift from 'downshift'
-import gql from 'graphql-tag'
-import { useQuery } from 'react-apollo'
+import { gql, useQuery } from '@apollo/client'
 
 
 const GET_USERS = gql`query messageUsersQuery($search: String!) {

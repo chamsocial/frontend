@@ -1,6 +1,5 @@
 import React from 'react'
-import { useQuery } from 'react-apollo'
-import gql from 'graphql-tag'
+import { gql, useQuery } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import Loading from '../../components/partials/Loading'
 import PostListItem from '../../components/Posts/ListItem'

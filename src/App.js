@@ -1,5 +1,5 @@
 import React from 'react'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/client'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTimes, faTimesCircle, faTrashAlt, faComment,

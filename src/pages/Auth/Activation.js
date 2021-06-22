@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useMutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { gql, useMutation } from '@apollo/client'
 import { Redirect } from 'react-router-dom'
 import { useAuthDispatch } from 'components/Auth/context'
 import Loading from 'components/partials/Loading'

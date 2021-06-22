@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import gql from 'graphql-tag'
-import { useMutation } from 'react-apollo'
+import { gql, useMutation } from '@apollo/client'
 import { Link, Redirect } from 'react-router-dom'
 import Button from 'components/partials/Button'
 import Alert from 'components/partials/Alert'

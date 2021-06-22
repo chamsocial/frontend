@@ -1,8 +1,10 @@
-import { ApolloClient } from 'apollo-client'
-// import { createHttpLink } from 'apollo-link-http'
-import { ApolloLink } from 'apollo-link'
-import { onError } from 'apollo-link-error'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloLink,
+} from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
+
 import { createUploadLink } from 'apollo-upload-client'
 
 const { REACT_APP_API_URL } = process.env
