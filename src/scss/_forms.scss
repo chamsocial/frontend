@@ -26,6 +26,16 @@ textarea {
   margin: 0 0 20px;
 }
 
+.input-btn {
+  display: flex;
+  .input {
+    border-radius: .25rem 0 0 .25rem;
+  }
+  .btn {
+    border-radius: 0 .25rem .25rem 0;
+  }
+}
+
 
 .downshift {
   &__input {

@@ -6,8 +6,8 @@ import PostListItem from 'components/Posts/ListItem'
 
 const POSTS_PER_PAGE = 20
 
-const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupId: ID) {
-  posts(postsPerPage: $postsPerPage, page: $page, groupId: $groupId) {
+const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupId: ID, $search: String) {
+  posts(postsPerPage: $postsPerPage, page: $page, groupId: $groupId, search: $search) {
     totalCount
     list {
       id
@@ -26,14 +26,16 @@ const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupI
 }`
 
 
-function PostList({ groupId, search }) {
-  const params = new URLSearchParams(search)
+function PostList({ groupId, queryParams }) {
+  const params = new URLSearchParams(queryParams)
   const page = parseInt(params.get('p'), 10) || 1
+  const search = params.get('q')
   const { error, loading, data } = useQuery(postsQuery, {
     variables: {
       page,
       postsPerPage: POSTS_PER_PAGE,
       groupId,
+      search,
     },
     fetchPolicy: 'network-only',
   })

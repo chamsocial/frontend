@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Groups from 'components/Groups'
+import Search from 'components/Search'
 import PostList from './PostList'
 
 
@@ -11,7 +12,7 @@ function PostsList({ location }) {
         <h1 className="space-between">
           Posts
         </h1>
-        <PostList search={location.search} />
+        <PostList queryParams={location.search} />
       </div>
 
       <div className="sidebar-top">
@@ -19,6 +20,8 @@ function PostsList({ location }) {
           <p>
             <Link to="/posts/create" className="btn btn--block">Create a post</Link>
           </p>
+          <hr />
+          <Search />
           <hr />
           <Groups />
         </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import { ApolloProvider } from '@apollo/client'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
-  faTimes, faTimesCircle, faTrashAlt, faComment,
+  faTimes, faTimesCircle, faTrashAlt, faComment, faSearch,
   faBell, faImage, faMapSigns, faAngleRight, faAngleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import apollo from './utils/apollo'
@@ -10,7 +10,7 @@ import Auth from './components/Auth'
 import Router from './Router'
 
 library.add(
-  faTimes, faTimesCircle, faTrashAlt, faComment,
+  faTimes, faTimesCircle, faTrashAlt, faComment, faSearch,
   faBell, faImage, faMapSigns, faAngleRight, faAngleLeft,
 )
 

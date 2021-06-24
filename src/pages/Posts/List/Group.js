@@ -28,7 +28,7 @@ function GroupList({ location, match }) {
         <h1 className="space-between">
           {group.title}
         </h1>
-        <PostList search={location.search} groupId={group.id} />
+        <PostList queryParams={location.search} groupId={group.id} />
       </div>
 
       <div className="sidebar-top">

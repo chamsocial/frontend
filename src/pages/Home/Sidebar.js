@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthState } from 'components/Auth/context'
 import Groups from 'components/Groups'
+import Search from 'components/Search'
+
 
 function User({ user }) {
   return (
@@ -50,6 +52,8 @@ function Sidebar() {
   return (
     <div>
       {user ? <User user={user} /> : <NotLoggedIn />}
+      <hr />
+      <Search />
       <hr />
       <Groups />
     </div>
