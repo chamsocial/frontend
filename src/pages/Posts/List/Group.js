@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import Groups from 'components/Groups'
+import Search from 'components/Search'
 import PostList from './PostList'
 
 const GROUP = gql`query groupItemQuery($slug: String!) {
@@ -36,6 +37,8 @@ function GroupList({ location, match }) {
           <p>
             <Link to="/posts/create" className="btn btn--block">Create a post</Link>
           </p>
+          <hr />
+          <Search urlPath={`/groups/${groupSlug}`} label={group.title} />
           <hr />
           <Groups activeId={group.id} />
         </div>

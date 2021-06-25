@@ -3,19 +3,27 @@ import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-function Search() {
+function Search({ urlPath, label }) {
   const currentUrlParams = new URLSearchParams(window.location.search)
   const [searchTerm, setSearchTerm] = useState(currentUrlParams.get('q') || '')
   const history = useHistory()
 
   const onSearch = evt => {
     evt.preventDefault()
-    history.push(`/posts?q=${encodeURIComponent(searchTerm)}`)
+    const searchPath = urlPath || '/posts'
+    history.push(`${searchPath}?q=${encodeURIComponent(searchTerm)}`)
   }
 
   return (
     <div className="block">
-      <h1>Search</h1>
+      <h1>
+        Search
+        {!!label && (
+          <span className="desc input-desc">
+            {' '}in {label}
+          </span>
+        )}
+      </h1>
       <form onSubmit={onSearch}>
         <div className="input-btn">
           <div className="input-clear">
