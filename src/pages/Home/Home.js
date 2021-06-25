@@ -32,6 +32,8 @@ const LATEST_POSTS = gql`query postsQuery {
 
 function Home() {
   const { error, loading, data } = useQuery(LATEST_POSTS, { fetchPolicy: 'network-only' })
+  const today = Date.now()
+  const endNews = 1626044400000 // July 12th 2021
 
   return (
     <div className="layout-1">
@@ -47,6 +49,11 @@ function Home() {
           Find or post accommodation, jobs, climbing partners,{' '}
           buy & sell or post anything else you might need / want.
         </p>
+        {today < endNews && (
+          <p>
+            <strong style={{ color: '#0086DB' }}>News:</strong> We have now added search to the site.
+          </p>
+        )}
       </div>
       <div className="content box">
         <h1 className="space-between">
