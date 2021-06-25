@@ -10,7 +10,7 @@ function User({ user }) {
     <div>
       <h1>Hi {user.username}</h1>
 
-      <ul>
+      <ul className="list list--lined">
         <li>
           <Link to={`/users/${user.slug}`}>Visit profile</Link>
         </li>

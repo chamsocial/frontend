@@ -74,10 +74,14 @@ hr {
       font-weight: bold;
     }
   }
+  a {
+    display: block;
+    padding: 2px;
+  }
   &--lined {
     border-top: 1px solid #eee;
     li {
-      padding: 2px 2px;
+      padding: 3px 2px;
       border-bottom: 1px solid #eee;
     }
   }

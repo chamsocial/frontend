@@ -38,7 +38,7 @@ function Home() {
   return (
     <div className="layout-1">
       <div className="intro box">
-        <h1>Welcome to the all new ChamSocial</h1>
+        <h1>Welcome to ChamSocial</h1>
         <p>
           <strong>Chamonix online.</strong>
           <br />

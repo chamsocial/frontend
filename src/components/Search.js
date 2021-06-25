@@ -20,9 +20,7 @@ function Search({ urlPath, label }) {
         <h1>
           Search
           {!!label && (
-            <span className="desc input-desc">
-              {' '}in {label}
-            </span>
+            <span className="desc">{' '}in {label}</span>
           )}
         </h1>
       </label>
@@ -35,15 +33,16 @@ function Search({ urlPath, label }) {
               onChange={evt => setSearchTerm(evt.target.value)}
               minLength="3"
               id="search"
+              placeholder="E.g. touring skis, gardner"
               required
             />
             {searchTerm && (
-              <button type="button" aria-label="Search" className="clear" onClick={() => setSearchTerm('')}>
+              <button type="button" aria-label="Clear search" className="clear" onClick={() => setSearchTerm('')}>
                 <FontAwesomeIcon icon="times" />
               </button>
             )}
           </div>
-          <button type="submit" className="btn">
+          <button type="submit" aria-label="Search" className="btn">
             <FontAwesomeIcon icon="search" />
           </button>
         </div>

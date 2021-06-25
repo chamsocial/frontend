@@ -11,7 +11,7 @@ const Footer = () => (
       </span>
       <span>
         <a href="https://github.com/chamsocial" target="_blank" rel="noreferrer noopener">
-          <img src={Logo} alt="Github.com" style={{ width: '16px' }} />
+          <img src={Logo} alt="Github.com" width="16" height="16" />
         </a>
       </span>
       <span>

@@ -1,3 +1,10 @@
+#search {
+  &::placeholder {
+    color: #bbb;
+    font-size: .9rem;
+  }
+}
+
 /**
  * Post list
  */
