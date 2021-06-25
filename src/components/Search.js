@@ -16,14 +16,16 @@ function Search({ urlPath, label }) {
 
   return (
     <div className="block">
-      <h1>
-        Search
-        {!!label && (
-          <span className="desc input-desc">
-            {' '}in {label}
-          </span>
-        )}
-      </h1>
+      <label htmlFor="search">
+        <h1>
+          Search
+          {!!label && (
+            <span className="desc input-desc">
+              {' '}in {label}
+            </span>
+          )}
+        </h1>
+      </label>
       <form onSubmit={onSearch}>
         <div className="input-btn">
           <div className="input-clear">
@@ -32,10 +34,11 @@ function Search({ urlPath, label }) {
               value={searchTerm}
               onChange={evt => setSearchTerm(evt.target.value)}
               minLength="3"
+              id="search"
               required
             />
             {searchTerm && (
-              <button type="button" className="clear" onClick={() => setSearchTerm('')}>
+              <button type="button" aria-label="Search" className="clear" onClick={() => setSearchTerm('')}>
                 <FontAwesomeIcon icon="times" />
               </button>
             )}

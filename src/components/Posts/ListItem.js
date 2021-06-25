@@ -6,25 +6,30 @@ import { dateToString } from '../../utils'
 
 function PostListItem({ post }) {
   const {
-    title, slug, author, createdAt, commentsCount, hasMedia,
+    title, slug, author, group, createdAt, commentsCount, hasMedia,
   } = post
-  let authorInfo = null
-  if (author) {
-    authorInfo = <Link to={`/users/${author.slug}`} className="float-right">{author.username}</Link>
-  }
 
   return (
     <div className="post-list__item">
       <h2>
         <Link to={`/posts/${slug}`}>{title}</Link>
       </h2>
-      <div className="meta">
-        {dateToString(createdAt)}
-        {' '}
-        {hasMedia && <FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="image" />}
-        {' '}
-        {!!commentsCount && <><FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="comment" /> {commentsCount}</>}
-        {authorInfo}
+      <div className="meta post-meta space-between">
+        <span>
+          {Boolean(author?.username) && (
+            <>By <Link to={`/users/${author.slug}`}>{author.username}</Link>{' '}</>
+          )}
+          {Boolean(group?.title) && (
+            <>in <Link to={`/groups/${group.slug}`}>{group.title}</Link></>
+          )}
+          {' '}
+          {hasMedia && <FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="image" />}
+          {' '}
+          {!!commentsCount && <><FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="comment" /> {commentsCount}</>}
+        </span>
+        <span>
+          {dateToString(createdAt)}
+        </span>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 .btn {
   position: relative;
-  background: #0086DB;
+  background: #007ac3; // #0086DB;
   color: #fff;
   cursor: pointer;
   display: inline-block;
@@ -9,12 +9,17 @@
   white-space: nowrap;
   vertical-align: middle;
   user-select: none;
-  border: 1px solid #006db1;
+  border: 1px solid #0069ab; // #006db1;
   padding: .5rem .7rem;
   font-size: 1rem;
   border-radius: .25rem;
   transition: opacity .3s;
   font-weight: normal;
+  transition: background .2s ease-in;
+  &:hover {
+    color: #f0f9ff;
+    background: #00629b;
+  }
 
   &--block {
     display: block;

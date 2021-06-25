@@ -15,6 +15,11 @@ const LATEST_POSTS = gql`query postsQuery {
       createdAt
       commentsCount
       hasMedia
+      group {
+        id
+        title
+        slug
+      }
       author {
         id
         slug
