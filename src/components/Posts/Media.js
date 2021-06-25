@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -22,20 +22,9 @@ const GET_POST_MEDIA = gql`
 `
 
 
-function PostMedia({ postId }) {
+function PostMedia({ postMedia }) {
   const [img, setImg] = useState(null)
-  const { loading, error, data } = useQuery(GET_POST_MEDIA, {
-    variables: { postId }, fetchPolicy: 'cache-and-network',
-  })
-  if (loading || error || !data || !data.postMedia.length) return null
-  const { postMedia } = data
   const lastIndex = postMedia.length - 1
-
-  const onClick = (isImage, image) => evt => {
-    if (!isImage) return
-    evt.preventDefault()
-    setImg(image)
-  }
 
   function getNextImage(index) {
     const nextIndex = lastIndex === index ? 0 : index + 1
@@ -43,9 +32,9 @@ function PostMedia({ postId }) {
     if (item.type !== 'image') return getNextImage(nextIndex)
     return item
   }
-
-  function nextImage(evt) {
+  const nextImage = evt => {
     evt.stopPropagation()
+    evt.preventDefault()
     const currentIndex = postMedia.findIndex(image => image.id === img.id)
     const nextItem = getNextImage(currentIndex)
     setImg(nextItem)
@@ -57,19 +46,50 @@ function PostMedia({ postId }) {
     if (item.type !== 'image') return getPrevImage(nextIndex)
     return item
   }
-
-  function previousImage(evt) {
+  const previousImage = evt => {
+    evt.preventDefault()
     evt.stopPropagation()
     const currentIndex = postMedia.findIndex(image => image.id === img.id)
     const nextItem = getPrevImage(currentIndex)
     setImg(nextItem)
   }
 
+  const openImgGallery = (isImage, image) => evt => {
+    if (!isImage) return
+    evt.preventDefault()
+    setImg(image)
+  }
+  const closeImgGallery = evt => {
+    evt.preventDefault()
+    setImg(null)
+  }
+
+  useEffect(() => {
+    if (!img) return null
+    const keyPress = evt => {
+      switch (evt.key) {
+        case 'Left': // IE/Edge specific value
+        case 'ArrowLeft':
+          return nextImage(evt)
+        case 'Right': // IE/Edge specific value
+        case 'ArrowRight':
+          return previousImage(evt)
+        case 'Esc': // IE/Edge specific value
+        case 'Escape':
+          return closeImgGallery(evt) // eslint-disable-line no-use-before-define
+        default:
+          return null // Quit when this doesn't handle the key event.
+      }
+    }
+    document.addEventListener('keydown', keyPress)
+    return () => document.removeEventListener('keydown', keyPress)
+  }, [img])
+
   return (
     <div className="post-media">
       {img && (
         ReactDOM.createPortal((
-          <div className="lightbox" onClick={() => setImg(null)}>{/* eslint-disable-line */}
+          <div className="lightbox" onClick={closeImgGallery}>{/* eslint-disable-line */}
             <img src={`${fileUrl}${img.url}`} alt="Big version" />
             {postMedia.length > 1 && (
               <>
@@ -91,7 +111,7 @@ function PostMedia({ postId }) {
             key={media.id}
             className={`media ${!isImage ? 'media--link' : ''}`}
             href={`${fileUrl}${media.url}`}
-            onClick={onClick(isImage, media)}
+            onClick={openImgGallery(isImage, media)}
           >
             {isImage && <img src={`${apiUrl}/thumb/${media.userId}/200/200/${media.filename}`} alt="Media" />}
             {!isImage && 'View file'}
@@ -102,8 +122,23 @@ function PostMedia({ postId }) {
   )
 }
 PostMedia.propTypes = {
+  postMedia: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+  })).isRequired,
+}
+
+
+function PostMediaWrapper({ postId }) {
+  const { loading, error, data } = useQuery(GET_POST_MEDIA, {
+    variables: { postId }, fetchPolicy: 'cache-and-network',
+  })
+  if (loading || error || !data || !data.postMedia.length) return null
+
+  return <PostMedia postMedia={data.postMedia} />
+}
+PostMediaWrapper.propTypes = {
   postId: PropTypes.string.isRequired,
 }
 
 
-export default PostMedia
+export default PostMediaWrapper
