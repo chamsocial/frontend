@@ -29,6 +29,9 @@ export function Post({ match }) {
     <div className="layout--narrow">
       <div className="box box--padded box--row">
         <h1>{post.title}</h1>
+        <div className="meta">
+          {dateToString(post.createdAt)}
+        </div>
         <hr />
         <div className="post-content markdown-content">
           <ReactMarkdown>{post.content}</ReactMarkdown>
@@ -41,11 +44,10 @@ export function Post({ match }) {
             <DeletePost postId={post.id} />
           </>
         )}
-        <div className="space-between">
+        <div className="space-between flex-end">
           <div className="meta">
-            {dateToString(post.createdAt)}
-            <br />
-            <Link to={`/users/${post.author.slug}`}>{post.author.username}</Link>
+            By <Link to={`/users/${post.author.slug}`}>{post.author.username}</Link>
+            {' '}in <Link to={`/groups/${post.group.slug}`}>{post.group.title}</Link>
           </div>
           <Modal
             activator={({ openModal }) => (

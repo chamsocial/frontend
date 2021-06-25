@@ -1,6 +1,9 @@
 .float-right { float: right }
 .float-left { float: left }
 
+.flex-end {
+  align-items: flex-end;
+}
 .space-between {
   display: flex;
   flex-wrap: wrap;

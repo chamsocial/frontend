@@ -11,6 +11,11 @@ export const singlePostQuery = gql`query postSingleQuery ($slug: String!) {
     createdAt
     commentsCount
     canEdit
+    group {
+      id
+      slug
+      title
+    }
     author {
       id
       slug
