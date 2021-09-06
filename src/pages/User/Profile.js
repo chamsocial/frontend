@@ -39,6 +39,7 @@ function Profile({ match }) {
   const auth = useAuthState()
   if (loading || error) return <Loading error={error} />
   let buttons = null
+  if (!user?.id) return <div className="alert">No user found.</div>
   if (user.id === auth.user.id) {
     buttons = (
       <>

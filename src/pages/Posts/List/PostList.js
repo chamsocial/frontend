@@ -16,6 +16,7 @@ const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupI
       createdAt
       commentsCount
       hasMedia
+      bookmarkedAt
       group {
         id
         title
