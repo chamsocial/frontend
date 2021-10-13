@@ -63,7 +63,7 @@ function FileUploader({ files, createDraft, postId }) {
     return () => (
       deleteFileMutation({ variables: { fileId } })
         .then(() => dispatch({ type: 'DELETED_FILE', fileId }))
-        .catch(err => console.log('delete err', err))
+        .catch(err => console.log('delete err', err)) // eslint-disable-line no-console
     )
   }
 
@@ -90,7 +90,7 @@ function FileUploader({ files, createDraft, postId }) {
         uploadedFile.tmpId = item.tmpId
         dispatch({ type: 'FILE_UPLOADED', file: uploadedFile })
       } catch (err) {
-        console.log('ERROR', err)
+        console.log('ERROR', err) // eslint-disable-line no-console
         dispatch({ type: 'UPLOAD_FAILED', file: item })
       }
     })
