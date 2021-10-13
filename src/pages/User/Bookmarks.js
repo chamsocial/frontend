@@ -37,7 +37,7 @@ function Bookmarks() {
       {
         data?.bookmarks?.length
           ? data.bookmarks.map(post => <PostListItem key={post.id} post={post} />)
-          : <div className="alert">You have no favorited posts yet.</div>
+          : <div className="alert">You have not bookmarked any posts yet.</div>
       }
     </div>
   )
