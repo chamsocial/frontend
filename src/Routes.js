@@ -36,14 +36,15 @@ const CreatePost = lazy(() => import('./pages/Posts/Create'))
 const UserProfile = lazy(() => import('./pages/User/Profile'))
 const UserEdit = lazy(() => import('./pages/User/Edit'))
 const UserEmailSettings = lazy(() => import('./pages/User/EmailSettings'))
+const Bookmarks = lazy(() => import('./pages/User/Bookmarks'))
+const PostsCommented = lazy(() => import('./pages/User/PostsCommented'))
+
 
 // Private messages
 const MessageList = lazy(() => import('./pages/Messages/List'))
 const MessageView = lazy(() => import('./pages/Messages/View'))
 const MessageCreate = lazy(() => import('./pages/Messages/Create/New'))
 const MessageSendTo = lazy(() => import('./pages/Messages/Create/SendTo'))
-
-const Bookmarks = lazy(() => import('./pages/User/Bookmarks'))
 
 // General routes
 const About = lazy(() => import('./pages/General/About'))
@@ -75,17 +76,22 @@ const Routes = withRouter(({ location }) => (
             <Route exact path="/map/quarantine" component={MapQuarantine} />
             <Route exact path="/curfew/am-i-allowed-outside" component={AllowedOutside} />
             <Route exact path="/users/activate/:code" component={Activation} />
+
             <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
             <PrivateRoute exact path="/users/edit" component={UserEdit} />
             <PrivateRoute exact path="/users/bookmarks" component={Bookmarks} />
+            <PrivateRoute exact path="/users/posts-comments" component={PostsCommented} />
             <PrivateRoute exact path="/users/:slug" component={UserProfile} />
+
             <PrivateRoute exact path="/posts/create" component={CreatePost} />
             <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
             <PrivateRoute exact path="/posts/:slug" component={Post} />
+
             <PrivateRoute exact path="/messages/new" component={MessageCreate} />
             <PrivateRoute exact path="/messages/to/:slug" component={MessageSendTo} />
             <PrivateRoute exact path="/messages/:threadId" component={MessageView} />
             <PrivateRoute exact path="/messages" component={MessageList} />
+
             <Route exact path="/" component={Home} />
             <Route path="/posts" component={PostList} />
             <Route path="/groups/:groupSlug" component={GroupList} />
