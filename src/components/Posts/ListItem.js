@@ -16,7 +16,7 @@ function PostListItem({ post }) {
         <Link to={`/posts/${slug}`}>{title}</Link>
       </h2>
       <div className="meta post-meta space-between">
-        <span>
+        <div>
           {Boolean(author?.username) && (
             <>By <Link to={`/users/${author.slug}`}>{author.username}</Link>{' '}</>
           )}
@@ -27,12 +27,12 @@ function PostListItem({ post }) {
           {hasMedia && <FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="image" />}
           {' '}
           {!!commentsCount && <><FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="comment" /> {commentsCount}</>}
-        </span>
-        <span className="center-items">
+        </div>
+        <div className="center-items">
           {dateToString(createdAt)}
           &nbsp;
           <Bookmark postId={id} bookmarkedAt={bookmarkedAt} />
-        </span>
+        </div>
       </div>
     </div>
   )
