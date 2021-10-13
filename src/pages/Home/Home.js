@@ -1,6 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Loading from '../../components/partials/Loading'
 import PostListItem from '../../components/Posts/ListItem'
 import Sidebar from './Sidebar'
@@ -34,7 +35,7 @@ const LATEST_POSTS = gql`query postsQuery {
 function Home() {
   const { error, loading, data } = useQuery(LATEST_POSTS, { fetchPolicy: 'network-only' })
   const today = Date.now()
-  const endNews = 1626044400000 // July 12th 2021
+  const endNews = new Date(2021, 10, 12).getTime() // November 12th 2021
 
   return (
     <div className="layout-1">
@@ -51,8 +52,13 @@ function Home() {
           buy & sell or post anything else you might need / want.
         </p>
         {today < endNews && (
-          <p>
-            <strong style={{ color: '#0086DB' }}>News:</strong> We have now added search to the site.
+          <p className="alert">
+            <strong style={{ color: '#0086DB' }}>News:</strong>
+            <br />
+            You can now bookmark posts you want to read later / again.
+            <br />
+            Click on <FontAwesomeIcon icon="bookmark" className="meta" /> to bookmark and
+            {' '}<FontAwesomeIcon icon="bookmark" className="meta green" /> to remove the bookmark.
           </p>
         )}
       </div>
