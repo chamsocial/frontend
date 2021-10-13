@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, {
+  useState, useEffect, useRef, useCallback,
+} from 'react'
 import { Link } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -35,10 +37,10 @@ function Notifications() {
   if (loading) classNames.push('loading--pulse')
   if (!count) classNames.push('nofif--none')
 
-  function openNotif() {
+  const openNotif = useCallback(() => {
     toggleOpen(false)
     setTimeout(refetch, 400)
-  }
+  }, [])
 
   return (
     <div style={{ position: 'relative' }} ref={node} className={classNames.join(' ')}>

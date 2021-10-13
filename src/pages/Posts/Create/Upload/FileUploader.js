@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
 import Dropzone from 'react-dropzone'
@@ -67,7 +67,7 @@ function FileUploader({ files, createDraft, postId }) {
     )
   }
 
-  async function onDropAccepted(newFiles) {
+  const onDropAccepted = useCallback(async newFiles => {
     let id = stateId
     if (!id) {
       id = await createDraft()
@@ -96,11 +96,11 @@ function FileUploader({ files, createDraft, postId }) {
     })
 
     return Promise.all(uploads)
-  }
+  }, [dispatch, stateId, setId])
 
-  function onDropRejected(rejectedFiles) {
+  const onDropRejected = useCallback(rejectedFiles => {
     setError({ code: 'INVALID_FILE', files: rejectedFiles.map(({ file }) => file) })
-  }
+  }, [setError])
 
   return (
     <Dropzone

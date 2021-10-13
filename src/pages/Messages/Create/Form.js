@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import Loading from 'components/partials/Loading'
@@ -36,14 +36,16 @@ function Form({ toUser }) {
     const { id, value } = evt.target
     setState(prevState => ({ ...prevState, [id]: value }))
   }
-  function setUser(user) {
+  const setUser = useCallback(user => {
     if (!user) return
     setRecipients(prevUsers => [user, ...prevUsers])
-  }
-  function removeUser(id) {
-    const recipientsUsers = recipients.filter(u => u.id !== id)
-    setRecipients(recipientsUsers)
-  }
+  }, [])
+  const removeUser = useCallback(id => {
+    setRecipients(curr => {
+      const recipientsUsers = curr.filter(u => u.id !== id)
+      return recipientsUsers
+    })
+  }, [])
 
   return (
     <form onSubmit={onSubmit}>

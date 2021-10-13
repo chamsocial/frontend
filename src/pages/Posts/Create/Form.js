@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
@@ -78,7 +78,7 @@ function Form({
   function onChange(evt) {
     setState({ ...state, [evt.target.id]: evt.target.value })
   }
-  function setGroup(group) { setState({ ...state, group }) }
+  const setGroup = useCallback(group => { setState(curr => ({ ...curr, group })) }, [setState])
   function onDelete() {
     deleteDraft({ variables: { id: state.id } })
       .then(() => setRedirect({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
