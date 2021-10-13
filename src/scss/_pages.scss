@@ -1,3 +1,23 @@
+/**
+ * Bookmark
+ */
+.btn--bookmark {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  transition: transform .2s;
+  color: #ccc;
+  &:hover {
+    transform: scale(1.2);
+  }
+  &.is-bookmarked {
+    color: $green;
+  }
+}
+
+/**
+ * Search
+ */
 #search {
   &::placeholder {
     color: #bbb;

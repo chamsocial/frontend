@@ -28,7 +28,7 @@ const BOOKMARKS_QUERY = gql`query bookmarksQuery {
 
 
 function Bookmarks() {
-  const { data, loading, error } = useQuery(BOOKMARKS_QUERY)
+  const { data, loading, error } = useQuery(BOOKMARKS_QUERY, { fetchPolicy: 'network-only' })
   if (loading || error) return <Loading error={error} />
 
   return (

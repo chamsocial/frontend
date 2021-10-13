@@ -15,6 +15,7 @@ const LATEST_POSTS = gql`query postsQuery {
       createdAt
       commentsCount
       hasMedia
+      bookmarkedAt
       group {
         id
         title

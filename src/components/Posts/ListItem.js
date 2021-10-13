@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Bookmark from 'components/Bookmark'
 import { dateToString } from '../../utils'
 
 function PostListItem({ post }) {
   const {
-    title, slug, author, group, createdAt, commentsCount, hasMedia,
+    id, title, slug, author, group, createdAt, commentsCount, hasMedia, bookmarkedAt,
   } = post
 
   return (
@@ -27,8 +28,10 @@ function PostListItem({ post }) {
           {' '}
           {!!commentsCount && <><FontAwesomeIcon style={{ color: '#5BC8AF' }} icon="comment" /> {commentsCount}</>}
         </span>
-        <span>
+        <span className="center-items">
           {dateToString(createdAt)}
+          &nbsp;
+          <Bookmark postId={id} bookmarkedAt={bookmarkedAt} />
         </span>
       </div>
     </div>

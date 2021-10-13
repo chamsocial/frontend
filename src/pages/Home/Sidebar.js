@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuthState } from 'components/Auth/context'
 import Groups from 'components/Groups'
 import Search from 'components/Search'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 function User({ user }) {
@@ -19,6 +20,12 @@ function User({ user }) {
         </li>
         <li>
           <Link to="/users/emails">E-mail subscriptions settings</Link>
+        </li>
+        <li className="space-between center-items">
+          <Link to="/users/bookmarks">
+            Bookmarks
+          </Link>
+          <FontAwesomeIcon icon="bookmark" className="meta green" />
         </li>
         <li>
           <Link to="/logout">Logout</Link>
