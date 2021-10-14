@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import Modal from 'components/Modal'
+import Bookmark from 'components/Bookmark'
 import { dateToString } from '../../../utils'
 import Loading from '../../../components/partials/Loading'
 import Comments from '../../../components/Comments'
@@ -29,8 +30,11 @@ export function Post({ match }) {
     <div className="layout--narrow">
       <div className="box box--padded box--row">
         <h1>{post.title}</h1>
-        <div className="meta">
+        <div className="meta space-between">
           {dateToString(post.createdAt)}
+          <small>
+            <Bookmark postId={post.id} bookmarkedAt={post.bookmarkedAt} />
+          </small>
         </div>
         <hr />
         <div className="post-content markdown-content">

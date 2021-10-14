@@ -21,6 +21,9 @@ function User({ user }) {
           <Link to="/users/emails">E-mail subscriptions settings</Link>
         </li>
         <li>
+          <Link to="/users/bookmarks">Bookmarks</Link>
+        </li>
+        <li>
           <Link to="/logout">Logout</Link>
         </li>
       </ul>
@@ -31,6 +34,7 @@ function User({ user }) {
     </div>
   )
 }
+
 
 function NotLoggedIn() {
   return (

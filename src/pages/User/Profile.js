@@ -49,6 +49,8 @@ function Profile({ match }) {
         {' '}&nbsp;|&nbsp;{' '}
         <Link to="/users/emails">Email settings</Link>
         {' '}&nbsp;|&nbsp;{' '}
+        <Link to="/users/bookmarks">Bookmarks</Link>
+        {' '}&nbsp;|&nbsp;{' '}
         <Link to="/logout">Logout</Link>
       </>
     )

@@ -4,8 +4,8 @@ import Loading from 'components/partials/Loading'
 import PostListItem from 'components/Posts/ListItem'
 
 
-const BOOKMARKS_QUERY = gql`query bookmarksQuery {
-  bookmarks {
+const POSTS_COMMENTED_QUERY = gql`query postsCommentedQuery {
+  postsCommented {
     id
     title
     slug
@@ -27,21 +27,21 @@ const BOOKMARKS_QUERY = gql`query bookmarksQuery {
 }`
 
 
-function Bookmarks() {
-  const { data, loading, error } = useQuery(BOOKMARKS_QUERY, { fetchPolicy: 'network-only' })
+function PostsCommented() {
+  const { data, loading, error } = useQuery(POSTS_COMMENTED_QUERY, { fetchPolicy: 'network-only' })
   if (loading || error) return <Loading error={error} />
 
   return (
     <div className="box box--row clearfix">
-      <h1>Bookmarks</h1>
+      <h1>Posts you have commented on</h1>
       {
-        data?.bookmarks?.length
-          ? data.bookmarks.map(post => <PostListItem key={post.id} post={post} />)
-          : <div className="alert">You have not bookmarked any posts yet.</div>
+        data?.postsCommented?.length
+          ? data.postsCommented.map(post => <PostListItem key={post.id} post={post} />)
+          : <div className="alert">You have no commented on any posts yet.</div>
       }
     </div>
   )
 }
 
 
-export default Bookmarks
+export default PostsCommented

@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
 import Dropzone from 'react-dropzone'
@@ -63,11 +63,11 @@ function FileUploader({ files, createDraft, postId }) {
     return () => (
       deleteFileMutation({ variables: { fileId } })
         .then(() => dispatch({ type: 'DELETED_FILE', fileId }))
-        .catch(err => console.log('delete err', err))
+        .catch(err => console.log('delete err', err)) // eslint-disable-line no-console
     )
   }
 
-  async function onDropAccepted(newFiles) {
+  const onDropAccepted = useCallback(async newFiles => {
     let id = stateId
     if (!id) {
       id = await createDraft()
@@ -90,17 +90,17 @@ function FileUploader({ files, createDraft, postId }) {
         uploadedFile.tmpId = item.tmpId
         dispatch({ type: 'FILE_UPLOADED', file: uploadedFile })
       } catch (err) {
-        console.log('ERROR', err)
+        console.log('ERROR', err) // eslint-disable-line no-console
         dispatch({ type: 'UPLOAD_FAILED', file: item })
       }
     })
 
     return Promise.all(uploads)
-  }
+  }, [dispatch, stateId, setId])
 
-  function onDropRejected(rejectedFiles) {
+  const onDropRejected = useCallback(rejectedFiles => {
     setError({ code: 'INVALID_FILE', files: rejectedFiles.map(({ file }) => file) })
-  }
+  }, [setError])
 
   return (
     <Dropzone
