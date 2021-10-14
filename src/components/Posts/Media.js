@@ -65,7 +65,7 @@ function PostMedia({ postMedia }) {
   }
 
   useEffect(() => {
-    if (!img) return null
+    if (!img) return undefined
     const keyPress = evt => {
       switch (evt.key) {
         case 'Left': // IE/Edge specific value
