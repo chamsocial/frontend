@@ -44,7 +44,7 @@ class Comment extends Component {
 
     return (
       <div>
-        <div className="comment">
+        <div className="comment" id={`comment_${comment.id}`}>
           <div className="meta space-between comment__meta">
             <Link to={`/users/${author.slug}`}>{author.username}</Link>
             <span>{dateToString(createdAt)}</span>
