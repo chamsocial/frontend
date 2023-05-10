@@ -16,9 +16,9 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
-    "apollo-upload-client": "^16.0.0",
+    "apollo-upload-client": "^17.0.0",
     "downshift": "^6.1.7",
-    "graphql": "^15.6.1",
+    "graphql": "^16.6.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.6.2",
     "react": "^17.0.2",
@@ -32,13 +32,14 @@
     "sass": "^1.42.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "@babel/eslint-parser": "^7.21.8",
+    "eslint": "^8.40.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.26.1",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^5.0.1"
   },
   "browserslist": [
     ">0.2%",
