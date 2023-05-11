@@ -37,8 +37,8 @@ function Signup() {
       <Navigate
         to="/"
         state={{
-            flashMessage: `We've sent an activation email to ${state.email}, please verify your email with the link in the email to login.`,
-          }}
+          flashMessage: `We've sent an activation email to ${state.email}, please verify your email with the link in the email to login.`,
+        }}
       />
     )
   }

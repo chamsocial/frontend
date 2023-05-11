@@ -60,7 +60,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 }
 
 
-const ChamRoutes = () => {
+function ChamRoutes() {
   const location = useLocation()
   return (
     <TransitionGroup className="transition-wrapper" exit={false}>

@@ -96,7 +96,7 @@ function FileUploader({ files, createDraft, postId }) {
     })
 
     return Promise.all(uploads)
-  }, [dispatch, stateId, setId])
+  }, [stateId, createDraft, uploadFile])
 
   const onDropRejected = useCallback(rejectedFiles => {
     setError({ code: 'INVALID_FILE', files: rejectedFiles.map(({ file }) => file) })

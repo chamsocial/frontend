@@ -30,7 +30,7 @@ const httpLink = createUploadLink({
   uri: `${REACT_APP_API_URL}/graphql`,
   credentials: 'include',
   headers: {
-    'Apollo-Require-Preflight': true
+    'Apollo-Require-Preflight': true,
   },
 })
 

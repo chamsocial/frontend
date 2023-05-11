@@ -114,7 +114,7 @@ function Edit({ profile }) {
       </div>
       <div className="form-group">
         <label htmlFor="lang">Language</label>
-        <select component="select" id="lang" value={state.lang} onChange={onChange}>
+        <select id="lang" value={state.lang} onChange={onChange}>
           <option value="en">English</option>
           <option value="fr">Français</option>
         </select>
@@ -130,7 +130,7 @@ function Edit({ profile }) {
 }
 Edit.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     firstName: PropTypes.string,
   }).isRequired,
 }

@@ -11,7 +11,14 @@ import Media from '../../../components/Posts/Media'
 import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
 import PrivateMessageForm from './components/PrivateMessageForm'
-// import PostReply from './components/PostReply'
+
+function PmButton({ openModal }) {
+  return (
+    <button type="button" onClick={openModal} className="btn btn--secondary">
+      Private message
+    </button>
+  )
+}
 
 
 export function Post() {
@@ -53,13 +60,7 @@ export function Post() {
             By <Link to={`/users/${post.author.slug}`}>{post.author.username}</Link>
             {' '}in <Link to={`/groups/${post.group.slug}`}>{post.group.title}</Link>
           </div>
-          <Modal
-            activator={({ openModal }) => (
-              <button type="button" onClick={openModal} className="btn btn--secondary">
-                Private message
-              </button>
-            )}
-          >
+          <Modal activator={PmButton}>
             {({ closeModal }) => (
               <PrivateMessageForm post={post} postSlug={post.slug} closeFn={closeModal} />
             )}

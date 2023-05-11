@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import Button from 'components/partials/Button'

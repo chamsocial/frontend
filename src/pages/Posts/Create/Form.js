@@ -58,7 +58,7 @@ function Form({
       .then(({ data }) => {
         const slug = data.editPost ? data.editPost.slug : data.createPost.slug
         const message = isEdit ? 'The post has been updated' : 'The post has been published'
-        setRedirect({ url: `/posts/${slug}`, message })
+        setNavigate({ url: `/posts/${slug}`, message })
       })
   }
 
@@ -81,7 +81,7 @@ function Form({
   const setGroup = useCallback(group => { setState(curr => ({ ...curr, group })) }, [setState])
   function onDelete() {
     deleteDraft({ variables: { id: state.id } })
-      .then(() => setRedirect({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
+      .then(() => setNavigate({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
   }
 
   if (redirect) {

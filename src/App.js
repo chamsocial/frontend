@@ -10,8 +10,17 @@ import Auth from './components/Auth'
 import Router from './Router'
 
 library.add(
-  faTimes, faTimesCircle, faTrashAlt, faComment, faSearch, faBookmark,
-  faBell, faImage, faMapSigns, faAngleRight, faAngleLeft,
+  faTimes,
+  faTimesCircle,
+  faTrashAlt,
+  faComment,
+  faSearch,
+  faBookmark,
+  faBell,
+  faImage,
+  faMapSigns,
+  faAngleRight,
+  faAngleLeft,
 )
 
 // Prevent file drag'n drop to load file in the browser

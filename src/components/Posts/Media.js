@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -26,33 +26,34 @@ function PostMedia({ postMedia }) {
   const [img, setImg] = useState(null)
   const lastIndex = postMedia.length - 1
 
-  function getNextImage(index) {
+  const getNextImage = useCallback(index => {
     const nextIndex = lastIndex === index ? 0 : index + 1
     const item = postMedia[nextIndex]
     if (item.type !== 'image') return getNextImage(nextIndex)
     return item
-  }
-  const nextImage = evt => {
+  }, [lastIndex, postMedia])
+
+  const nextImage = useCallback(evt => {
     evt.stopPropagation()
     evt.preventDefault()
     const currentIndex = postMedia.findIndex(image => image.id === img.id)
     const nextItem = getNextImage(currentIndex)
     setImg(nextItem)
-  }
+  }, [getNextImage, img?.id, postMedia])
 
-  function getPrevImage(index) {
+  const getPrevImage = useCallback(index => {
     const nextIndex = index === 0 ? lastIndex : index - 1
     const item = postMedia[nextIndex]
     if (item.type !== 'image') return getPrevImage(nextIndex)
     return item
-  }
-  const previousImage = evt => {
+  }, [lastIndex, postMedia])
+  const previousImage = useCallback(evt => {
     evt.preventDefault()
     evt.stopPropagation()
     const currentIndex = postMedia.findIndex(image => image.id === img.id)
     const nextItem = getPrevImage(currentIndex)
     setImg(nextItem)
-  }
+  }, [getPrevImage, img?.id, postMedia])
 
   const openImgGallery = (isImage, image) => evt => {
     if (!isImage) return
@@ -83,12 +84,13 @@ function PostMedia({ postMedia }) {
     }
     document.addEventListener('keydown', keyPress)
     return () => document.removeEventListener('keydown', keyPress)
-  }, [img])
+  }, [img, nextImage, previousImage])
 
   return (
     <div className="post-media">
       {img && (
-        ReactDOM.createPortal((
+        ReactDOM.createPortal(
+          (
           <div className="lightbox" onClick={closeImgGallery}>{/* eslint-disable-line */}
             <img src={`${fileUrl}${img.url}`} alt="Big version" />
             {postMedia.length > 1 && (
@@ -102,7 +104,8 @@ function PostMedia({ postMedia }) {
               </>
             )}
           </div>
-        ), portalDom)
+          ), portalDom,
+        )
       )}
       {postMedia.map(media => {
         const isImage = media.type === 'image'

@@ -6,21 +6,6 @@ import { gql } from '@apollo/client'
 import { singlePostQuery } from '../../graphql/post-queries'
 
 
-function loopComments(comments, newComment) {
-  comments.forEach(comment => {
-    if (comment.id === newComment.parentId) {
-      if (!comment.comments) comment.comments = []
-      comment.comments.push(newComment)
-      return true
-    }
-    if (comment.comments && comment.comments.length) {
-      loopComments(comment.comments, newComment)
-    }
-    return false
-  })
-}
-
-
 export class CommentsFormComponent extends Component {
   constructor(props) {
     super(props)
@@ -57,8 +42,7 @@ export class CommentsFormComponent extends Component {
         // @TODO scroll to comment
         this.timeoutStatus = setTimeout(() => closeMe(), 1500)
       })
-      .catch((err) => {
-        console.log('Hmm', err)
+      .catch(() => {
         this.setState(() => ({ status: '' }))
         window.alert('Could not save comment!') // eslint-disable-line no-alert
       })
@@ -127,7 +111,7 @@ const CommentsForm = graphql(commentMutation, {
       refetchQueries: [{
         query: singlePostQuery,
         variables: { slug: postSlug },
-      }]
+      }],
     }
   ),
 })(CommentsFormComponent)
