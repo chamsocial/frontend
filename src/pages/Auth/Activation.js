@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
-import { Redirect } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useAuthDispatch } from 'components/Auth/context'
 import Loading from 'components/partials/Loading'
 import Alert from 'components/partials/Alert'
@@ -18,10 +17,10 @@ const ACTIVATION = gql`
 `
 
 
-function Activation({ match }) {
+function Activation() {
+  const { code } = useParams()
   const [activate, { error, data }] = useMutation(ACTIVATION)
   const authDispatch = useAuthDispatch()
-  const { code } = match.params
   useEffect(() => {
     activate({ variables: { code } })
       .then(({ data: { activateUser } }) => {
@@ -31,18 +30,8 @@ function Activation({ match }) {
   if (error) return <Alert type="danger">Could not find activation code or it&apos;s already been used.</Alert>
   if (!data || !data.activateUser) return <Loading />
 
-  const to = {
-    pathname: '/',
-    state: { flashMessage: 'Your account has been activated and you have been logged in.' },
-  }
-  return <Redirect to={to} />
-}
-Activation.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      code: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
+  const toState = { flashMessage: 'Your account has been activated and you have been logged in.' }
+  return <Navigate to="/" state={toState} />
 }
 
 

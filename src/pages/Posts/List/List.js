@@ -5,14 +5,14 @@ import Search from 'components/Search'
 import PostList from './PostList'
 
 
-function PostsList({ location }) {
+function PostsList() {
   return (
     <div className="layout-posts">
       <div className="content box">
         <h1 className="space-between">
           Posts
         </h1>
-        <PostList queryParams={location.search} />
+        <PostList />
       </div>
 
       <div className="sidebar-top">

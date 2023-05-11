@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import SelectUsers from './SelectUsers'
@@ -18,9 +18,20 @@ function Form({ toUser }) {
   const [state, setState] = useState({ subject: '', message: '' })
   const [recipients, setRecipients] = useState(toUser ? [toUser] : [])
 
+  const setUser = useCallback(user => {
+    if (!user) return
+    setRecipients(prevUsers => [user, ...prevUsers])
+  }, [])
+  const removeUser = useCallback(id => {
+    setRecipients(curr => {
+      const recipientsUsers = curr.filter(u => u.id !== id)
+      return recipientsUsers
+    })
+  }, [])
+
   const [sendMessage, { loading, error, data }] = useMutation(NEW_PM)
   if (loading) return <Loading />
-  if (data && data.message) return <Redirect to={`/messages/${data.message.id}`} />
+  if (data && data.message) return <Navigate to={`/messages/${data.message.id}`} />
 
   const valid = state.subject.length > 2 && state.message.length > 2 && recipients.length > 0
 
@@ -36,16 +47,6 @@ function Form({ toUser }) {
     const { id, value } = evt.target
     setState(prevState => ({ ...prevState, [id]: value }))
   }
-  const setUser = useCallback(user => {
-    if (!user) return
-    setRecipients(prevUsers => [user, ...prevUsers])
-  }, [])
-  const removeUser = useCallback(id => {
-    setRecipients(curr => {
-      const recipientsUsers = curr.filter(u => u.id !== id)
-      return recipientsUsers
-    })
-  }, [])
 
   return (
     <form onSubmit={onSubmit}>

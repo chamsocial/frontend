@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { useAuthState } from 'components/Auth/context'
 import Loading from 'components/partials/Loading'
@@ -30,8 +29,8 @@ const MESSAGE_THREAD = gql`query messageThreadQuery($threadId: ID!) {
 }`
 
 
-function Messages({ match }) {
-  const { threadId } = match.params
+function Messages() {
+  const { threadId } = useParams()
   const { user } = useAuthState()
   const { loading, error, data } = useQuery(MESSAGE_THREAD, { variables: { threadId } })
   if (loading || error) return <Loading error={error} />
@@ -77,13 +76,6 @@ function Messages({ match }) {
       </div>
     </div>
   )
-}
-Messages.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      threadId: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
 }
 
 

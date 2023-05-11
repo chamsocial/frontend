@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import Modal from 'components/Modal'
 import Bookmark from 'components/Bookmark'
@@ -15,9 +14,10 @@ import PrivateMessageForm from './components/PrivateMessageForm'
 // import PostReply from './components/PostReply'
 
 
-export function Post({ match }) {
+export function Post() {
+  const { slug } = useParams()
   const { loading, error, data } = useQuery(singlePostQuery, {
-    variables: { slug: match.params.slug },
+    variables: { slug },
     fetchPolicy: 'network-only',
   })
   if (error && error.message.includes('NO_POSTS_FOUND')) {
@@ -74,13 +74,6 @@ export function Post({ match }) {
       </div>
     </div>
   )
-}
-Post.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      slug: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 

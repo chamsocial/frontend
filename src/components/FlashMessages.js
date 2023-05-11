@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import { useAuthState, useAuthDispatch } from './Auth/context'
 import Alert from './partials/Alert'
@@ -13,8 +13,9 @@ const UNSET_BOUNCE = gql`mutation authQuery {
 }`
 
 
-function FlashMessages({ location }) {
+function FlashMessages() {
   const { user } = useAuthState()
+  const { state } = useLocation()
   const authDispatch = useAuthDispatch()
   const [unsetBounce, { loading, error }] = useMutation(UNSET_BOUNCE)
 
@@ -26,8 +27,8 @@ function FlashMessages({ location }) {
       })
   }
 
-  if (location.state && location.state.flashMessage) {
-    return <Alert>{location.state.flashMessage}</Alert>
+  if (state && state.flashMessage) {
+    return <Alert>{state.flashMessage}</Alert>
   }
   if (user && user.bouncing) {
     return (
@@ -41,4 +42,4 @@ function FlashMessages({ location }) {
   return null
 }
 
-export default withRouter(FlashMessages)
+export default FlashMessages

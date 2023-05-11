@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import Form from './Form'
@@ -14,8 +14,8 @@ const userQuery = gql`query userToQuery ($slug: String!) {
 }`
 
 
-function SendTo({ match }) {
-  const { slug } = match.params
+function SendTo() {
+  const { slug } = useParams()
   const { loading, error, data } = useQuery(userQuery, { variables: { slug } })
   if (loading || error) return <Loading error={error} />
 

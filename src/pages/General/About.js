@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 function About() {
   return (
     <div className="box">
@@ -56,5 +57,6 @@ function About() {
     </div>
   )
 }
+
 
 export default About

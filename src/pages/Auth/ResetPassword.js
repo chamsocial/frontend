@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { Redirect } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import Loading from 'components/partials/Loading'
 import Button from 'components/partials/Button'
 import Alert from 'components/partials/Alert'
@@ -23,8 +22,8 @@ const RESET_PASSWORD = gql`
   ${authFields}
 `
 
-function ResetPassword({ match }) {
-  const { token } = match.params
+function ResetPassword() {
+  const { token } = useParams()
   const { loading, error, data } = useQuery(FORGOT_PASSWORD_TOKEN, { variables: { token } })
   const [resetPassword, mutation] = useMutation(RESET_PASSWORD)
   const [password, setPassword] = useState('')
@@ -34,7 +33,7 @@ function ResetPassword({ match }) {
   if (error) return <Alert type="danger">Something went wrong, please try again.</Alert>
   if (data.resetPassword === null) return <Alert type="danger">Invalid or expired reset token.</Alert>
   if (mutation.data && mutation.data.resetPassword) {
-    return <Redirect to={{ pathname: '/', state: { flashMessage: 'You have been logged in and your password has been reset!' } }} />
+    return <Navigate to="/" state={{ flashMessage: 'You have been logged in and your password has been reset!' }} />
   }
 
   function onSubmit(evt) {
@@ -71,13 +70,6 @@ function ResetPassword({ match }) {
       </div>
     </form>
   )
-}
-ResetPassword.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      token: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense } from 'react'
 import {
-  Route, Switch, withRouter, Redirect,
+  Route, Routes, Navigate, useLocation,
 } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import TransitionGroup from 'react-transition-group/TransitionGroup'
@@ -55,53 +55,56 @@ const AllowedOutside = lazy(() => import('./pages/Map/AllowedOutside'))
 
 function PrivateRoute({ component: Component, ...rest }) {
   const { user } = useAuthState()
-  if (!user) return <Redirect to={{ pathname: '/login', state: { from: rest.location } }} />
-  return <Route {...rest} component={Component} />
+  if (!user) return <Navigate to={{ pathname: '/login', state: { from: rest.location } }} />
+  return <Component {...rest} />
 }
 
 
-const Routes = withRouter(({ location }) => (
-  <TransitionGroup className="transition-wrapper" exit={false}>
-    <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
-      <div className="cham-route">
-        <Suspense fallback={<Loading />}>
-          <Switch key={location.key} location={location}>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/forgot-password" component={ForgotPassword} />
-            <Route exact path="/reset-password/:token" component={ResetPassword} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/logout" component={Logout} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/contact" component={About} />
-            <Route exact path="/map/quarantine" component={MapQuarantine} />
-            <Route exact path="/curfew/am-i-allowed-outside" component={AllowedOutside} />
-            <Route exact path="/users/activate/:code" component={Activation} />
+const ChamRoutes = () => {
+  const location = useLocation()
+  return (
+    <TransitionGroup className="transition-wrapper" exit={false}>
+      <CSSTransition key={`css-${location.key}`} classNames="fade" timeout={300}>
+        <div className="cham-route">
+          <Suspense fallback={<Loading />}>
+            <Routes key={location.key} location={location}>
+              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/forgot-password" element={<ForgotPassword />} />
+              <Route exact path="/reset-password/:token" element={<ResetPassword />} />
+              <Route exact path="/signup" element={<Signup />} />
+              <Route exact path="/logout" element={<Logout />} />
+              <Route exact path="/about" element={<About />} />
+              <Route exact path="/contact" element={<About />} />
+              <Route exact path="/map/quarantine" element={<MapQuarantine />} />
+              <Route exact path="/curfew/am-i-allowed-outside" element={<AllowedOutside />} />
+              <Route exact path="/users/activate/:code" element={<Activation />} />
 
-            <PrivateRoute exact path="/users/emails" component={UserEmailSettings} />
-            <PrivateRoute exact path="/users/edit" component={UserEdit} />
-            <PrivateRoute exact path="/users/bookmarks" component={Bookmarks} />
-            <PrivateRoute exact path="/users/posts-comments" component={PostsCommented} />
-            <PrivateRoute exact path="/users/:slug" component={UserProfile} />
+              <Route exact path="/users/emails" element={<PrivateRoute component={UserEmailSettings} />} />
+              <Route exact path="/users/edit" element={<PrivateRoute component={UserEdit} />} />
+              <Route exact path="/users/bookmarks" element={<PrivateRoute component={Bookmarks} />} />
+              <Route exact path="/users/posts-comments" element={<PrivateRoute component={PostsCommented} />} />
+              <Route exact path="/users/:slug" element={<PrivateRoute component={UserProfile} />} />
 
-            <PrivateRoute exact path="/posts/create" component={CreatePost} />
-            <PrivateRoute exact path="/posts/:postId/edit" component={CreatePost} />
-            <PrivateRoute exact path="/posts/:slug" component={Post} />
+              <Route exact path="/posts/create" element={<PrivateRoute component={CreatePost} />} />
+              <Route exact path="/posts/:postId/edit" element={<PrivateRoute component={CreatePost} />} />
+              <Route exact path="/posts/:slug" element={<PrivateRoute component={Post} />} />
 
-            <PrivateRoute exact path="/messages/new" component={MessageCreate} />
-            <PrivateRoute exact path="/messages/to/:slug" component={MessageSendTo} />
-            <PrivateRoute exact path="/messages/:threadId" component={MessageView} />
-            <PrivateRoute exact path="/messages" component={MessageList} />
+              <Route exact path="/messages/new" element={<PrivateRoute component={MessageCreate} />} />
+              <Route exact path="/messages/to/:slug" element={<PrivateRoute component={MessageSendTo} />} />
+              <Route exact path="/messages/:threadId" element={<PrivateRoute component={MessageView} />} />
+              <Route exact path="/messages" element={<PrivateRoute component={MessageList} />} />
 
-            <Route exact path="/" component={Home} />
-            <Route path="/posts" component={PostList} />
-            <Route path="/groups/:groupSlug" component={GroupList} />
-            <Route component={FourOhFour} />
-          </Switch>
-        </Suspense>
-      </div>
-    </CSSTransition>
-  </TransitionGroup>
-))
+              <Route exact path="/" element={<Home />} />
+              <Route path="/posts" element={<PostList />} />
+              <Route path="/groups/:groupSlug" element={<GroupList />} />
+              <Route element={<FourOhFour />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
+  )
+}
 
 
-export default Routes
+export default ChamRoutes

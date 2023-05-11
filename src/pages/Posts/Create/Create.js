@@ -1,6 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
+import { useParams } from 'react-router-dom'
 import Loading from 'components/partials/Loading'
 import Form from './Form'
 import Drafts from './Drafts'
@@ -29,8 +29,8 @@ const DELETE_DRAFT = gql`
 `
 
 
-function CreatePost({ match }) {
-  const { postId } = match.params
+function CreatePost() {
+  const { postId } = useParams()
   const [deleteDraft] = useMutation(DELETE_DRAFT)
   const { loading, error, data } = useQuery(GET_POST_EDIT, {
     skip: !postId,
@@ -52,13 +52,6 @@ function CreatePost({ match }) {
       />
     </div>
   )
-}
-CreatePost.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      postId: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 

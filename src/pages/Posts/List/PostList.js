@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import Pagination from 'components/partials/Pagination'
 import PostListItem from 'components/Posts/ListItem'
+import { useSearchParams } from 'react-router-dom'
 
 const POSTS_PER_PAGE = 20
 
@@ -32,10 +33,10 @@ const postsQuery = gql`query postsQuery($postsPerPage: Int, $page: Int!, $groupI
 }`
 
 
-function PostList({ groupId, queryParams }) {
-  const params = new URLSearchParams(queryParams)
-  const page = parseInt(params.get('p'), 10) || 1
-  const search = params.get('q')
+function PostList({ groupId }) {
+  const [searchParams] = useSearchParams()
+  const page = parseInt(searchParams.get('p'), 10) || 1
+  const search = searchParams.get('q')
   const { error, loading, data } = useQuery(postsQuery, {
     variables: {
       page,

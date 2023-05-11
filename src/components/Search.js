@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 function Search({ urlPath, label }) {
   const currentUrlParams = new URLSearchParams(window.location.search)
   const [searchTerm, setSearchTerm] = useState(currentUrlParams.get('q') || '')
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const onSearch = evt => {
     evt.preventDefault()
     const searchPath = urlPath || '/posts'
-    history.push(`${searchPath}?q=${encodeURIComponent(searchTerm)}`)
+    navigate(`${searchPath}?q=${encodeURIComponent(searchTerm)}`)
   }
 
   return (

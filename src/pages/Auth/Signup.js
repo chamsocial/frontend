@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { Redirect, Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import Button from 'components/partials/Button'
 import Alert from 'components/partials/Alert'
 
@@ -31,16 +31,14 @@ function Signup() {
     setState(currState => ({ ...currState, [id]: value }))
   }
 
-  // Redirect the user home on success
+  // Navigate the user home on success
   if (data?.createUser?.success) {
     return (
-      <Redirect
-        to={{
-          pathname: '/',
-          state: {
+      <Navigate
+        to="/"
+        state={{
             flashMessage: `We've sent an activation email to ${state.email}, please verify your email with the link in the email to login.`,
-          },
-        }}
+          }}
       />
     )
   }

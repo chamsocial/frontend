@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 
 
@@ -19,7 +19,7 @@ function DeletePost({ postId }) {
   }
 
   if (data && data.deletePost) {
-    return <Redirect to={{ pathname: '/', state: { flashMessage: 'Post deleted.' } }} />
+    return <Navigate to="/" state={{ flashMessage: 'Post deleted.' }} />
   }
 
   return (

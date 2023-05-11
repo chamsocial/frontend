@@ -106,7 +106,7 @@ function FileUploader({ files, createDraft, postId }) {
     <Dropzone
       minSize={ONE_KB}
       maxSize={TEN_MB}
-      accept="image/png, image/gif, image/jpg, image/jpeg"
+      accept={{ 'image/*': ['.png', '.gif', '.jpg', '.jpeg'] }}
       onDropAccepted={onDropAccepted}
       onDropRejected={onDropRejected}
     >

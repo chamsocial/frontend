@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import Button from '../../../components/partials/Button'
 import GroupSelect from './GroupSelect'
@@ -33,7 +33,7 @@ const EDIT_POST = gql`
 function Form({
   draft, isDraft, deleteDraft, isEdit,
 }) {
-  const [redirect, setRedirect] = useState(null)
+  const [redirect, setNavigate] = useState(null)
   const [state, setState] = useState(draft)
   const [createPost] = useMutation(CREATE_POST)
   const [editPost] = useMutation(EDIT_POST)
@@ -85,7 +85,7 @@ function Form({
   }
 
   if (redirect) {
-    return <Redirect to={{ pathname: redirect.url, state: { flashMessage: redirect.message } }} />
+    return <Navigate to={redirect.url} state={{ flashMessage: redirect.message }} />
   }
 
   return (

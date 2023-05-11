@@ -3,8 +3,8 @@
     "browser": true,
     "es6": true
   },
-  "extends": "airbnb",
-  "parser": "@babel/eslint-parser",
+  "extends": ["react-app", "airbnb"],
+  // "parser": "@babel/eslint-parser",
   "rules": {
     "semi": ["error", "never"],
     "arrow-parens": ["error", "as-needed"],
