@@ -24,19 +24,31 @@ function About() {
         <tbody>
           <tr>
             <td>1999</td>
-            <td>2011</td>
-            <td>2014</td>
-            <td>2015</td>
-            <td>2019</td>
-            <td>2020</td>
+            <td>ChamShare was created</td>
           </tr>
-          <tr className="small">
-            <td>ChamShare was created.</td>
-            <td>Chamsocial took over.</td>
-            <td>Chamsocial get new admins.</td>
-            <td>New version of Chamsocial was launched.</td>
-            <td>Development of this version of ChamSocial.</td>
-            <td>July 24 current version was deployed</td>
+          <tr>
+            <td>2011</td>
+            <td>Chamsocial took over</td>
+          </tr>
+          <tr>
+            <td>2014</td>
+            <td>Chamsocial get new admins</td>
+          </tr>
+          <tr>
+            <td>2015</td>
+            <td>New version of Chamsocial was launched</td>
+          </tr>
+          <tr>
+            <td>2019</td>
+            <td>Another version of ChamSocial was deployed</td>
+          </tr>
+          <tr>
+            <td>2020</td>
+            <td>July 24 the current version was deployed</td>
+          </tr>
+          <tr>
+            <td>2023</td>
+            <td>September 13 moved server from Gandi to Oracle</td>
           </tr>
         </tbody>
       </table>
