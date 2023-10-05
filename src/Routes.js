@@ -48,6 +48,8 @@ const MessageSendTo = lazy(() => import('./pages/Messages/Create/SendTo'))
 
 // General routes
 const About = lazy(() => import('./pages/General/About'))
+const Blog = lazy(() => import('./pages/Blog/List'))
+const BlogPost = lazy(() => import('./pages/Blog/Single'))
 
 const MapQuarantine = lazy(() => import('./pages/Map/Quarantine'))
 const AllowedOutside = lazy(() => import('./pages/Map/AllowedOutside'))
@@ -93,6 +95,10 @@ function ChamRoutes() {
               <Route exact path="/messages/to/:slug" element={<PrivateRoute component={MessageSendTo} />} />
               <Route exact path="/messages/:threadId" element={<PrivateRoute component={MessageView} />} />
               <Route exact path="/messages" element={<PrivateRoute component={MessageList} />} />
+
+              {/* Blog */}
+              <Route exact path="/blog" element={<Blog />} />
+              <Route exact path="/blog/:slug" element={<BlogPost />} />
 
               <Route exact path="/" element={<Home />} />
               <Route path="/posts" element={<PostList />} />

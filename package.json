@@ -17,7 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "apollo-upload-client": "^17.0.0",
-    "downshift": "^7.6.0",
+    "downshift": "^8.2.2",
     "graphql": "^16.6.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.6.2",
@@ -26,9 +26,10 @@
     "react-dropzone": "^14.2.3",
     "react-dropzone-uploader": "^2.10.0",
     "react-filepond": "^7.1.1",
-    "react-markdown": "^8.0.7",
+    "react-markdown": "^9.0.0",
     "react-router-dom": "^6.11.1",
     "react-transition-group": "^4.4.2",
+    "remark-gfm": "^4.0.0",
     "sass": "^1.42.1"
   },
   "devDependencies": {

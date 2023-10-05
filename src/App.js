@@ -1,5 +1,6 @@
 import React from 'react'
 import { ApolloProvider } from '@apollo/client'
+import { BrowserRouter } from 'react-router-dom'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTimes, faTimesCircle, faTrashAlt, faComment, faSearch, faBookmark,
@@ -7,7 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import apollo from './utils/apollo'
 import Auth from './components/Auth'
-import Router from './Router'
+import Routes from './Routes'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import FlashMessages from './components/FlashMessages'
 
 library.add(
   faTimes,
@@ -36,7 +40,14 @@ function App() {
   return (
     <ApolloProvider client={apollo.client}>
       <Auth>
-        <Router />
+        <BrowserRouter>
+          <Header />
+          <div className="container">
+            <FlashMessages />
+            <Routes />
+          </div>
+          <Footer />
+        </BrowserRouter>
       </Auth>
     </ApolloProvider>
   )
