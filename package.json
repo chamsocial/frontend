@@ -9,13 +9,15 @@
     "lint:fix": "eslint . --fix",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org chamsocial --project frontend ./build && sentry-cli sourcemaps upload --org chamsocial --project frontend ./build"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@sentry/cli": "^2.29.1",
     "@sentry/react": "^7.105.0",
     "apollo-upload-client": "^17.0.0",
     "downshift": "^8.2.2",
