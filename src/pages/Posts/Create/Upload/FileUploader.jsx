@@ -84,7 +84,10 @@ function FileUploader({ files, createDraft, postId }) {
       dispatch({ type: 'ADD_FILE', file: item })
 
       try {
-        const resp = await uploadFile({ variables: { file, postId: id } })
+        const resp = await uploadFile({
+          variables: { file, postId: id },
+          context: { headers: { 'apollo-require-preflight': 'true' } }
+        })
         const uploadedFile = resp.data.uploadFile
         uploadedFile.preview = `${apiPath}${uploadedFile.url}`
         uploadedFile.tmpId = item.tmpId
