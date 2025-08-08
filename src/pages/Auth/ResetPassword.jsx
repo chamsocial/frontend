@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { Redirect } from 'react-router-dom'
-import Loading from 'components/partials/Loading'
-import Button from 'components/partials/Button'
-import Alert from 'components/partials/Alert'
-import { useAuthDispatch } from 'components/Auth/context'
-import { authFields } from 'graphql/fragments'
+import Loading from '@/components/partials/Loading'
+import Button from '@/components/partials/Button'
+import Alert from '@/components/partials/Alert'
+import { useAuthDispatch } from '@/components/Auth/context'
+import { authFields } from '@/graphql/fragments'
 
 
 const FORGOT_PASSWORD_TOKEN = gql`

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
-import Loading from 'components/partials/Loading'
+import Loading from '@/components/partials/Loading'
 import SelectUsers from './SelectUsers'
 
 

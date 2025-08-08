@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "react-scripts start",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "dev": "vite",
+  "start": "vite",
+  "lint": "eslint .",
+  "lint:fix": "eslint . --fix",
+  "build": "vite build",
+  "test": "vitest",
+  "eject": "echo 'Eject is not supported with Vite'"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.15",
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@fortawesome/react-fontawesome": "^0.2.3",
     "apollo-upload-client": "^16.0.0",
     "downshift": "^6.1.7",
     "graphql": "^15.6.1",
@@ -32,13 +32,9 @@
     "sass": "^1.42.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.26.1",
-    "react-scripts": "^4.0.3"
+    "vite": "^4.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "vitest": "^0.34.0"
   },
   "browserslist": [
     ">0.2%",

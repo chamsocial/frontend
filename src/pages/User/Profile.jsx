@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
-import { prettyDate } from 'utils'
-import Loading from 'components/partials/Loading'
-import { useAuthState } from 'components/Auth/context'
-import PostListItem from 'components/Posts/ListItem'
+import { prettyDate } from '@/utils'
+import Loading from '@/components/partials/Loading'
+import { useAuthState } from '@/components/Auth/context'
+import PostListItem from '@/components/Posts/ListItem'
 
 
 const profileQuery = gql`query userQuery ($slug: String!) {

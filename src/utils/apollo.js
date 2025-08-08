@@ -7,7 +7,7 @@ import { onError } from '@apollo/client/link/error'
 
 import { createUploadLink } from 'apollo-upload-client'
 
-const { REACT_APP_API_URL } = process.env
+const { VITE_API_URL } = import.meta.env
 
 const apollo = {
   client: {},
@@ -27,7 +27,7 @@ const cache = new InMemoryCache()
  * Create Apollo HTTP Link
  */
 const httpLink = createUploadLink({
-  uri: `${REACT_APP_API_URL}/graphql`,
+  uri: `${VITE_API_URL}/graphql`,
   credentials: 'include',
 })
 

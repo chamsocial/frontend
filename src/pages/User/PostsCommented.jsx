@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
-import Loading from 'components/partials/Loading'
-import PostListItem from 'components/Posts/ListItem'
+import Loading from '@/components/partials/Loading'
+import PostListItem from '@/components/Posts/ListItem'
 
 
 const POSTS_COMMENTED_QUERY = gql`query postsCommentedQuery {

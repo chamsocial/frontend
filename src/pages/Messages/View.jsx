@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
-import { useAuthState } from 'components/Auth/context'
-import Loading from 'components/partials/Loading'
-import { dateToString } from 'utils'
+import { useAuthState } from '@/components/Auth/context'
+import Loading from '@/components/partials/Loading'
+import { dateToString } from '@/utils'
 import ReplyForm from './ReplyForm'
 
 

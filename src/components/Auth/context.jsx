@@ -1,13 +1,13 @@
 import React, { useReducer, useContext } from 'react'
-import apollo from 'utils/apollo'
+import apollo from '@/utils/apollo'
 
-const { REACT_APP_API_URL } = process.env
+const { VITE_API_URL } = import.meta.env
 const AuthStateContext = React.createContext()
 const AuthDispatchContext = React.createContext()
 
 
 function logout() {
-  fetch(`${REACT_APP_API_URL}/logout`, { credentials: 'include' })
+  fetch(`${VITE_API_URL}/logout`, { credentials: 'include' })
     .then(() => {
       apollo.resetAll()
       window.location = '/'

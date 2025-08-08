@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import Loading from 'components/partials/Loading'
+import Loading from '@/components/partials/Loading'
 import Form from './Form'
 import Drafts from './Drafts'
 

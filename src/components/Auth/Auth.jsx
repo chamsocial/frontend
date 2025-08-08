@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { gql, useQuery } from '@apollo/client'
-import Loading from 'components/partials/Loading'
-import { authFields } from 'graphql/fragments'
+import Loading from '@/components/partials/Loading'
+import { authFields } from '@/graphql/fragments'
 import { AuthProvider } from './context'
 
 
@@ -18,6 +18,7 @@ const AUTH = gql`
 
 function Auth({ children }) {
   const { loading, error, data } = useQuery(AUTH)
+  console.log('Auth data:', data) // eslint-disable-line no-console
   if (loading || error) return <Loading error={error} />
   return (
     <AuthProvider user={data.me}>

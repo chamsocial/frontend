@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
-import Loading from 'components/partials/Loading'
+import Loading from '@/components/partials/Loading'
 
 
 const POST_PM = gql`

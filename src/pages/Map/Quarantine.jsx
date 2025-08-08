@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 
-const { REACT_APP_GOOGLE_MAPS_API_KEY } = process.env
+const { VITE_GOOGLE_MAPS_API_KEY } = import.meta.env
 const chamonixCenter = { lat: 45.923183187683215, lng: 6.869751360383987 }
 
 
@@ -119,7 +119,7 @@ function Quarantine() {
   useEffect(() => {
     if (window.initQuarantineMap || !mapContainer.current) return
     const script = document.createElement('script')
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${REACT_APP_GOOGLE_MAPS_API_KEY}&callback=initQuarantineMap`
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${VITE_GOOGLE_MAPS_API_KEY}&callback=initQuarantineMap`
     script.defer = true
     window.initQuarantineMap = () => {
       geocoderRef.current = new google.maps.Geocoder()

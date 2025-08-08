@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
 import { Link, Redirect } from 'react-router-dom'
-import Button from 'components/partials/Button'
-import Alert from 'components/partials/Alert'
-import { useAuthState, useAuthDispatch } from 'components/Auth/context'
-import { authFields } from 'graphql/fragments'
+import Button from '@/components/partials/Button'
+import Alert from '@/components/partials/Alert'
+import { useAuthState, useAuthDispatch } from '@/components/Auth/context'
+import { authFields } from '@/graphql/fragments'
 
 
-const { REACT_APP_DEV_USER = '', REACT_APP_DEV_PASS = '' } = process.env
+const { VITE_DEV_USER = '', VITE_DEV_PASS = '' } = import.meta.env
 const LOGIN = gql`
   mutation LoginMutation($username: String! $password: String!) {
     login(username: $username, password: $password) {
@@ -23,8 +23,8 @@ function LoginForm({ location }) {
   const [login, { loading, error }] = useMutation(LOGIN)
   const authDispatch = useAuthDispatch()
   const { user } = useAuthState()
-  const [username, setUsername] = useState(REACT_APP_DEV_USER)
-  const [password, setPassword] = useState(REACT_APP_DEV_PASS)
+  const [username, setUsername] = useState(VITE_DEV_USER)
+  const [password, setPassword] = useState(VITE_DEV_PASS)
   const isRedirect = location.state && location.state.from
   const pathname = (isRedirect && location.state.from.pathname) ? location.state.from.pathname : '/'
 

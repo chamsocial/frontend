@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
 import { Redirect } from 'react-router-dom'
-import { useAuthDispatch } from 'components/Auth/context'
-import Loading from 'components/partials/Loading'
-import Alert from 'components/partials/Alert'
-import { authFields } from 'graphql/fragments'
+import { useAuthDispatch } from '@/components/Auth/context'
+import Loading from '@/components/partials/Loading'
+import Alert from '@/components/partials/Alert'
+import { authFields } from '@/graphql/fragments'
 
 
 const ACTIVATION = gql`

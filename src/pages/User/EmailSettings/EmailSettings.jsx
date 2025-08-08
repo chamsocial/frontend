@@ -1,6 +1,6 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
-import Loading from 'components/partials/Loading'
+import Loading from '@/components/partials/Loading'
 import Form from './Form'
 
 

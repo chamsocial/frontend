@@ -1,3 +1,5 @@
+@use "variables";
+
 .float-right { float: right }
 .float-left { float: left }
 
@@ -61,4 +63,4 @@
 /**
  * Colors
  */
-.green { color: $green; }
+.green { color: variables.$green; }

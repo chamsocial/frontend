@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
-import Loading from 'components/partials/Loading'
-import Groups from 'components/Groups'
-import Search from 'components/Search'
+import Loading from '@/components/partials/Loading'
+import Groups from '@/components/Groups'
+import Search from '@/components/Search'
 import PostList from './PostList'
 
 const GROUP = gql`query groupItemQuery($slug: String!) {

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { Redirect, Link } from 'react-router-dom'
-import Button from 'components/partials/Button'
-import Loading from 'components/partials/Loading'
-import Alert from 'components/partials/Alert'
+import Button from '@/components/partials/Button'
+import Loading from '@/components/partials/Loading'
+import Alert from '@/components/partials/Alert'
 
 
 const editUserQuery = gql`query editUserQuery {

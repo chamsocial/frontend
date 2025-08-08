@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client'
 import FileUploader from './FileUploader'
 
 
-const apiPath = process.env.REACT_APP_UPLOAD_URL
+const apiPath = import.meta.env.VITE_UPLOAD_URL
 const GET_POST_MEDIA = gql`
   query getPostMediaQuery($postId: ID!) {
     postMedia(postId: $postId) {

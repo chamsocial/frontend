@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useAuthState } from 'components/Auth/context'
-import Groups from 'components/Groups'
-import Search from 'components/Search'
+import { useAuthState } from '@/components/Auth/context'
+import Groups from '@/components/Groups'
+import Search from '@/components/Search'
 
 
 function User({ user }) {

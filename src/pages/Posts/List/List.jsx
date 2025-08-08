@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Groups from 'components/Groups'
-import Search from 'components/Search'
+import Groups from '@/components/Groups'
+import Search from '@/components/Search'
 import PostList from './PostList'
 
 

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { gql, useQuery } from '@apollo/client'
 
-const apiUrl = process.env.REACT_APP_API_URL
-const fileUrl = process.env.REACT_APP_FILE_URL
+const apiUrl = import.meta.env.VITE_API_URL
+const fileUrl = import.meta.env.VITE_FILE_URL
 const portalDom = document.getElementById('portals')
 
 

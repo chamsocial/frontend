@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { Redirect, Link } from 'react-router-dom'
-import Button from 'components/partials/Button'
-import Alert from 'components/partials/Alert'
+import Button from '@/components/partials/Button'
+import Alert from '@/components/partials/Alert'
 
 
 const signupMutation = gql`

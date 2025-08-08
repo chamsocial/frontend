@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
-import { dateToString } from 'utils'
+import { dateToString } from '@/utils'
 import CommentsForm from './Form'
 
 
