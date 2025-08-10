@@ -1,3 +1,7 @@
-## Chamsocial frontend react
+# ChamSocial frontend
 
-Work in progress rewrite from angular 1 to react
+
+## Development
+* `npm install`
+* `npm run dev`
+* Visit http://localhost:4074
