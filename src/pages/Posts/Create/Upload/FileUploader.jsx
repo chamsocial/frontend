@@ -129,7 +129,7 @@ function FileUploader({ files, createDraft, postId }) {
                 Drop files or <span>browse</span> to upload.
               </div>
               {!!state.files.length && (
-                <div className="uploader__files" onClick={preventAllEvents}>{ }
+                <div className="uploader__files" onClick={preventAllEvents}>
                   {state.files.map(file => (
                     <div key={file.tmpId || file.id} className="uploader__file">
                       <div>
