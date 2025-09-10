@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { gql, useMutation } from '@apollo/client'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import Button from '@/components/partials/Button'
 import Alert from '@/components/partials/Alert'
 import { useAuthState, useAuthDispatch } from '@/components/Auth/context'
@@ -19,7 +18,8 @@ const LOGIN = gql`
 `
 
 
-function LoginForm({ location }) {
+function LoginForm() {
+  const location = useLocation()
   const [login, { loading, error }] = useMutation(LOGIN)
   const authDispatch = useAuthDispatch()
   const { user } = useAuthState()
@@ -29,7 +29,7 @@ function LoginForm({ location }) {
   const pathname = (isRedirect && location.state.from.pathname) ? location.state.from.pathname : '/'
 
   if (user) {
-    return <Redirect to={{ pathname, state: { flashMessage: 'You are now logged in!' } }} />
+    return <Navigate to={pathname} state={{ flashMessage: 'You are now logged in!' }} />
   }
 
   function onSubmit(evt) {
@@ -53,7 +53,7 @@ function LoginForm({ location }) {
         <label htmlFor="password">Password</label>
         <input className="input" type="password" value={password} onChange={evt => setPassword(evt.target.value)} required />
         <div className="desc text-right">
-          <Link to="forgot-password">Forgot password?</Link>
+          <Link to="/forgot-password">Forgot password?</Link>
         </div>
       </div>
       {error && <Alert type="danger">Invalid username/email or password.</Alert>}
@@ -63,11 +63,6 @@ function LoginForm({ location }) {
       </div>
     </form>
   )
-}
-LoginForm.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.any, // eslint-disable-line react/forbid-prop-types
-  }).isRequired,
 }
 
 

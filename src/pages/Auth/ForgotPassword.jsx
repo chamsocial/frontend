@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import Button from '../../components/partials/Button'
 import Alert from '../../components/partials/Alert'
 
@@ -16,7 +16,7 @@ function ForgotPassword() {
   const [username, setUsername] = useState('')
 
   if (data && data.forgotPassword) {
-    return <Redirect to={{ pathname: '/', state: { flashMessage: 'Check your email for a reset email.' } }} />
+    return <Navigate to="/" state={{ flashMessage: 'Check your email for a reset email.' }} />
   }
 
   function onSubmit(evt) {

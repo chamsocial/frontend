@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import Button from '../../../components/partials/Button'
 import GroupSelect from './GroupSelect'
@@ -33,7 +33,7 @@ const EDIT_POST = gql`
 function Form({
   draft, isDraft, deleteDraft, isEdit,
 }) {
-  const [redirect, setRedirect] = useState(null)
+  const [redirect, setNavigate] = useState(null)
   const [state, setState] = useState(draft)
   const [createPost] = useMutation(CREATE_POST)
   const [editPost] = useMutation(EDIT_POST)
@@ -58,7 +58,7 @@ function Form({
       .then(({ data }) => {
         const slug = data.editPost ? data.editPost.slug : data.createPost.slug
         const message = isEdit ? 'The post has been updated' : 'The post has been published'
-        setRedirect({ url: `/posts/${slug}`, message })
+        setNavigate({ url: `/posts/${slug}`, message })
       })
   }
 
@@ -81,11 +81,11 @@ function Form({
   const setGroup = useCallback(group => { setState(curr => ({ ...curr, group })) }, [setState])
   function onDelete() {
     deleteDraft({ variables: { id: state.id } })
-      .then(() => setRedirect({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
+      .then(() => setNavigate({ url: '/', message: 'Draft deleted!' }))
   }
 
   if (redirect) {
-    return <Redirect to={{ pathname: redirect.url, state: { flashMessage: redirect.message } }} />
+    return <Navigate to={redirect.url} state={{ flashMessage: redirect.message }} />
   }
 
   return (

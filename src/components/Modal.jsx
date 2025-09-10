@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-const Modal = ({ children, activator }) => {
+function Modal({ children, activator }) {
   const [isOpen, setOpen] = useState(false)
   function openModal() { setOpen(true) }
   function closeModal() { setOpen(false) }

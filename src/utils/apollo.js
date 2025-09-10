@@ -29,6 +29,9 @@ const cache = new InMemoryCache()
 const httpLink = createUploadLink({
   uri: `${VITE_API_URL}/graphql`,
   credentials: 'include',
+  headers: {
+    'Apollo-Require-Preflight': true,
+  },
 })
 
 /**

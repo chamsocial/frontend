@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import Modal from '@/components/Modal'
 import Bookmark from '@/components/Bookmark'
@@ -12,12 +11,20 @@ import Media from '../../../components/Posts/Media'
 import { singlePostQuery } from '../../../graphql/post-queries'
 import DeletePost from './DeletePost'
 import PrivateMessageForm from './components/PrivateMessageForm'
-// import PostReply from './components/PostReply'
+
+function PmButton({ openModal }) {
+  return (
+    <button type="button" onClick={openModal} className="btn btn--secondary">
+      Private message
+    </button>
+  )
+}
 
 
-export function Post({ match }) {
+export function Post() {
+  const { slug } = useParams()
   const { loading, error, data } = useQuery(singlePostQuery, {
-    variables: { slug: match.params.slug },
+    variables: { slug },
     fetchPolicy: 'network-only',
   })
   if (error && error.message.includes('NO_POSTS_FOUND')) {
@@ -53,13 +60,7 @@ export function Post({ match }) {
             By <Link to={`/users/${post.author.slug}`}>{post.author.username}</Link>
             {' '}in <Link to={`/groups/${post.group.slug}`}>{post.group.title}</Link>
           </div>
-          <Modal
-            activator={({ openModal }) => (
-              <button type="button" onClick={openModal} className="btn btn--secondary">
-                Private message
-              </button>
-            )}
-          >
+          <Modal activator={PmButton}>
             {({ closeModal }) => (
               <PrivateMessageForm post={post} postSlug={post.slug} closeFn={closeModal} />
             )}
@@ -74,13 +75,6 @@ export function Post({ match }) {
       </div>
     </div>
   )
-}
-Post.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      slug: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 
