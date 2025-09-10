@@ -103,7 +103,7 @@ function ChamRoutes() {
               <Route exact path="/" element={<Home />} />
               <Route path="/posts" element={<PostList />} />
               <Route path="/groups/:groupSlug" element={<GroupList />} />
-              <Route element={<FourOhFour />} />
+              <Route path="*" element={<FourOhFour />} />
             </Routes>
           </Suspense>
         </div>
