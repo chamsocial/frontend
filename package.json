@@ -3,19 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "vite",
-  "start": "vite",
-  "lint": "eslint .",
-  "lint:fix": "eslint . --fix",
-  "build": "vite build",
-  "test": "vitest",
-  "eject": "echo 'Eject is not supported with Vite'"
+    "dev": "vite",
+    "start": "vite",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "vite build",
+    "test": "vitest",
+    "eject": "echo 'Eject is not supported with Vite'"
   },
   "dependencies": {
     "@apollo/client": "^3.14.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
+    "@sentry/react": "^10.11.0",
     "apollo-upload-client": "^17.0.0",
     "downshift": "^8.5.0",
     "graphql": "^16.6.0",
@@ -33,8 +34,8 @@
     "sass": "^1.42.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
     "@sentry/cli": "^2.29.1",
+    "@vitejs/plugin-react": "^4.0.0",
     "vite": "^4.0.0",
     "vitest": "^0.34.0"
   },

@@ -3,8 +3,8 @@ import { gql, useQuery } from '@apollo/client'
 import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import Loading from 'components/partials/Loading'
-import { dateToString } from 'utils'
+import Loading from '@/components/partials/Loading'
+import { dateToString } from '@/utils'
 
 const BLOG_POST = gql`query blogPostQuery($slug: String!) {
   blogPost(slug: $slug) {
