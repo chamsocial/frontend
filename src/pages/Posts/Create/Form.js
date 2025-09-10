@@ -81,7 +81,7 @@ function Form({
   const setGroup = useCallback(group => { setState(curr => ({ ...curr, group })) }, [setState])
   function onDelete() {
     deleteDraft({ variables: { id: state.id } })
-      .then(() => setNavigate({ pathname: '/', state: { flashMessage: 'Draft deleted!' } }))
+      .then(() => setNavigate({ url: '/', message: 'Draft deleted!' }))
   }
 
   if (redirect) {

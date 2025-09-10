@@ -57,7 +57,10 @@ const AllowedOutside = lazy(() => import('./pages/Map/AllowedOutside'))
 
 function PrivateRoute({ component: Component, ...rest }) {
   const { user } = useAuthState()
-  if (!user) return <Navigate to={{ pathname: '/login', state: { from: rest.location } }} />
+  const location = useLocation()
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location }} />
+  }
   return <Component {...rest} />
 }
 

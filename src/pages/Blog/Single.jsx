@@ -20,11 +20,12 @@ const BLOG_POST = gql`query blogPostQuery($slug: String!) {
   }
 }`
 
-export default function BlogList() {
+export default function BlogPost() {
   const { slug } = useParams()
   const { loading, error, data } = useQuery(BLOG_POST, { variables: { slug } })
   if (loading || error) return <Loading error={error} />
-  const blog = data.blogPost
+  const blog = data?.blogPost
+  if (!blog) return <div className="box"><h2>Post not found</h2></div>
 
   return (
     <div className="blog-post">
