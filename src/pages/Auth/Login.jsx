@@ -7,7 +7,6 @@ import { useAuthState, useAuthDispatch } from '@/components/Auth/context'
 import { authFields } from '@/graphql/fragments'
 
 
-const { VITE_DEV_USER = '', VITE_DEV_PASS = '' } = import.meta.env
 const LOGIN = gql`
   mutation LoginMutation($username: String! $password: String!) {
     login(username: $username, password: $password) {
@@ -23,8 +22,10 @@ function LoginForm() {
   const [login, { loading, error }] = useMutation(LOGIN)
   const authDispatch = useAuthDispatch()
   const { user } = useAuthState()
-  const [username, setUsername] = useState(VITE_DEV_USER)
-  const [password, setPassword] = useState(VITE_DEV_PASS)
+  const initialUsername = import.meta.env.DEV ? (import.meta.env.VITE_DEV_USER || '') : ''
+  const initialPassword = import.meta.env.DEV ? (import.meta.env.VITE_DEV_PASS || '') : ''
+  const [username, setUsername] = useState(initialUsername)
+  const [password, setPassword] = useState(initialPassword)
   const isRedirect = location.state && location.state.from
   const pathname = (isRedirect && location.state.from.pathname) ? location.state.from.pathname : '/'
 
