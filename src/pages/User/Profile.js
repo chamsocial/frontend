@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { prettyDate } from 'utils'
 import Loading from 'components/partials/Loading'
@@ -32,9 +31,10 @@ const profileQuery = gql`query userQuery ($slug: String!) {
 }`
 
 
-function Profile({ match }) {
+function Profile() {
+  const { slug } = useParams()
   const { data: { user } = {}, loading, error } = useQuery(profileQuery, {
-    variables: { slug: match.params.slug },
+    variables: { slug },
   })
   const auth = useAuthState()
   if (loading || error) return <Loading error={error} />
@@ -81,13 +81,6 @@ function Profile({ match }) {
       </div>
     </>
   )
-}
-Profile.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      slug: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 

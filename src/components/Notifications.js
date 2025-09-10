@@ -40,7 +40,7 @@ function Notifications() {
   const openNotif = useCallback(() => {
     toggleOpen(false)
     setTimeout(refetch, 400)
-  }, [])
+  }, [refetch])
 
   return (
     <div style={{ position: 'relative' }} ref={node} className={classNames.join(' ')}>

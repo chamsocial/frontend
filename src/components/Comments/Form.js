@@ -5,19 +5,6 @@ import { graphql } from '@apollo/client/react/hoc'
 import { gql } from '@apollo/client'
 import { singlePostQuery } from '../../graphql/post-queries'
 
-function loopComments(comments, newComment) {
-  comments.forEach(comment => {
-    if (comment.id === newComment.parentId) {
-      if (!comment.comments) comment.comments = []
-      comment.comments.push(newComment)
-      return true
-    }
-    if (comment.comments && comment.comments.length) {
-      loopComments(comment.comments, newComment)
-    }
-    return false
-  })
-}
 
 export class CommentsFormComponent extends Component {
   constructor(props) {
@@ -91,6 +78,7 @@ CommentsFormComponent.propTypes = {
   closeMe: PropTypes.func,
 }
 
+
 const commentMutation = gql`
   mutation commentMutation($comment: String!, $postSlug: String!, $parentId: ID) {
     createComment(comment: $comment, postSlug: $postSlug, parentId: $parentId) {
@@ -106,6 +94,7 @@ const commentMutation = gql`
   }
 `
 
+
 const CommentsForm = graphql(commentMutation, {
   props: ({ mutate, ownProps }) => ({
     submitComment: comment => {
@@ -117,23 +106,12 @@ const CommentsForm = graphql(commentMutation, {
       return mutate({ variables })
     },
   }),
-  options: ({ postSlug, parentId }) => (
+  options: ({ postSlug }) => (
     {
-      update: (proxy, { data: { createComment } }) => {
-        const data = proxy.readQuery({
-          query: singlePostQuery,
-          variables: { slug: postSlug, parentId },
-        })
-        createComment.comments = null
-        data.post.comments_count += 1
-        if (createComment.parentId) {
-          loopComments(data.post.comments, createComment)
-        } else {
-          data.post.comments.push(createComment)
-        }
-
-        proxy.writeQuery({ query: singlePostQuery, data, variables: { slug: postSlug } })
-      },
+      refetchQueries: [{
+        query: singlePostQuery,
+        variables: { slug: postSlug },
+      }],
     }
   ),
 })(CommentsFormComponent)

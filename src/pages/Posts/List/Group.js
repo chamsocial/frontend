@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import Loading from 'components/partials/Loading'
 import Groups from 'components/Groups'
 import Search from 'components/Search'
 import PostList from './PostList'
+
 
 const GROUP = gql`query groupItemQuery($slug: String!) {
   group(slug: $slug) {
@@ -14,8 +15,8 @@ const GROUP = gql`query groupItemQuery($slug: String!) {
 }`
 
 
-function GroupList({ location, match }) {
-  const { groupSlug } = match.params
+function GroupList() {
+  const { groupSlug } = useParams()
   const { error, loading, data } = useQuery(GROUP, {
     variables: { slug: groupSlug },
     fetchPolicy: 'network-only',
@@ -29,7 +30,7 @@ function GroupList({ location, match }) {
         <h1 className="space-between">
           {group.title}
         </h1>
-        <PostList queryParams={location.search} groupId={group.id} />
+        <PostList groupId={group.id} />
       </div>
 
       <div className="sidebar-top">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { Redirect, Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import Button from 'components/partials/Button'
 import Loading from 'components/partials/Loading'
 import Alert from 'components/partials/Alert'
@@ -71,7 +71,7 @@ function Edit({ profile }) {
 
   if (data?.updateUser?.id) {
     return (
-      <Redirect to={{
+      <Navigate to={{
         pathname: `/users/${profile.slug}/`,
         state: { flashMessage: 'Your profile has been updated.' },
       }}
@@ -114,7 +114,7 @@ function Edit({ profile }) {
       </div>
       <div className="form-group">
         <label htmlFor="lang">Language</label>
-        <select component="select" id="lang" value={state.lang} onChange={onChange}>
+        <select id="lang" value={state.lang} onChange={onChange}>
           <option value="en">English</option>
           <option value="fr">Français</option>
         </select>
@@ -130,7 +130,7 @@ function Edit({ profile }) {
 }
 Edit.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     firstName: PropTypes.string,
   }).isRequired,
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 
+
 function FourOhFour() {
   return (
     <div className="text-center box">
@@ -18,5 +19,6 @@ function FourOhFour() {
     </div>
   )
 }
+
 
 export default FourOhFour
