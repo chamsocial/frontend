@@ -21,7 +21,7 @@ function setMarker(latLng, includeMarker = true) {
       infowindow.setContent(`<strong>Elevation:</strong> ${Math.ceil(results[0].elevation)}m`)
       infowindow.open(map, marker)
     } else {
-      console.log('Elevation service failed due to:', status)
+      console.error('Elevation service failed due to:', status)
     }
   })
 }
@@ -36,7 +36,7 @@ function getLocation() {
         maximumAge: 0,
       })
     } else {
-      console.log('Geolocation is not supported by this browser.')
+      console.error('Geolocation is not supported by this browser.')
       resolve(null)
     }
   })
@@ -78,7 +78,7 @@ function addMarker(geo) {
 
   // Move the circle after moving the pin
   google.maps.event.addListener(marker, 'dragend', event => {
-    console.log('New pos', event.latLng.lat(), event.latLng.lng())
+    // console.log('New pos', event.latLng.lat(), event.latLng.lng())
     setMarker(event.latLng, true)
   })
 }
@@ -98,7 +98,7 @@ async function main(mapContainer) {
   const geo = (pos && pos.coords && pos.coords.latitude)
     ? { lat: pos.coords.latitude, lng: pos.coords.longitude }
     : chamonixCenter
-  console.log('Pos', pos, 'Geo', geo)
+  // console.log('Pos', pos, 'Geo', geo)
 
   addMarker(geo)
 }
@@ -122,7 +122,7 @@ function Quarantine() {
     window.initQuarantineMap = () => {
       geocoderRef.current = new google.maps.Geocoder()
       main(mapContainer.current)
-        .catch(err => console.log('Failed:', err))
+        .catch(err => console.error('Failed:', err))
     }
     document.head.appendChild(script)
   }, [mapContainer])

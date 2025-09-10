@@ -91,7 +91,7 @@ function PostMedia({ postMedia }) {
       {img && (
         ReactDOM.createPortal(
           (
-          <div className="lightbox" onClick={closeImgGallery}>{ }
+          <div className="lightbox" onClick={closeImgGallery}>
             <img src={`${fileUrl}${img.url}`} alt="Big version" />
             {postMedia.length > 1 && (
               <>

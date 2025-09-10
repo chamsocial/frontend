@@ -13,7 +13,7 @@ function logout() {
       window.location = '/'
     })
     .catch(err => {
-      console.log('Logout error:', err)
+      console.error('Logout error:', err)
       apollo.resetAll()
       window.location = '/'
     })

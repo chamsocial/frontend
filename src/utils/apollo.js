@@ -39,7 +39,7 @@ const httpLink = createUploadLink({
  */
 const errorLink = onError(({ networkError }) => {
   if (networkError && networkError.result) {
-    console.log(networkError.result.errors[0])
+    console.error(networkError.result.errors[0])
     // if (networkError.result.errors.find(e => e.extensions.code === 'UNAUTHENTICATED')) {
     //   apollo.resetAll()
     // }

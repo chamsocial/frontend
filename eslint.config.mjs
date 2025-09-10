@@ -16,6 +16,7 @@ export default defineConfig([
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
       "react/prop-types": "off",
+      "no-console": ["error", { allow: ["error"] }],
     },
   },
   {

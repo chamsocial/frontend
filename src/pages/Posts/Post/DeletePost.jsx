@@ -15,7 +15,7 @@ function DeletePost({ postId }) {
     const deleteIt = window.confirm('Are you sure?')
     if (!deleteIt) return
     deletePost({ variables: { id: postId } })
-      .catch(() => window.alert('Somthing went wrong.'))
+      .catch(() => window.alert('Something went wrong.'))
   }
 
   if (data && data.deletePost) {

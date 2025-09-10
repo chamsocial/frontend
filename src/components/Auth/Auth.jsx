@@ -18,7 +18,6 @@ const AUTH = gql`
 
 function Auth({ children }) {
   const { loading, error, data } = useQuery(AUTH)
-  console.log('Auth data:', data)
   if (loading || error) return <Loading error={error} />
   return (
     <AuthProvider user={data.me}>
