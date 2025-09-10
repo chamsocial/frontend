@@ -63,7 +63,7 @@ function FileUploader({ files, createDraft, postId }) {
     return () => (
       deleteFileMutation({ variables: { fileId } })
         .then(() => dispatch({ type: 'DELETED_FILE', fileId }))
-        .catch(err => console.log('delete err', err)) // eslint-disable-line no-console
+        .catch(err => console.log('delete err', err))
     )
   }
 
@@ -93,7 +93,7 @@ function FileUploader({ files, createDraft, postId }) {
         uploadedFile.tmpId = item.tmpId
         dispatch({ type: 'FILE_UPLOADED', file: uploadedFile })
       } catch (err) {
-        console.log('ERROR', err) // eslint-disable-line no-console
+        console.log('ERROR', err)
         dispatch({ type: 'UPLOAD_FAILED', file: item })
       }
     })
@@ -129,7 +129,7 @@ function FileUploader({ files, createDraft, postId }) {
                 Drop files or <span>browse</span> to upload.
               </div>
               {!!state.files.length && (
-                <div className="uploader__files" onClick={preventAllEvents}>{/* eslint-disable-line */}
+                <div className="uploader__files" onClick={preventAllEvents}>{ }
                   {state.files.map(file => (
                     <div key={file.tmpId || file.id} className="uploader__file">
                       <div>

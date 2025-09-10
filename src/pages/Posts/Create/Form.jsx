@@ -70,7 +70,7 @@ function Form({
         return post.id
       })
       .catch(err => {
-        window.alert(`Error: ${err.toString()}`) // eslint-disable-line no-alert
+        window.alert(`Error: ${err.toString()}`)
         return null
       })
   )

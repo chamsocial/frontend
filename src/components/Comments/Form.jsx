@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from '@apollo/client/react/hoc'
@@ -44,7 +43,7 @@ export class CommentsFormComponent extends Component {
       })
       .catch(() => {
         this.setState(() => ({ status: '' }))
-        window.alert('Could not save comment!') // eslint-disable-line no-alert
+        window.alert('Could not save comment!')
       })
   }
 

@@ -74,7 +74,6 @@ function GroupSelect({ setGroup, group }) {
                   .filter(filterMatches(inputValue))
                   .map((item, index) => {
                     const itemProps = {
-                      key: item.id,
                       index,
                       item,
                       style: {
@@ -83,7 +82,7 @@ function GroupSelect({ setGroup, group }) {
                       },
                     }
                     return (
-                      <li {...getItemProps(itemProps)}>
+                      <li key={item.id} {...getItemProps(itemProps)}>
                         {item.title}
                         <div className="desc">{item.description}</div>
                       </li>

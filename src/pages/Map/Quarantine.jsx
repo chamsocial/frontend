@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* globals google */
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -8,7 +7,6 @@ const { VITE_GOOGLE_MAPS_API_KEY } = import.meta.env
 const chamonixCenter = { lat: 45.923183187683215, lng: 6.869751360383987 }
 
 
-// eslint-disable-next-line one-var, one-var-declaration-per-line
 let map, marker, bufferCircle, infowindow
 
 

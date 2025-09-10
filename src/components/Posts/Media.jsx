@@ -77,7 +77,7 @@ function PostMedia({ postMedia }) {
           return previousImage(evt)
         case 'Esc': // IE/Edge specific value
         case 'Escape':
-          return closeImgGallery(evt) // eslint-disable-line no-use-before-define
+          return closeImgGallery(evt)
         default:
           return null // Quit when this doesn't handle the key event.
       }
@@ -91,7 +91,7 @@ function PostMedia({ postMedia }) {
       {img && (
         ReactDOM.createPortal(
           (
-          <div className="lightbox" onClick={closeImgGallery}>{/* eslint-disable-line */}
+          <div className="lightbox" onClick={closeImgGallery}>{ }
             <img src={`${fileUrl}${img.url}`} alt="Big version" />
             {postMedia.length > 1 && (
               <>

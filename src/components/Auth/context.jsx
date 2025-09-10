@@ -13,7 +13,7 @@ function logout() {
       window.location = '/'
     })
     .catch(err => {
-      console.log('Logout error:', err) // eslint-disable-line
+      console.log('Logout error:', err)
       apollo.resetAll()
       window.location = '/'
     })

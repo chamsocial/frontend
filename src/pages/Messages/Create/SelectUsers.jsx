@@ -69,7 +69,7 @@ function SelectUsers({ setUser, removeUser, users }) {
               <ul {...getMenuProps()} className="downshift__dropdown">
                 {userList
                   .map(user => (
-                    <li {...getItemProps({ key: user.id, item: user })}>
+                    <li key={user.id} {...getItemProps({ item: user })}>
                       {user.username}
                     </li>
                   ))}

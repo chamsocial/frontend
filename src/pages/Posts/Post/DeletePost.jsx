@@ -12,10 +12,10 @@ const DELETE_POST = gql`mutation deletePostMutation( $id: ID! ) {
 function DeletePost({ postId }) {
   const [deletePost, { loading, data }] = useMutation(DELETE_POST)
   function onClick() {
-    const deleteIt = window.confirm('Are you sure?') // eslint-disable-line no-alert
+    const deleteIt = window.confirm('Are you sure?')
     if (!deleteIt) return
     deletePost({ variables: { id: postId } })
-      .catch(() => window.alert('Somthing went wrong.')) // eslint-disable-line no-alert
+      .catch(() => window.alert('Somthing went wrong.'))
   }
 
   if (data && data.deletePost) {

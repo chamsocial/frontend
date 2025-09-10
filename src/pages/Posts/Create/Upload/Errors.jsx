@@ -10,7 +10,6 @@ function InvalidFile({ files }) {
       <h4>Can&apos;t upload the file{files.length > 1 ? 's' : ''}:</h4>
       <hr />
       {files.map((file, i) => (
-        // eslint-disable-next-line react/no-array-index-key
         <div key={i}>
           <p>
             <strong>Name:</strong> {file.name}<br />
