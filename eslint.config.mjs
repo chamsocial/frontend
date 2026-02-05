@@ -20,12 +20,12 @@ export default defineConfig([
     },
   },
   {
-		// Note: there should be no other properties in this object
-		ignores: [
-			"node_modules/*",
-			"build/*",
-			"tmp/*",
-			"public/*",
-		],
-	},
+    // Note: there should be no other properties in this object
+    ignores: [
+      "node_modules/*",
+      "build/*",
+      "tmp/*",
+      "public/*",
+    ],
+  },
 ]);
