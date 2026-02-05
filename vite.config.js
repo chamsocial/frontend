@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import process from 'node:process';
 
 const dir = dirname(fileURLToPath(import.meta.url));
 
@@ -10,7 +11,7 @@ export default defineConfig({
   root: '.',
   publicDir: 'public',
   build: {
-    outDir: 'build',
+    outDir: process.env.BUILD_PATH || 'build',
     emptyOutDir: true,
   },
   resolve: {
