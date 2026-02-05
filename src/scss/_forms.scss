@@ -1,3 +1,5 @@
+@use "variables";
+
 label {
   display: block;
   margin: 0 0 10px;
@@ -108,8 +110,8 @@ textarea {
     &__item {
       position: relative;
       display: inline-block;
-      background: $lightPrimaryBg;
-      border: 1px solid $lightPrimaryBorder;
+      background: variables.$lightPrimaryBg;
+      border: 1px solid variables.$lightPrimaryBorder;
       padding: 3px 7px;
       border-radius: 3px;
       margin: 0 10px 10px 0;
@@ -132,8 +134,8 @@ textarea {
         display: block;
         position: absolute;
         left: 50%;
-        background: $lightPrimaryBg;
-        border: 1px solid $lightPrimaryBorder;
+        background: variables.$lightPrimaryBg;
+        border: 1px solid variables.$lightPrimaryBorder;
         transition: opacity 0.3s ease-out;
       }
       &::after {

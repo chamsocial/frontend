@@ -1,0 +1,136 @@
+import React, { useState, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { Link, Navigate } from 'react-router-dom'
+import { gql, useMutation } from '@apollo/client'
+import Button from '../../../components/partials/Button'
+import GroupSelect from './GroupSelect'
+import Upload from './Upload'
+
+
+const CREATE_POST = gql`
+  mutation createPostMutation($title: String! $content: String! $status: PostStatus $groupId: ID) {
+    createPost(title: $title, content: $content, status: $status, groupId: $groupId) {
+      id
+      slug
+      title
+      content
+    }
+  }
+`
+
+const EDIT_POST = gql`
+  mutation editPostMutation($id: ID! $title: String! $content: String! $status: PostStatus! $groupId: ID!) {
+    editPost(id: $id, title: $title, content: $content, status: $status, groupId: $groupId) {
+      id
+      slug
+      title
+      content
+    }
+  }
+`
+
+
+function Form({
+  draft, isDraft, deleteDraft, isEdit,
+}) {
+  const [redirect, setNavigate] = useState(null)
+  const [state, setState] = useState(draft)
+  const [createPost] = useMutation(CREATE_POST)
+  const [editPost] = useMutation(EDIT_POST)
+
+  function submitPost(status) {
+    const variables = {
+      title: state.title,
+      content: state.content,
+      status,
+      groupId: state.group ? state.group.id : null,
+    }
+    if (state.id) {
+      variables.id = state.id
+      return editPost({ variables })
+    }
+    return createPost({ variables })
+  }
+
+  function submit(evt) {
+    evt.preventDefault()
+    submitPost('published')
+      .then(({ data }) => {
+        const slug = data.editPost ? data.editPost.slug : data.createPost.slug
+        const message = isEdit ? 'The post has been updated' : 'The post has been published'
+        setNavigate({ url: `/posts/${slug}`, message })
+      })
+  }
+
+  const createDraft = async () => (
+    submitPost('draft')
+      .then(({ data }) => {
+        const post = data.createPost
+        setState(prevState => ({ ...prevState, id: post.id }))
+        return post.id
+      })
+      .catch(err => {
+        window.alert(`Error: ${err.toString()}`)
+        return null
+      })
+  )
+
+  function onChange(evt) {
+    setState({ ...state, [evt.target.id]: evt.target.value })
+  }
+  const setGroup = useCallback(group => { setState(curr => ({ ...curr, group })) }, [setState])
+  function onDelete() {
+    deleteDraft({ variables: { id: state.id } })
+      .then(() => setNavigate({ url: '/', message: 'Draft deleted!' }))
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect.url} state={{ flashMessage: redirect.message }} />
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <div className="form-group">
+        <label htmlFor="title">Title</label>
+        <input className="input" value={state.title} id="title" onChange={onChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="content">Content</label>
+        <textarea id="content" onChange={onChange} value={state.content} required />
+      </div>
+
+      <div className="form-group">
+        <GroupSelect group={state.group} setGroup={setGroup} />
+      </div>
+
+      <h4>Add images</h4>
+      <Upload
+        createDraft={createDraft}
+        postId={draft.id}
+      />
+
+      <div className="form-group space-between">
+        <Button type="submit">{ isEdit ? 'Update' : 'Publish' }</Button>
+        {isDraft && (
+          <button type="button" className="btn btn--warn" onClick={onDelete}>Delete draft</button>
+        )}
+        {!isDraft && draft.id && (
+          <Link to={`/posts/${draft.slug}`} className="btn btn--warn">Cancel</Link>
+        )}
+      </div>
+    </form>
+  )
+}
+Form.defaultProps = {
+  draft: { title: '', content: '' },
+}
+Form.propTypes = {
+  isDraft: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
+  deleteDraft: PropTypes.func.isRequired,
+  draft: PropTypes.shape({
+    title: PropTypes.string,
+  }),
+}
+
+export default Form

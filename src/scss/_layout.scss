@@ -1,3 +1,5 @@
+@use "variables";
+
 
 /**
  * General
@@ -169,7 +171,7 @@ body .layout--narrow {
     pointer-events: none;
     display: block;
     position: absolute;
-    background: $lightPrimaryBg;
+    background: variables.$lightPrimaryBg;
     border: 1px solid #002842;
     transition: opacity 0.3s ease-out;
     content: "";
@@ -192,7 +194,7 @@ body .layout--narrow {
       background: #002842 !important;
     }
     &:nth-of-type(odd) {
-      background: $lightPrimaryBg;
+      background: variables.$lightPrimaryBg;
     }
     &:last-child {
       border: 0;

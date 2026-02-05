@@ -1,4 +1,5 @@
+@use "sass:color";
 $primaryColor: #0086DB;
-$lightPrimaryBg: lighten($primaryColor, 55%);
-$lightPrimaryBorder: lighten($primaryColor, 20%);
+$lightPrimaryBg: color.adjust($primaryColor, $lightness: 55%);
+$lightPrimaryBorder: color.adjust($primaryColor, $lightness: 20%);
 $green: #5BC8AF;

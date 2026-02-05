@@ -8,7 +8,4 @@ echo " - Symlink"
 ln -s $BUILD_PATH build-new
 mv -T build-new build
 
-echo "- Upload sourcemaps to Sentry"
-npm run sentry:sourcemaps
-
 echo " - Finished!"
