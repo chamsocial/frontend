@@ -1,3 +1,5 @@
+@use "variables";
+
 /**
  * Bookmark
  */
@@ -11,7 +13,7 @@
     transform: scale(1.2);
   }
   &.is-bookmarked {
-    color: $green;
+    color: variables.$green;
   }
 }
 

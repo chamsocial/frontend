@@ -1,3 +1,4 @@
+@use "sass:color";
 .btn {
   position: relative;
   background: #007ac3; // #0086DB;
@@ -69,7 +70,7 @@
     border: 1px solid #fff;
     transition: all .2s;
     &:hover {
-      text-shadow: 0 0 2px darken(#0086DB, 20%), 0 0 1px darken(#0086DB, 20%);
+      text-shadow: 0 0 2px color.adjust(#0086DB, $lightness: -20%), 0 0 1px color.adjust(#0086DB, $lightness: -20%);
       background: rgba(255, 255, 255, .3);
       border-color: rgba(255, 255, 255, .7);
     }

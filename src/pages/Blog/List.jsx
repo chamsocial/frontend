@@ -1,8 +1,8 @@
 import { gql, useQuery } from '@apollo/client'
-import Loading from 'components/partials/Loading'
+import Loading from '@/components/partials/Loading'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { dateToString } from 'utils'
+import { dateToString } from '@/utils'
 
 const BLOG_LIST = gql`query blogQuery {
   blog {
