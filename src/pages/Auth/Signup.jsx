@@ -54,6 +54,8 @@ function Signup() {
           value={state.username}
           onChange={onChange}
           minLength="3"
+          pattern="[^@]+"
+          title="The username can't contain @"
           required
         />
       </div>
