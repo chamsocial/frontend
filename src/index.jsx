@@ -2,8 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import App from './App'
+import { installUmami, umamiEnv } from './utils/umami'
 import './scss/index.scss'
 
+
+// Umami analytics, when configured (src/utils/umami.js).
+installUmami(umamiEnv, window)
 
 Sentry.init({
   dsn: 'https://1c765368a22f372f7e105a62ebb339bb@o4505204785348608.ingest.us.sentry.io/4506862987968512',
