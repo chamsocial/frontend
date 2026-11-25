@@ -12,6 +12,7 @@ import Routes from './Routes'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import FlashMessages from './components/FlashMessages'
+import BetaBar from './components/BetaBar'
 
 library.add(
   faTimes,
@@ -43,6 +44,7 @@ function App() {
         <BrowserRouter>
           <Header />
           <div className="container">
+            <BetaBar />
             <FlashMessages />
             <Routes />
           </div>

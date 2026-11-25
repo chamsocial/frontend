@@ -1,0 +1,84 @@
+@use "variables";
+
+// The friendly one: a white card at the top of the content column (inside
+// .container) with a round signpost icon, a title and a line of text.
+.beta-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px 14px;
+  margin-bottom: 20px;
+  padding: 14px 8px 14px 16px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 15px;
+
+  &__icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e6f3fb;
+    color: variables.$primaryColor;
+    font-size: 18px;
+  }
+  &__text {
+    flex: 1;
+    min-width: 0;
+  }
+  &__title {
+    display: block;
+    font-size: 16px;
+  }
+  &__sub {
+    display: block;
+    margin-top: 2px;
+    color: #777;
+    a {
+      text-decoration: underline;
+      white-space: nowrap;
+    }
+  }
+  &__go {
+    font-size: 14px;
+    padding: .4rem .8rem;
+  }
+  &__close {
+    border: 0;
+    background: none;
+    color: #999;
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    cursor: pointer;
+    &:hover {
+      color: #555;
+    }
+  }
+
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 14px 36px 14px 14px;
+    &__icon {
+      width: 34px;
+      height: 34px;
+      font-size: 15px;
+    }
+    &__text {
+      flex-basis: calc(100% - 48px);
+    }
+    &__go {
+      margin-left: 48px;
+    }
+    &__close {
+      position: absolute;
+      top: 6px;
+      right: 4px;
+    }
+  }
+}
