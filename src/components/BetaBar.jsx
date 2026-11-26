@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const BETA_URL = 'https://beta.chamsocial.com'
 // Path of the announcement post, e.g. '/posts/the-new-chamsocial-beta'.
 // Fill in once the post is up; the "Read more" link stays hidden until then.
-const ANNOUNCEMENT_PATH = ''
+const ANNOUNCEMENT_PATH = '/posts/new-chamsocial-beta'
 const DISMISS_KEY = 'beta-bar-dismissed'
 
 function readDismissed() {
